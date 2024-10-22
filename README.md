@@ -21,13 +21,13 @@ Spotify API
 Google Maps Platform  
 
 # Članovi tima 
-*Ana Angelov
-*Lana Frleta
-*Ena Gladović
-*Luka Maleš
-*Antun Slaviček
-*Antonio Šulenta
-*Nikola Zrnc
+* Ana Angelov
+* Lana Frleta
+* Ena Gladović
+* Luka Maleš
+* Antun Slaviček
+* Antonio Šulenta
+* Nikola Zrnc
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
