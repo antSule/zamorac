@@ -14,13 +14,20 @@ Cilj našeg projekta je napraviti aplikaciju koja će pomoću podataka sa Spotif
 * Obavijesti
 
 # Tehnologije
-React
-Spring Boot
-Java
-Spotify API
-Google Maps Platform
+React  
+Spring Boot  
+Java  
+Spotify API  
+Google Maps Platform  
 
 # Članovi tima 
+*Ana Angelov
+*Lana Frleta
+*Ena Gladović
+*Luka Maleš
+*Antun Slaviček
+*Antonio Šulenta
+*Nikola Zrnc
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md
