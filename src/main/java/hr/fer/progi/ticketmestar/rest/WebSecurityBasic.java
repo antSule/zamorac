@@ -39,8 +39,8 @@ public class WebSecurityBasic {
     @Profile("basic-security")
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
-        http.oauth2Login(withDefaults());
         http.formLogin(withDefaults());
+        http.oauth2Login(withDefaults());
         http.httpBasic(withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
@@ -70,7 +70,6 @@ public class WebSecurityBasic {
 
     @Bean
     @Profile("form-security")
-    @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain spaFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
@@ -103,7 +102,7 @@ public class WebSecurityBasic {
 
     @Bean
     @Profile({ "basic-security", "form-security" })
-
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher(PathRequest.toH2Console());
         http.csrf(AbstractHttpConfigurer::disable);
