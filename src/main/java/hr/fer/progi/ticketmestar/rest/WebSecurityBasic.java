@@ -105,6 +105,7 @@ public class WebSecurityBasic {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher(PathRequest.toH2Console());
+        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
         http.csrf(AbstractHttpConfigurer::disable);
         http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         return http.build();
