@@ -4,7 +4,7 @@ import hr.fer.progi.ticketmestar.domain.AppUser;
 
 import java.util.List;
 
-public interface AppUserService {
+public interface AppUserDetailsService {
     List<AppUser> listAll();
 
 

@@ -1,9 +1,8 @@
 package hr.fer.progi.ticketmestar.rest;
 
 import hr.fer.progi.ticketmestar.domain.AppUser;
-import hr.fer.progi.ticketmestar.service.AppUserService;
+import hr.fer.progi.ticketmestar.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class AppUserController {
 
     @Autowired
-    private AppUserService appUserService;
+    private AppUserDetailsService appUserService;
 
     @GetMapping("")
     public List<AppUser> listAppUsers() {
