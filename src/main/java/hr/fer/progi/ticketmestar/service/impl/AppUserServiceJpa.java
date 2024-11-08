@@ -2,7 +2,7 @@ package hr.fer.progi.ticketmestar.service.impl;
 
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
-import hr.fer.progi.ticketmestar.service.AppUserService;
+import hr.fer.progi.ticketmestar.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 @Service
-public class AppUserServiceJpa implements AppUserService {
+public class AppUserServiceJpa implements AppUserDetailsService {
 
     @Autowired
     private AppUserRepository appUserRepo;

@@ -1,11 +1,10 @@
 package hr.fer.progi.ticketmestar.rest;
 
+import hr.fer.progi.ticketmestar.dao.ConcertRepository;
+import hr.fer.progi.ticketmestar.domain.AppUser;
 import hr.fer.progi.ticketmestar.domain.Concert;
-import hr.fer.progi.ticketmestar.service.ConcertService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,11 +12,21 @@ import java.util.List;
 @RequestMapping("/concerts")
 public class ConcertController {
 
-    @Autowired
-    private ConcertService concertService;
+    ConcertService concertService;
+    ConcertRepository concertRepository;
 
-    @GetMapping("")
+    public ConcertController(ConcertService concertService, ConcertRepository concertRepository) {
+        this.concertService = concertService;
+        this.concertRepository = concertRepository;
+    }
+
+    @GetMapping(value="/all")
     public List<Concert> listConcerts() {
-        return concertService.listAll();
+        return concertService.concertList();
+    }
+
+    @PostMapping(value="/add" ,consumes="application/json")
+    public Concert addConcert(@RequestBody Concert concert){
+        return concertService.addConcert(concert);
     }
 }

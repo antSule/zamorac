@@ -2,6 +2,7 @@ package hr.fer.progi.ticketmestar.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
@@ -11,13 +12,18 @@ import java.time.LocalTime;
 public class Concert {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-
     private LocalDate date;
     private LocalTime time;
-
     private String performer;
+
+    public Concert(Long id, LocalDate date, LocalTime time, String performer) {
+        this.id = id;
+        this.date = date;
+        this.time = time;
+        this.performer = performer;
+    }
 
     public Long getId() {
         return id;
