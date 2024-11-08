@@ -17,7 +17,7 @@ const LoginPage = () => {
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{textAlign:"center"}}>
-                    Sign In
+                    Login
                 </Typography>
                 <Box
                     component='form'
@@ -39,7 +39,10 @@ const LoginPage = () => {
                         type="password"
                     />
                     <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
-                        Sign In
+                        Log In
+                    </Button>
+                    <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
+                        Log In With Spotify
                     </Button>
                 </Box>
             </Paper>

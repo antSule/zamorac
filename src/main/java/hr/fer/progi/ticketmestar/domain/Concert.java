@@ -18,6 +18,8 @@ public class Concert {
     private LocalTime time;
     private String performer;
 
+    public Concert(){}
+
     public Concert(Long id, LocalDate date, LocalTime time, String performer) {
         this.id = id;
         this.date = date;

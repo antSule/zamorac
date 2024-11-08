@@ -36,7 +36,7 @@ const HomePage = () =>{
                 <a href="">Favourites</a>
                 <a href="">Filter</a>
                 <button className="button">
-                <a href="">Connect spotify</a>
+                    <RouterLink to="/login">Login</RouterLink>
                 </button>
              </div>
         </div>
