@@ -5,6 +5,7 @@ package hr.fer.progi.ticketmestar.rest
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +40,11 @@ public class RegistrationController {
         return appUserRepository.findAll();
     }
 
+    @GetMapping("/home")
+    public ResponseEntity<String> home() {
+
+        return ResponseEntity.ok("Evo me doma");
+
+    }
 
 }

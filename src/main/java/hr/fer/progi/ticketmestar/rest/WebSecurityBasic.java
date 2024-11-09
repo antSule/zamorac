@@ -1,5 +1,5 @@
 package hr.fer.progi.ticketmestar.rest;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AnonymousConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,6 +24,7 @@ public class WebSecurityBasic {
     private final AppUserService appUserService;
     private final ConcertService concertService;
 
+    @Autowired
     public WebSecurityBasic(AppUserService appUserService, ConcertService concertService) {
         this.appUserService = appUserService;
         this.concertService = concertService;
@@ -66,6 +68,12 @@ public class WebSecurityBasic {
                     registry.requestMatchers("/concerts/add").permitAll();
                     registry.requestMatchers("/getuser/**").permitAll();
                     registry.requestMatchers("/allusers/**").permitAll();
+                    registry.requestMatchers("/callback").permitAll();
+                    registry.requestMatchers("/error/**").permitAll();
+                    registry.requestMatchers("/search/**").permitAll();
+                    registry.requestMatchers("/home/**").permitAll();
+                    registry.requestMatchers("/albums/**").permitAll();
+                    registry.requestMatchers("/following/**").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .headers(headers -> headers
@@ -73,9 +81,11 @@ public class WebSecurityBasic {
                 )
                 .formLogin(withDefaults())
                 .oauth2Login(withDefaults())
+                .anonymous(anon -> anon.authorities("ROLE_ANONYMOUS"))
                 .build();
     }
-/*
+
+    /*
     @Value("${progi.fronted.url}")
     private String frontendUrl;
 
@@ -156,6 +166,8 @@ public class WebSecurityBasic {
         return http.build();
     }
 
+
+
     private GrantedAuthoritiesMapper authorityMapper() {
         final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
 
@@ -165,5 +177,7 @@ public class WebSecurityBasic {
     }
 
 
- */
+
+*/
+
 }
