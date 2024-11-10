@@ -1,13 +1,14 @@
 import { Avatar, Box, Button, Container, FormControlLabel, Grid, Link, Paper, TextField, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import { CheckBox } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 const RegistrationPage = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
+    const navigate = useNavigate();
 
     const handleSubmit = async(event) => {
         event.preventDefault();
@@ -29,6 +30,7 @@ const RegistrationPage = () => {
 
             if (response.ok) {
                 console.log('Registration successful');
+                navigate("/login");
             } else{
                 console.error('Registration failed');
             }

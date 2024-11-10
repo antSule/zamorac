@@ -6,7 +6,6 @@ import {useState} from "react";
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async(event) => {
@@ -30,7 +29,7 @@ const LoginPage = () => {
                 navigate("/");
             } else {
                 console.error("Login failed");
-                alert("Invalid email or password");
+                alert("Invalid username or password");
             }
         } catch(error) {
             console.error("Error during login", error);
