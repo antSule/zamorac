@@ -1,5 +1,9 @@
 package hr.fer.progi.ticketmestar.spotify;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.http.*;
@@ -31,6 +35,9 @@ public class SpotifyService {
     @Value("${spotify.accessToken}")
     private String accessToken;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     public String buildAuthorizationUrl() {
         return authorizeLink +
                 "?client_id=" + clientId +
@@ -40,34 +47,46 @@ public class SpotifyService {
                 "&scope=" + scope;
     }
 
-    public String buildTokenUrl(){
+    public String buildTokenUrl() {
         return tokenUrl;
     }
 
-    public String buildSearchUrl(String query, String type){
+    public String buildSearchUrl(String query, String type) {
         return searchUrl + "/search?q=" + query + "&type=" + type;
     }
 
-    public String buildUserAlbumsUrl(){
+    public String buildUserAlbumsUrl() {
         return searchUrl + "/me/albums";
     }
 
-    public String buildUserFollowingUrl(){
+    public String buildUserFollowingUrl() {
         return searchUrl + "/me/following?type=artist";
     }
 
-    public HttpHeaders createAuthHeader(){
+    public HttpHeaders createAuthHeader(String accessToken) {
         HttpHeaders header = new HttpHeaders();
         header.set("Authorization", "Bearer " + accessToken);
         return header;
     }
 
-    public HttpEntity<String> createTokenRequestBody(String code){
+    public HttpEntity<String> createTokenRequestBody(String code) {
         HttpHeaders header = new HttpHeaders();
         header.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + secretId).getBytes()));
         header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String body = "code=" + code + "&redirect_uri=" + redirect_Uri + "&grant_type=authorization_code";
-        return new HttpEntity<>(body,header);
+        return new HttpEntity<>(body, header);
+    }
+
+    public Cookie authorize(final String json) {
+
+        try {
+            SpotifyTokenResponse tokenResponse = mapper.readValue(json, SpotifyTokenResponse.class);
+
+            return SpotifySession.getCookie(tokenResponse);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+
