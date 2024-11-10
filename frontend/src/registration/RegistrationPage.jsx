@@ -1,42 +1,42 @@
 import { Avatar, Box, Button, Container, FormControlLabel, Grid, Link, Paper, TextField, Typography } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {Link as RouterLink, useNavigate} from "react-router-dom";
+import PersonIcon from '@mui/icons-material/Person';
+import { CheckBox } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
 import {useState} from "react";
 
-const LoginPage = () => {
+const RegistrationPage = () => {
     const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("")
 
     const handleSubmit = async(event) => {
         event.preventDefault();
 
+        const userPayload = {
+            username: username,
+            email: email,
+            password: password,
+        };
+
         try {
-            const response = await fetch("http://localhost:8080/login", {
+            const response = await fetch("http://localhost:8080/registration", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    "Content-Type": "application/json",
                 },
-                body: new URLSearchParams({
-                    username: username,
-                    password: password,
-                }),
+                body: JSON.stringify(userPayload),
             });
 
             if (response.ok) {
-                console.log("Login successful");
-                sessionStorage.setItem('username', username);
-                navigate("/");
-            } else {
-                console.error("Login failed");
-                alert("Invalid email or password");
+                console.log('Registration successful');
+            } else{
+                console.error('Registration failed');
             }
         } catch(error) {
-            console.error("Error during login", error);
-            alert("An error occurred. Please try again.");
+            console.log('Error during registration', error);
         }
-    }
+    };
+
     return (
         <Container maxWidth="xs">
             <Paper elevation={10} sx={{ marginTop: 8, padding: 2}}>
@@ -46,10 +46,10 @@ const LoginPage = () => {
                     textAlign: "center",
                     mb: 1
                 }}>
-                    <LockOutlinedIcon/>
+                    <PersonIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5" sx={{textAlign:"center"}}>
-                    Login
+                    Registration
                 </Typography>
                 <Box
                     component='form'
@@ -67,6 +67,14 @@ const LoginPage = () => {
                         sx={{mb: 2}}
                     />
                     <TextField
+                        placeholder="Email"
+                        fullWidth
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        sx={{mb: 2}}
+                    />
+                    <TextField
                         placeholder="Password"
                         fullWidth
                         required
@@ -75,14 +83,11 @@ const LoginPage = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
-                        Log In
-                    </Button>
-                    <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
-                        Log In With Spotify
+                        Register
                     </Button>
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh'}}>
                         <Button style={{fontSize: '13px', padding: '0px 10px'}}>
-                            <RouterLink to="/registration">Don't have an account? Register here!</RouterLink>
+                            <RouterLink to="/login">Already have an account? Log in.</RouterLink>
                         </Button>
                     </div>
                 </Box>
@@ -91,4 +96,4 @@ const LoginPage = () => {
     )
 };
 
-export default LoginPage;
+export default RegistrationPage;

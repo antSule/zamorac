@@ -35,7 +35,20 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     color: var(--secondary);
+    position: relative;
 }
+.centerText {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.welcomeText {
+    font-size: 2rem;
+    color: var(--secondary);
+}
+
 .h-menu{
     gap: 2rem;
     font-family: 'Poppins', sans-serif;

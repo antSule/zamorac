@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -57,6 +59,7 @@ public class WebSecurityBasic {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationManager(authenticationManager()) // Set custom AuthenticationManager
                 .authorizeHttpRequests(registry -> {
@@ -66,14 +69,33 @@ public class WebSecurityBasic {
                     registry.requestMatchers("/concerts/add").permitAll();
                     registry.requestMatchers("/getuser/**").permitAll();
                     registry.requestMatchers("/allusers/**").permitAll();
+                    registry.requestMatchers("/login/**").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
-                .formLogin(withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .failureHandler(authenticationFailureHandler())
+                        .defaultSuccessUrl("/", true)
+                )
                 .oauth2Login(withDefaults())
                 .build();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            if (exception instanceof BadCredentialsException) {
+                response.setStatus(401);  // Set status to Unauthorized if credentials are invalid
+                response.getWriter().write("{\"error\":\"Invalid credentials\"}");  // Custom error message
+            } else {
+                response.setStatus(400);  // Set status for other failures (400 Bad Request)
+                response.getWriter().write("{\"error\":\"Login failed\"}");  // Generic failure message
+            }
+        };
     }
 /*
     @Value("${progi.fronted.url}")

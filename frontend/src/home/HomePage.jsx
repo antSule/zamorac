@@ -1,3 +1,5 @@
+import {useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from "react-router-dom";
 import './home.css';
 import './header.css';
@@ -13,9 +15,26 @@ import slide_image_4 from '../slike/img_4.jpg';
 import slide_image_5 from '../slike/img_5.jpg';
 import slide_image_6 from '../slike/img_6.jpg';
 import slide_image_7 from '../slike/img_7.jpg';
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const HomePage = () =>{
+
+    const [username, setUsername] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedUsername = sessionStorage.getItem('username');
+        if(storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('username');
+        setUsername(null);
+        navigate("/");
+    }
+
     const handleButtonClick = () =>console.log("Klik");
     const slideImages = [
         slide_image_1,
@@ -31,13 +50,27 @@ const HomePage = () =>{
        <section className=" h-wrapper">
         <div className="flexCenter paddings innerWidth h-container">
             <img src="fakelogo.png" alt="logo"width = {100} />
-             
+
              <div className="flexCenter h-menu">
+                 <div className="centerText">
+                     {username && (
+                         <span className="WelcomeText">
+                         Welcome, {username}
+                        </span>
+                     )}
+                 </div>
+
                 <a href="">Favourites</a>
                 <a href="">Filter</a>
-                <button className="button">
-                    <RouterLink to="/login">Login</RouterLink>
-                </button>
+                    {username ? (
+                        <button className="button" onClick={handleLogout}>
+                            Log Out
+                        </button>
+                    ) : (
+                        <RouterLink to="/login" className="button">
+                            Login
+                        </RouterLink>
+                    )}
              </div>
         </div>
        </section>

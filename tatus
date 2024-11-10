@@ -1,0 +1,917 @@
+[33mcommit be125977e4e25a949d47f2278964075550140594[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: AnteSule <antesulenta1@gmail.com>
+Date:   Fri Nov 8 23:11:16 2024 +0100
+
+    Added Login page, connected to Home page, fixed showing concert database when calling /concerts/all
+
+[1mdiff --git a/CODE_OF_CONDUCT.md b/CODE_OF_CONDUCT.md[m
+[1mnew file mode 100644[m
+[1mindex 00000000..45d257b2[m
+[1m--- /dev/null[m
+[1m+++ b/CODE_OF_CONDUCT.md[m
+[36m@@ -0,0 +1,133 @@[m
+[32m+[m
+[32m+[m[32m# Contributor Covenant Code of Conduct[m
+[32m+[m
+[32m+[m[32m## Our Pledge[m
+[32m+[m
+[32m+[m[32mWe as members, contributors, and leaders pledge to make participation in our[m
+[32m+[m[32mcommunity a harassment-free experience for everyone, regardless of age, body[m
+[32m+[m[32msize, visible or invisible disability, ethnicity, sex characteristics, gender[m
+[32m+[m[32midentity and expression, level of experience, education, socio-economic status,[m
+[32m+[m[32mnationality, personal appearance, race, caste, color, religion, or sexual[m
+[32m+[m[32midentity and orientation.[m
+[32m+[m
+[32m+[m[32mWe pledge to act and interact in ways that contribute to an open, welcoming,[m
+[32m+[m[32mdiverse, inclusive, and healthy community.[m
+[32m+[m
+[32m+[m[32m## Our Standards[m
+[32m+[m
+[32m+[m[32mExamples of behavior that contributes to a positive environment for our[m
+[32m+[m[32mcommunity include:[m
+[32m+[m
+[32m+[m[32m* Demonstrating empathy and kindness toward other people[m
+[32m+[m[32m* Being respectful of differing opinions, viewpoints, and experiences[m
+[32m+[m[32m* Giving and gracefully accepting constructive feedback[m
+[32m+[m[32m* Accepting responsibility and apologizing to those affected by our mistakes,[m
+[32m+[m[32m  and learning from the experience[m
+[32m+[m[32m* Focusing on what is best not just for us as individuals, but for the overall[m
+[32m+[m[32m  community[m
+[32m+[m
+[32m+[m[32mExamples of unacceptable behavior include:[m
+[32m+[m
+[32m+[m[32m* The use of sexualized language or imagery, and sexual attention or advances of[m
+[32m+[m[32m  any kind[m
+[32m+[m[32m* Trolling, insulting or derogatory comments, and personal or political attacks[m
+[32m+[m[32m* Public or private harassment[m
+[32m+[m[32m* Publishing others' private information, such as a physical or email address,[m
+[32m+[m[32m  without their explicit permission[m
+[32m+[m[32m* Other conduct which could reasonably be considered inappropriate in a[m
+[32m+[m[32m  professional setting[m
+[32m+[m
+[32m+[m[32m## Enforcement Responsibilities[m
+[32m+[m
+[32m+[m[32mCommunity leaders are responsible for clarifying and enforcing our standards of[m
+[32m+[m[32macceptable behavior and will take appropriate and fair corrective action in[m
+[32m+[m[32mresponse to any behavior that they deem inappropriate, threatening, offensive,[m
+[32m+[m[32mor harmful.[m
+[32m+[m
+[32m+[m[32mCommunity leaders have the right and responsibility to remove, edit, or reject[m
+[32m+[m[32mcomments, commits, code, wiki edits, issues, and other contributions that are[m
+[32m+[m[32mnot aligned to this Code of Conduct, and will communicate reasons for moderation[m
+[32m+[m[32mdecisions when appropriate.[m
+[32m+[m
+[32m+[m[32m## Scope[m
+[32m+[m
+[32m+[m[32mThis Code of Conduct applies within all community spaces, and also applies when[m
+[32m+[m[32man individual is officially representing the community in public spaces.[m
+[32m+[m[32mExamples of representing our community include using an official e-mail address,[m
+[32m+[m[32mposting via an official social media account, or acting as an appointed[m
+[32m+[m[32mrepresentative at an online or offline event.[m
+[32m+[m
+[32m+[m[32m## Enforcement[m
+[32m+[m
+[32m+[m[32mInstances of abusive, harassing, or otherwise unacceptable behavior may be[m
+[32m+[m[32mreported to the community leaders responsible for enforcement at[m
+[32m+[m[32m[INSERT CONTACT METHOD].[m
+[32m+[m[32mAll complaints will be reviewed and investigated promptly and fairly.[m
+[32m+[m
+[32m+[m[32mAll community leaders are obligated to respect the privacy and security of the[m
+[32m+[m[32mreporter of any incident.[m
+[32m+[m
+[32m+[m[32m## Enforcement Guidelines[m
+[32m+[m
+[32m+[m[32mCommunity leaders will follow these Community Impact Guidelines in determining[m
+[32m+[m[32mthe consequences for any action they deem in violation of this Code of Conduct:[m
+[32m+[m
+[32m+[m[32m### 1. Correction[m
+[32m+[m
+[32m+[m[32m**Community Impact**: Use of inappropriate language or other behavior deemed[m
+[32m+[m[32munprofessional or unwelcome in the community.[m
+[32m+[m
+[32m+[m[32m**Consequence**: A private, written warning from community leaders, providing[m
+[32m+[m[32mclarity around the nature of the violation and an explanation of why the[m
+[32m+[m[32mbehavior was inappropriate. A public apology may be requested.[m
+[32m+[m
+[32m+[m[32m### 2. Warning[m
+[32m+[m
+[32m+[m[32m**Community Impact**: A violation through a single incident or series of[m
+[32m+[m[32mactions.[m
+[32m+[m
+[32m+[m[32m**Consequence**: A warning with consequences for continued behavior. No[m
+[32m+[m[32minteraction with the people involved, including unsolicited interaction with[m
+[32m+[m[32mthose enforcing the Code of Conduct, for a specified period of time. This[m
+[32m+[m[32mincludes avoiding interactions in community spaces as well as external channels[m
+[32m+[m[32mlike social media. Violating these terms may lead to a temporary or permanent[m
+[32m+[m[32mban.[m
+[32m+[m
+[32m+[m[32m### 3. Temporary Ban[m
+[32m+[m
+[32m+[m[32m**Community Impact**: A serious violation of community standards, including[m
+[32m+[m[32msustained inappropriate behavior.[m
+[32m+[m
+[32m+[m[32m**Consequence**: A temporary ban from any sort of interaction or public[m
+[32m+[m[32mcommunication with the community for a specified period of time. No public or[m
+[32m+[m[32mprivate interaction with the people involved, including unsolicited interaction[m
+[32m+[m[32mwith those enforcing the Code of Conduct, is allowed during this period.[m
+[32m+[m[32mViolating these terms may lead to a permanent ban.[m
+[32m+[m
+[32m+[m[32m### 4. Permanent Ban[m
+[32m+[m
+[32m+[m[32m**Community Impact**: Demonstrating a pattern of violation of community[m
+[32m+[m[32mstandards, including sustained inappropriate behavior, harassment of an[m
+[32m+[m[32mindividual, or aggression toward or disparagement of classes of individuals.[m
+[32m+[m
+[32m+[m[32m**Consequence**: A permanent ban from any sort of public interaction within the[m
+[32m+[m[32mcommunity.[m
+[32m+[m
+[32m+[m[32m## Attribution[m
+[32m+[m
+[32m+[m[32mThis Code of Conduct is adapted from the [Contributor Covenant][homepage],[m
+[32m+[m[32mversion 2.1, available at[m
+[32m+[m[32m[https://www.contributor-covenant.org/version/2/1/code_of_conduct.html][v2.1].[m
+[32m+[m
+[32m+[m[32mCommunity Impact Guidelines were inspired by[m
+[32m+[m[32m[Mozilla's code of conduct enforcement ladder][Mozilla CoC].[m
+[32m+[m
+[32m+[m[32mFor answers to common questions about this code of conduct, see the FAQ at[m
+[32m+[m[32m[https://www.contributor-covenant.org/faq][FAQ]. Translations are available at[m
+[32m+[m[32m[https://www.contributor-covenant.org/translations][translations].[m
+[32m+[m
+[32m+[m[32m[homepage]: https://www.contributor-covenant.org[m
+[32m+[m[32m[v2.1]: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html[m
+[32m+[m[32m[Mozilla CoC]: https://github.com/mozilla/diversity[m
+[32m+[m[32m[FAQ]: https://www.contributor-covenant.org/faq[m
+[32m+[m[32m[translations]: https://www.contributor-covenant.org/translations[m
+[1mdiff --git a/LICENSE b/LICENSE[m
+[1mnew file mode 100644[m
+[1mindex 00000000..cbe5ad16[m
+[1m--- /dev/null[m
+[1m+++ b/LICENSE[m
+[36m@@ -0,0 +1,437 @@[m
+[32m+[m[32mAttribution-NonCommercial-ShareAlike 4.0 International[m
+[32m+[m
+[32m+[m[32m=======================================================================[m
+[32m+[m
+[32m+[m[32mCreative Commons Corporation ("Creative Commons") is not a law firm and[m
+[32m+[m[32mdoes not provide legal services or legal advice. Distribution of[m
+[32m+[m[32mCreative Commons public licenses does not create a lawyer-client or[m
+[32m+[m[32mother relationship. Creative Commons makes its licenses and related[m
+[32m+[m[32minformation available on an "as-is" basis. Creative Commons gives no[m
+[32m+[m[32mwarranties regarding its licenses, any material licensed under their[m
+[32m+[m[32mterms and conditions, or any related information. Creative Commons[m
+[32m+[m[32mdisclaims all liability for damages resulting from their use to the[m
+[32m+[m[32mfullest extent possible.[m
+[32m+[m
+[32m+[m[32mUsing Creative Commons Public Licenses[m
+[32m+[m
+[32m+[m[32mCreative Commons public licenses provide a standard set of terms and[m
+[32m+[m[32mconditions that creators and other rights holders may use to share[m
+[32m+[m[32moriginal works of authorship and other material subject to copyright[m
+[32m+[m[32mand certain other rights specified in the public license below. The[m
+[32m+[m[32mfollowing considerations are for informational purposes only, are not[m
+[32m+[m[32mexhaustive, and do not form part of our licenses.[m
+[32m+[m
+[32m+[m[32m     Considerations for licensors: Our public licenses are[m
+[32m+[m[32m     intended for use by those authorized to give the public[m
+[32m+[m[32m     permission to use material in ways otherwise restricted by[m
+[32m+[m[32m     copyright and certain other rights. Our licenses are[m
+[32m+[m[32m     irrevocable. Licensors should read and understand the terms[m
+[32m+[m[32m     and conditions of the license they choose before applying it.[m
+[32m+[m[32m     Licensors should also secure all rights necessary before[m
+[32m+[m[32m     applying our licenses so that the public can reuse the[m
+[32m+[m[32m     material as expected. Licensors should clearly mark any[m
+[32m+[m[32m     material not subject to the license. This includes other CC-[m
+[32m+[m[32m     licensed material, or material used under an exception or[m
+[32m+[m[32m     limitation to copyright. More considerations for licensors:[m
+[32m+[m[32m    wiki.creativecommons.org/Considerations_for_licensors[m
+[32m+[m
+[32m+[m[32m     Considerations for the public: By using one of our public[m
+[32m+[m[32m     licenses, a licensor grants the public permission to use the[m
+[32m+[m[32m     licensed material under specified terms and conditions. If[m
+[32m+[m[32m     the licensor's permission is not necessary for any reason--for[m
+[32m+[m[32m     example, because of any applicable exception or limitation to[m
+[32m+[m[32m     copyright--then that use is not regulated by the license. Our[m
+[32m+[m[32m     licenses grant only permissions under copyright and certain[m
+[32m+[m[32m     other rights that a licensor has authority to grant. Use of[m
+[32m+[m[32m     the licensed material may still be restricted for other[m
+[32m+[m[32m     reasons, including because others have copyright or other[m
+[32m+[m[32m     rights in the material. A licensor may make special requests,[m
+[32m+[m[32m     such as asking that all changes be marked or described.[m
+[32m+[m[32m     Although not required by our licenses, you are encouraged to[m
+[32m+[m[32m     respect those requests where reasonable. More considerations[m
+[32m+[m[32m     for the public:[m
+[32m+[m[32m    wiki.creativecommons.org/Considerations_for_licensees[m
+[32m+[m
+[32m+[m[32m=======================================================================[m
+[32m+[m
+[32m+[m[32mCreative Commons Attribution-NonCommercial-ShareAlike 4.0 International[m
+[32m+[m[32mPublic License[m
+[32m+[m
+[32m+[m[32mBy exercising the Licensed Rights (defined below), You accept and agree[m
+[32m+[m[32mto be bound by the terms and conditions of this Creative Commons[m
+[32m+[m[32mAttribution-NonCommercial-ShareAlike 4.0 International Public License[m
+[32m+[m[32m("Public License"). To the extent this Public License may be[m
+[32m+[m[32minterpreted as a contract, You are granted the Licensed Rights in[m
+[32m+[m[32mconsideration of Your acceptance of these terms and conditions, and the[m
+[32m+[m[32mLicensor grants You such rights in consideration of benefits the[m
+[32m+[m[32mLicensor receives from making the Licensed Material available under[m
+[32m+[m[32mthese terms and conditions.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 1 -- Definitions.[m
+[32m+[m
+[32m+[m[32m  a. Adapted Material means material subject to Copyright and Similar[m
+[32m+[m[32m     Rights that is derived from or based upon the Licensed Material[m
+[32m+[m[32m     and in which the Licensed Material is translated, altered,[m
+[32m+[m[32m     arranged, transformed, or otherwise modified in a manner requiring[m
+[32m+[m[32m     permission under the Copyright and Similar Rights held by the[m
+[32m+[m[32m     Licensor. For purposes of this Public License, where the Licensed[m
+[32m+[m[32m     Material is a musical work, performance, or sound recording,[m
+[32m+[m[32m     Adapted Material is always produced where the Licensed Material is[m
+[32m+[m[32m     synched in timed relation with a moving image.[m
+[32m+[m
+[32m+[m[32m  b. Adapter's License means the license You apply to Your Copyright[m
+[32m+[m[32m     and Similar Rights in Your contributions to Adapted Material in[m
+[32m+[m[32m     accordance with the terms and conditions of this Public License.[m
+[32m+[m
+[32m+[m[32m  c. BY-NC-SA Compatible License means a license listed at[m
+[32m+[m[32m     creativecommons.org/compatiblelicenses, approved by Creative[m
+[32m+[m[32m     Commons as essentially the equivalent of this Public License.[m
+[32m+[m
+[32m+[m[32m  d. Copyright and Similar Rights means copyright and/or similar rights[m
+[32m+[m[32m     closely related to copyright including, without limitation,[m
+[32m+[m[32m     performance, broadcast, sound recording, and Sui Generis Database[m
+[32m+[m[32m     Rights, without regard to how the rights are labeled or[m
+[32m+[m[32m     categorized. For purposes of this Public License, the rights[m
+[32m+[m[32m     specified in Section 2(b)(1)-(2) are not Copyright and Similar[m
+[32m+[m[32m     Rights.[m
+[32m+[m
+[32m+[m[32m  e. Effective Technological Measures means those measures that, in the[m
+[32m+[m[32m     absence of proper authority, may not be circumvented under laws[m
+[32m+[m[32m     fulfilling obligations under Article 11 of the WIPO Copyright[m
+[32m+[m[32m     Treaty adopted on December 20, 1996, and/or similar international[m
+[32m+[m[32m     agreements.[m
+[32m+[m
+[32m+[m[32m  f. Exceptions and Limitations means fair use, fair dealing, and/or[m
+[32m+[m[32m     any other exception or limitation to Copyright and Similar Rights[m
+[32m+[m[32m     that applies to Your use of the Licensed Material.[m
+[32m+[m
+[32m+[m[32m  g. License Elements means the license attributes listed in the name[m
+[32m+[m[32m     of a Creative Commons Public License. The License Elements of this[m
+[32m+[m[32m     Public License are Attribution, NonCommercial, and ShareAlike.[m
+[32m+[m
+[32m+[m[32m  h. Licensed Material means the artistic or literary work, database,[m
+[32m+[m[32m     or other material to which the Licensor applied this Public[m
+[32m+[m[32m     License.[m
+[32m+[m
+[32m+[m[32m  i. Licensed Rights means the rights granted to You subject to the[m
+[32m+[m[32m     terms and conditions of this Public License, which are limited to[m
+[32m+[m[32m     all Copyright and Similar Rights that apply to Your use of the[m
+[32m+[m[32m     Licensed Material and that the Licensor has authority to license.[m
+[32m+[m
+[32m+[m[32m  j. Licensor means the individual(s) or entity(ies) granting rights[m
+[32m+[m[32m     under this Public License.[m
+[32m+[m
+[32m+[m[32m  k. NonCommercial means not primarily intended for or directed towards[m
+[32m+[m[32m     commercial advantage or monetary compensation. For purposes of[m
+[32m+[m[32m     this Public License, the exchange of the Licensed Material for[m
+[32m+[m[32m     other material subject to Copyright and Similar Rights by digital[m
+[32m+[m[32m     file-sharing or similar means is NonCommercial provided there is[m
+[32m+[m[32m     no payment of monetary compensation in connection with the[m
+[32m+[m[32m     exchange.[m
+[32m+[m
+[32m+[m[32m  l. Share means to provide material to the public by any means or[m
+[32m+[m[32m     process that requires permission under the Licensed Rights, such[m
+[32m+[m[32m     as reproduction, public display, public performance, distribution,[m
+[32m+[m[32m     dissemination, communication, or importation, and to make material[m
+[32m+[m[32m     available to the public including in ways that members of the[m
+[32m+[m[32m     public may access the material from a place and at a time[m
+[32m+[m[32m     individually chosen by them.[m
+[32m+[m
+[32m+[m[32m  m. Sui Generis Database Rights means rights other than copyright[m
+[32m+[m[32m     resulting from Directive 96/9/EC of the European Parliament and of[m
+[32m+[m[32m     the Council of 11 March 1996 on the legal protection of databases,[m
+[32m+[m[32m     as amended and/or succeeded, as well as other essentially[m
+[32m+[m[32m     equivalent rights anywhere in the world.[m
+[32m+[m
+[32m+[m[32m  n. You means the individual or entity exercising the Licensed Rights[m
+[32m+[m[32m     under this Public License. Your has a corresponding meaning.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 2 -- Scope.[m
+[32m+[m
+[32m+[m[32m  a. License grant.[m
+[32m+[m
+[32m+[m[32m       1. Subject to the terms and conditions of this Public License,[m
+[32m+[m[32m          the Licensor hereby grants You a worldwide, royalty-free,[m
+[32m+[m[32m          non-sublicensable, non-exclusive, irrevocable license to[m
+[32m+[m[32m          exercise the Licensed Rights in the Licensed Material to:[m
+[32m+[m
+[32m+[m[32m            a. reproduce and Share the Licensed Material, in whole or[m
+[32m+[m[32m               in part, for NonCommercial purposes only; and[m
+[32m+[m
+[32m+[m[32m            b. produce, reproduce, and Share Adapted Material for[m
+[32m+[m[32m               NonCommercial purposes only.[m
+[32m+[m
+[32m+[m[32m       2. Exceptions and Limitations. For the avoidance of doubt, where[m
+[32m+[m[32m          Exceptions and Limitations apply to Your use, this Public[m
+[32m+[m[32m          License does not apply, and You do not need to comply with[m
+[32m+[m[32m          its terms and conditions.[m
+[32m+[m
+[32m+[m[32m       3. Term. The term of this Public License is specified in Section[m
+[32m+[m[32m          6(a).[m
+[32m+[m
+[32m+[m[32m       4. Media and formats; technical modifications allowed. The[m
+[32m+[m[32m          Licensor authorizes You to exercise the Licensed Rights in[m
+[32m+[m[32m          all media and formats whether now known or hereafter created,[m
+[32m+[m[32m          and to make technical modifications necessary to do so. The[m
+[32m+[m[32m          Licensor waives and/or agrees not to assert any right or[m
+[32m+[m[32m          authority to forbid You from making technical modifications[m
+[32m+[m[32m          necessary to exercise the Licensed Rights, including[m
+[32m+[m[32m          technical modifications necessary to circumvent Effective[m
+[32m+[m[32m          Technological Measures. For purposes of this Public License,[m
+[32m+[m[32m          simply making modifications authorized by this Section 2(a)[m
+[32m+[m[32m          (4) never produces Adapted Material.[m
+[32m+[m
+[32m+[m[32m       5. Downstream recipients.[m
+[32m+[m
+[32m+[m[32m            a. Offer from the Licensor -- Licensed Material. Every[m
+[32m+[m[32m               recipient of the Licensed Material automatically[m
+[32m+[m[32m               receives an offer from the Licensor to exercise the[m
+[32m+[m[32m               Licensed Rights under the terms and conditions of this[m
+[32m+[m[32m               Public License.[m
+[32m+[m
+[32m+[m[32m            b. Additional offer from the Licensor -- Adapted Material.[m
+[32m+[m[32m               Every recipient of Adapted Material from You[m
+[32m+[m[32m               automatically receives an offer from the Licensor to[m
+[32m+[m[32m               exercise the Licensed Rights in the Adapted Material[m
+[32m+[m[32m               under the conditions of the Adapter's License You apply.[m
+[32m+[m
+[32m+[m[32m            c. No downstream restrictions. You may not offer or impose[m
+[32m+[m[32m               any additional or different terms or conditions on, or[m
+[32m+[m[32m               apply any Effective Technological Measures to, the[m
+[32m+[m[32m               Licensed Material if doing so restricts exercise of the[m
+[32m+[m[32m               Licensed Rights by any recipient of the Licensed[m
+[32m+[m[32m               Material.[m
+[32m+[m
+[32m+[m[32m       6. No endorsement. Nothing in this Public License constitutes or[m
+[32m+[m[32m          may be construed as permission to assert or imply that You[m
+[32m+[m[32m          are, or that Your use of the Licensed Material is, connected[m
+[32m+[m[32m          with, or sponsored, endorsed, or granted official status by,[m
+[32m+[m[32m          the Licensor or others designated to receive attribution as[m
+[32m+[m[32m          provided in Section 3(a)(1)(A)(i).[m
+[32m+[m
+[32m+[m[32m  b. Other rights.[m
+[32m+[m
+[32m+[m[32m       1. Moral rights, such as the right of integrity, are not[m
+[32m+[m[32m          licensed under this Public License, nor are publicity,[m
+[32m+[m[32m          privacy, and/or other similar personality rights; however, to[m
+[32m+[m[32m          the extent possible, the Licensor waives and/or agrees not to[m
+[32m+[m[32m          assert any such rights held by the Licensor to the limited[m
+[32m+[m[32m          extent necessary to allow You to exercise the Licensed[m
+[32m+[m[32m          Rights, but not otherwise.[m
+[32m+[m
+[32m+[m[32m       2. Patent and trademark rights are not licensed under this[m
+[32m+[m[32m          Public License.[m
+[32m+[m
+[32m+[m[32m       3. To the extent possible, the Licensor waives any right to[m
+[32m+[m[32m          collect royalties from You for the exercise of the Licensed[m
+[32m+[m[32m          Rights, whether directly or through a collecting society[m
+[32m+[m[32m          under any voluntary or waivable statutory or compulsory[m
+[32m+[m[32m          licensing scheme. In all other cases the Licensor expressly[m
+[32m+[m[32m          reserves any right to collect such royalties, including when[m
+[32m+[m[32m          the Licensed Material is used other than for NonCommercial[m
+[32m+[m[32m          purposes.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 3 -- License Conditions.[m
+[32m+[m
+[32m+[m[32mYour exercise of the Licensed Rights is expressly made subject to the[m
+[32m+[m[32mfollowing conditions.[m
+[32m+[m
+[32m+[m[32m  a. Attribution.[m
+[32m+[m
+[32m+[m[32m       1. If You Share the Licensed Material (including in modified[m
+[32m+[m[32m          form), You must:[m
+[32m+[m
+[32m+[m[32m            a. retain the following if it is supplied by the Licensor[m
+[32m+[m[32m               with the Licensed Material:[m
+[32m+[m
+[32m+[m[32m                 i. identification of the creator(s) of the Licensed[m
+[32m+[m[32m                    Material and any others designated to receive[m
+[32m+[m[32m                    attribution, in any reasonable manner requested by[m
+[32m+[m[32m                    the Licensor (including by pseudonym if[m
+[32m+[m[32m                    designated);[m
+[32m+[m
+[32m+[m[32m                ii. a copyright notice;[m
+[32m+[m
+[32m+[m[32m               iii. a notice that refers to this Public License;[m
+[32m+[m
+[32m+[m[32m                iv. a notice that refers to the disclaimer of[m
+[32m+[m[32m                    warranties;[m
+[32m+[m
+[32m+[m[32m                 v. a URI or hyperlink to the Licensed Material to the[m
+[32m+[m[32m                    extent reasonably practicable;[m
+[32m+[m
+[32m+[m[32m            b. indicate if You modified the Licensed Material and[m
+[32m+[m[32m               retain an indication of any previous modifications; and[m
+[32m+[m
+[32m+[m[32m            c. indicate the Licensed Material is licensed under this[m
+[32m+[m[32m               Public License, and include the text of, or the URI or[m
+[32m+[m[32m               hyperlink to, this Public License.[m
+[32m+[m
+[32m+[m[32m       2. You may satisfy the conditions in Section 3(a)(1) in any[m
+[32m+[m[32m          reasonable manner based on the medium, means, and context in[m
+[32m+[m[32m          which You Share the Licensed Material. For example, it may be[m
+[32m+[m[32m          reasonable to satisfy the conditions by providing a URI or[m
+[32m+[m[32m          hyperlink to a resource that includes the required[m
+[32m+[m[32m          information.[m
+[32m+[m[32m       3. If requested by the Licensor, You must remove any of the[m
+[32m+[m[32m          information required by Section 3(a)(1)(A) to the extent[m
+[32m+[m[32m          reasonably practicable.[m
+[32m+[m
+[32m+[m[32m  b. ShareAlike.[m
+[32m+[m
+[32m+[m[32m     In addition to the conditions in Section 3(a), if You Share[m
+[32m+[m[32m     Adapted Material You produce, the following conditions also apply.[m
+[32m+[m
+[32m+[m[32m       1. The Adapter's License You apply must be a Creative Commons[m
+[32m+[m[32m          license with the same License Elements, this version or[m
+[32m+[m[32m          later, or a BY-NC-SA Compatible License.[m
+[32m+[m
+[32m+[m[32m       2. You must include the text of, or the URI or hyperlink to, the[m
+[32m+[m[32m          Adapter's License You apply. You may satisfy this condition[m
+[32m+[m[32m          in any reasonable manner based on the medium, means, and[m
+[32m+[m[32m          context in which You Share Adapted Material.[m
+[32m+[m
+[32m+[m[32m       3. You may not offer or impose any additional or different terms[m
+[32m+[m[32m          or conditions on, or apply any Effective Technological[m
+[32m+[m[32m          Measures to, Adapted Material that restrict exercise of the[m
+[32m+[m[32m          rights granted under the Adapter's License You apply.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 4 -- Sui Generis Database Rights.[m
+[32m+[m
+[32m+[m[32mWhere the Licensed Rights include Sui Generis Database Rights that[m
+[32m+[m[32mapply to Your use of the Licensed Material:[m
+[32m+[m
+[32m+[m[32m  a. for the avoidance of doubt, Section 2(a)(1) grants You the right[m
+[32m+[m[32m     to extract, reuse, reproduce, and Share all or a substantial[m
+[32m+[m[32m     portion of the contents of the database for NonCommercial purposes[m
+[32m+[m[32m     only;[m
+[32m+[m
+[32m+[m[32m  b. if You include all or a substantial portion of the database[m
+[32m+[m[32m     contents in a database in which You have Sui Generis Database[m
+[32m+[m[32m     Rights, then the database in which You have Sui Generis Database[m
+[32m+[m[32m     Rights (but not its individual contents) is Adapted Material,[m
+[32m+[m[32m     including for purposes of Section 3(b); and[m
+[32m+[m
+[32m+[m[32m  c. You must comply with the conditions in Section 3(a) if You Share[m
+[32m+[m[32m     all or a substantial portion of the contents of the database.[m
+[32m+[m
+[32m+[m[32mFor the avoidance of doubt, this Section 4 supplements and does not[m
+[32m+[m[32mreplace Your obligations under this Public License where the Licensed[m
+[32m+[m[32mRights include other Copyright and Similar Rights.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 5 -- Disclaimer of Warranties and Limitation of Liability.[m
+[32m+[m
+[32m+[m[32m  a. UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE[m
+[32m+[m[32m     EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS[m
+[32m+[m[32m     AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF[m
+[32m+[m[32m     ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,[m
+[32m+[m[32m     IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,[m
+[32m+[m[32m     WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR[m
+[32m+[m[32m     PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,[m
+[32m+[m[32m     ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT[m
+[32m+[m[32m     KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT[m
+[32m+[m[32m     ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.[m
+[32m+[m
+[32m+[m[32m  b. TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE[m
+[32m+[m[32m     TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,[m
+[32m+[m[32m     NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,[m
+[32m+[m[32m     INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,[m
+[32m+[m[32m     COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR[m
+[32m+[m[32m     USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN[m
+[32m+[m[32m     ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR[m
+[32m+[m[32m     DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR[m
+[32m+[m[32m     IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.[m
+[32m+[m
+[32m+[m[32m  c. The disclaimer of warranties and limitation of liability provided[m
+[32m+[m[32m     above shall be interpreted in a manner that, to the extent[m
+[32m+[m[32m     possible, most closely approximates an absolute disclaimer and[m
+[32m+[m[32m     waiver of all liability.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 6 -- Term and Termination.[m
+[32m+[m
+[32m+[m[32m  a. This Public License applies for the term of the Copyright and[m
+[32m+[m[32m     Similar Rights licensed here. However, if You fail to comply with[m
+[32m+[m[32m     this Public License, then Your rights under this Public License[m
+[32m+[m[32m     terminate automatically.[m
+[32m+[m
+[32m+[m[32m  b. Where Your right to use the Licensed Material has terminated under[m
+[32m+[m[32m     Section 6(a), it reinstates:[m
+[32m+[m
+[32m+[m[32m       1. automatically as of the date the violation is cured, provided[m
+[32m+[m[32m          it is cured within 30 days of Your discovery of the[m
+[32m+[m[32m          violation; or[m
+[32m+[m
+[32m+[m[32m       2. upon express reinstatement by the Licensor.[m
+[32m+[m
+[32m+[m[32m     For the avoidance of doubt, this Section 6(b) does not affect any[m
+[32m+[m[32m     right the Licensor may have to seek remedies for Your violations[m
+[32m+[m[32m     of this Public License.[m
+[32m+[m
+[32m+[m[32m  c. For the avoidance of doubt, the Licensor may also offer the[m
+[32m+[m[32m     Licensed Material under separate terms or conditions or stop[m
+[32m+[m[32m     distributing the Licensed Material at any time; however, doing so[m
+[32m+[m[32m     will not terminate this Public License.[m
+[32m+[m
+[32m+[m[32m  d. Sections 1, 5, 6, 7, and 8 survive termination of this Public[m
+[32m+[m[32m     License.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 7 -- Other Terms and Conditions.[m
+[32m+[m
+[32m+[m[32m  a. The Licensor shall not be bound by any additional or different[m
+[32m+[m[32m     terms or conditions communicated by You unless expressly agreed.[m
+[32m+[m
+[32m+[m[32m  b. Any arrangements, understandings, or agreements regarding the[m
+[32m+[m[32m     Licensed Material not stated herein are separate from and[m
+[32m+[m[32m     independent of the terms and conditions of this Public License.[m
+[32m+[m
+[32m+[m
+[32m+[m[32mSection 8 -- Interpretation.[m
+[32m+[m
+[32m+[m[32m  a. For the avoidance of doubt, this Public License does not, and[m
+[32m+[m[32m     shall not be interpreted to, reduce, limit, restrict, or impose[m
+[32m+[m[32m     conditions on any use of the Licensed Material that could lawfully[m
+[32m+[m[32m     be made without permission under this Public License.[m
+[32m+[m
+[32m+[m[32m  b. To the extent possible, if any provision of this Public License is[m
+[32m+[m[32m     deemed unenforceable, it shall be automatically reformed to the[m
+[32m+[m[32m     minimum extent necessary to make it enforceable. If the provision[m
+[32m+[m[32m     cannot be reformed, it shall be severed from this Public License[m
+[32m+[m[32m     without affecting the enforceability of the remaining terms and[m
+[32m+[m[32m     conditions.[m
+[32m+[m
+[32m+[m[32m  c. No term or condition of this Public License will be waived and no[m
+[32m+[m[32m     failure to comply consented to unless expressly agreed to by the[m
+[32m+[m[32m     Licensor.[m
+[32m+[m
+[32m+[m[32m  d. Nothing in this Public License constitutes or may be interpreted[m
+[32m+[m[32m     as a limitation upon, or waiver of, any privileges and immunities[m
+[32m+[m[32m     that apply to the Licensor or You, including from the legal[m
+[32m+[m[32m     processes of any jurisdiction or authority.[m
+[32m+[m
+[32m+[m[32m=======================================================================[m
+[32m+[m
+[32m+[m[32mCreative Commons is not a party to its public[m
+[32m+[m[32mlicenses. Notwithstanding, Creative Commons may elect to apply one of[m
+[32m+[m[32mits public licenses to material it publishes and in those instances[m
+[32m+[m[32mwill be considered the “Licensor.” The text of the Creative Commons[m
+[32m+[m[32mpublic licenses is dedicated to the public domain under the CC0 Public[m
+[32m+[m[32mDomain Dedication. Except for the limited purpose of indicating that[m
+[32m+[m[32mmaterial is shared under a Creative Commons public license or as[m
+[32m+[m[32motherwise permitted by the Creative Commons policies published at[m
+[32m+[m[32mcreativecommons.org/policies, Creative Commons does not authorize the[m
+[32m+[m[32muse of the trademark "Creative Commons" or any other trademark or logo[m
+[32m+[m[32mof Creative Commons without its prior written consent including,[m
+[32m+[m[32mwithout limitation, in connection with any unauthorized modifications[m
+[32m+[m[32mto any of its public licenses or any other arrangements,[m
+[32m+[m[32munderstandings, or agreements concerning use of licensed material. For[m
+[32m+[m[32mthe avoidance of doubt, this paragraph does not form part of the[m
+[32m+[m[32mpublic licenses.[m
+[32m+[m
+[32m+[m[32mCreative Commons may be contacted at creativecommons.org.[m
+[1mdiff --git a/frontend/.gitignore b/frontend/.gitignore[m
+[1mnew file mode 100644[m
+[1mindex 00000000..df5f8cea[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/.gitignore[m
+[36m@@ -0,0 +1,8 @@[m
+[32m+[m[32mnode_modules/[m
+[32m+[m[32m.env[m
+[32m+[m[32m.DS_Store[m
+[32m+[m[32mbuild/[m
+[32m+[m[32mdist/[m
+[32m+[m[32m.next/[m
+[32m+[m[32mout/[m
+[32m+[m[32mcoverage/[m
+[1mdiff --git a/frontend/node_modules/.bin/acorn b/frontend/node_modules/.bin/acorn[m
+[1mnew file mode 100644[m
+[1mindex 00000000..679bd163[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/acorn[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m#!/bin/sh[m
+[32m+[m[32mbasedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")[m
+[32m+[m
+[32m+[m[32mcase `uname` in[m
+[32m+[m[32m    *CYGWIN*|*MINGW*|*MSYS*)[m
+[32m+[m[32m        if command -v cygpath > /dev/null 2>&1; then[m
+[32m+[m[32m            basedir=`cygpath -w "$basedir"`[m
+[32m+[m[32m        fi[m
+[32m+[m[32m    ;;[m
+[32m+[m[32mesac[m
+[32m+[m
+[32m+[m[32mif [ -x "$basedir/node" ]; then[m
+[32m+[m[32m  exec "$basedir/node"  "$basedir/../acorn/bin/acorn" "$@"[m
+[32m+[m[32melse[m[41m [m
+[32m+[m[32m  exec node  "$basedir/../acorn/bin/acorn" "$@"[m
+[32m+[m[32mfi[m
+[1mdiff --git a/frontend/node_modules/.bin/acorn.cmd b/frontend/node_modules/.bin/acorn.cmd[m
+[1mnew file mode 100644[m
+[1mindex 00000000..a9324df9[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/acorn.cmd[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32m@ECHO off[m
+[32m+[m[32mGOTO start[m
+[32m+[m[32m:find_dp0[m
+[32m+[m[32mSET dp0=%~dp0[m
+[32m+[m[32mEXIT /b[m
+[32m+[m[32m:start[m
+[32m+[m[32mSETLOCAL[m
+[32m+[m[32mCALL :find_dp0[m
+[32m+[m
+[32m+[m[32mIF EXIST "%dp0%\node.exe" ([m
+[32m+[m[32m  SET "_prog=%dp0%\node.exe"[m
+[32m+[m[32m) ELSE ([m
+[32m+[m[32m  SET "_prog=node"[m
+[32m+[m[32m  SET PATHEXT=%PATHEXT:;.JS;=;%[m
+[32m+[m[32m)[m
+[32m+[m
+[32m+[m[32mendLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "%_prog%"  "%dp0%\..\acorn\bin\acorn" %*[m
+[1mdiff --git a/frontend/node_modules/.bin/acorn.ps1 b/frontend/node_modules/.bin/acorn.ps1[m
+[1mnew file mode 100644[m
+[1mindex 00000000..6f6dcddf[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/acorn.ps1[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32m#!/usr/bin/env pwsh[m
+[32m+[m[32m$basedir=Split-Path $MyInvocation.MyCommand.Definition -Parent[m
+[32m+[m
+[32m+[m[32m$exe=""[m
+[32m+[m[32mif ($PSVersionTable.PSVersion -lt "6.0" -or $IsWindows) {[m
+[32m+[m[32m  # Fix case when both the Windows and Linux builds of Node[m
+[32m+[m[32m  # are installed in the same directory[m
+[32m+[m[32m  $exe=".exe"[m
+[32m+[m[32m}[m
+[32m+[m[32m$ret=0[m
+[32m+[m[32mif (Test-Path "$basedir/node$exe") {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "$basedir/node$exe"  "$basedir/../acorn/bin/acorn" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "$basedir/node$exe"  "$basedir/../acorn/bin/acorn" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m} else {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "node$exe"  "$basedir/../acorn/bin/acorn" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "node$exe"  "$basedir/../acorn/bin/acorn" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m}[m
+[32m+[m[32mexit $ret[m
+[1mdiff --git a/frontend/node_modules/.bin/ansi-html.cmd b/frontend/node_modules/.bin/ansi-html.cmd[m
+[1mnew file mode 100644[m
+[1mindex 00000000..fb530914[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/ansi-html.cmd[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32m@ECHO off[m
+[32m+[m[32mGOTO start[m
+[32m+[m[32m:find_dp0[m
+[32m+[m[32mSET dp0=%~dp0[m
+[32m+[m[32mEXIT /b[m
+[32m+[m[32m:start[m
+[32m+[m[32mSETLOCAL[m
+[32m+[m[32mCALL :find_dp0[m
+[32m+[m
+[32m+[m[32mIF EXIST "%dp0%\node.exe" ([m
+[32m+[m[32m  SET "_prog=%dp0%\node.exe"[m
+[32m+[m[32m) ELSE ([m
+[32m+[m[32m  SET "_prog=node"[m
+[32m+[m[32m  SET PATHEXT=%PATHEXT:;.JS;=;%[m
+[32m+[m[32m)[m
+[32m+[m
+[32m+[m[32mendLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "%_prog%"  "%dp0%\..\ansi-html\bin\ansi-html" %*[m
+[1mdiff --git a/frontend/node_modules/.bin/ansi-html.ps1 b/frontend/node_modules/.bin/ansi-html.ps1[m
+[1mnew file mode 100644[m
+[1mindex 00000000..01f0ccdf[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/ansi-html.ps1[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32m#!/usr/bin/env pwsh[m
+[32m+[m[32m$basedir=Split-Path $MyInvocation.MyCommand.Definition -Parent[m
+[32m+[m
+[32m+[m[32m$exe=""[m
+[32m+[m[32mif ($PSVersionTable.PSVersion -lt "6.0" -or $IsWindows) {[m
+[32m+[m[32m  # Fix case when both the Windows and Linux builds of Node[m
+[32m+[m[32m  # are installed in the same directory[m
+[32m+[m[32m  $exe=".exe"[m
+[32m+[m[32m}[m
+[32m+[m[32m$ret=0[m
+[32m+[m[32mif (Test-Path "$basedir/node$exe") {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "$basedir/node$exe"  "$basedir/../ansi-html/bin/ansi-html" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "$basedir/node$exe"  "$basedir/../ansi-html/bin/ansi-html" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m} else {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "node$exe"  "$basedir/../ansi-html/bin/ansi-html" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "node$exe"  "$basedir/../ansi-html/bin/ansi-html" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m}[m
+[32m+[m[32mexit $ret[m
+[1mdiff --git a/frontend/node_modules/.bin/autoprefixer b/frontend/node_modules/.bin/autoprefixer[m
+[1mnew file mode 100644[m
+[1mindex 00000000..2d2ee701[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/autoprefixer[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m#!/bin/sh[m
+[32m+[m[32mbasedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")[m
+[32m+[m
+[32m+[m[32mcase `uname` in[m
+[32m+[m[32m    *CYGWIN*|*MINGW*|*MSYS*)[m
+[32m+[m[32m        if command -v cygpath > /dev/null 2>&1; then[m
+[32m+[m[32m            basedir=`cygpath -w "$basedir"`[m
+[32m+[m[32m        fi[m
+[32m+[m[32m    ;;[m
+[32m+[m[32mesac[m
+[32m+[m
+[32m+[m[32mif [ -x "$basedir/node" ]; then[m
+[32m+[m[32m  exec "$basedir/node"  "$basedir/../autoprefixer/bin/autoprefixer" "$@"[m
+[32m+[m[32melse[m[41m [m
+[32m+[m[32m  exec node  "$basedir/../autoprefixer/bin/autoprefixer" "$@"[m
+[32m+[m[32mfi[m
+[1mdiff --git a/frontend/node_modules/.bin/autoprefixer.ps1 b/frontend/node_modules/.bin/autoprefixer.ps1[m
+[1mnew file mode 100644[m
+[1mindex 00000000..b0f0b6f7[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/autoprefixer.ps1[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32m#!/usr/bin/env pwsh[m
+[32m+[m[32m$basedir=Split-Path $MyInvocation.MyCommand.Definition -Parent[m
+[32m+[m
+[32m+[m[32m$exe=""[m
+[32m+[m[32mif ($PSVersionTable.PSVersion -lt "6.0" -or $IsWindows) {[m
+[32m+[m[32m  # Fix case when both the Windows and Linux builds of Node[m
+[32m+[m[32m  # are installed in the same directory[m
+[32m+[m[32m  $exe=".exe"[m
+[32m+[m[32m}[m
+[32m+[m[32m$ret=0[m
+[32m+[m[32mif (Test-Path "$basedir/node$exe") {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "$basedir/node$exe"  "$basedir/../autoprefixer/bin/autoprefixer" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "$basedir/node$exe"  "$basedir/../autoprefixer/bin/autoprefixer" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m} else {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "node$exe"  "$basedir/../autoprefixer/bin/autoprefixer" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "node$exe"  "$basedir/../autoprefixer/bin/autoprefixer" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m}[m
+[32m+[m[32mexit $ret[m
+[1mdiff --git a/frontend/node_modules/.bin/browserslist b/frontend/node_modules/.bin/browserslist[m
+[1mnew file mode 100644[m
+[1mindex 00000000..60e71ad8[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/browserslist[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m#!/bin/sh[m
+[32m+[m[32mbasedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")[m
+[32m+[m
+[32m+[m[32mcase `uname` in[m
+[32m+[m[32m    *CYGWIN*|*MINGW*|*MSYS*)[m
+[32m+[m[32m        if command -v cygpath > /dev/null 2>&1; then[m
+[32m+[m[32m            basedir=`cygpath -w "$basedir"`[m
+[32m+[m[32m        fi[m
+[32m+[m[32m    ;;[m
+[32m+[m[32mesac[m
+[32m+[m
+[32m+[m[32mif [ -x "$basedir/node" ]; then[m
+[32m+[m[32m  exec "$basedir/node"  "$basedir/../browserslist/cli.js" "$@"[m
+[32m+[m[32melse[m[41m [m
+[32m+[m[32m  exec node  "$basedir/../browserslist/cli.js" "$@"[m
+[32m+[m[32mfi[m
+[1mdiff --git a/frontend/node_modules/.bin/browserslist.cmd b/frontend/node_modules/.bin/browserslist.cmd[m
+[1mnew file mode 100644[m
+[1mindex 00000000..f93c251e[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/browserslist.cmd[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32m@ECHO off[m
+[32m+[m[32mGOTO start[m
+[32m+[m[32m:find_dp0[m
+[32m+[m[32mSET dp0=%~dp0[m
+[32m+[m[32mEXIT /b[m
+[32m+[m[32m:start[m
+[32m+[m[32mSETLOCAL[m
+[32m+[m[32mCALL :find_dp0[m
+[32m+[m
+[32m+[m[32mIF EXIST "%dp0%\node.exe" ([m
+[32m+[m[32m  SET "_prog=%dp0%\node.exe"[m
+[32m+[m[32m) ELSE ([m
+[32m+[m[32m  SET "_prog=node"[m
+[32m+[m[32m  SET PATHEXT=%PATHEXT:;.JS;=;%[m
+[32m+[m[32m)[m
+[32m+[m
+[32m+[m[32mendLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "%_prog%"  "%dp0%\..\browserslist\cli.js" %*[m
+[1mdiff --git a/frontend/node_modules/.bin/browserslist.ps1 b/frontend/node_modules/.bin/browserslist.ps1[m
+[1mnew file mode 100644[m
+[1mindex 00000000..01e10a08[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/browserslist.ps1[m
+[36m@@ -0,0 +1,28 @@[m
+[32m+[m[32m#!/usr/bin/env pwsh[m
+[32m+[m[32m$basedir=Split-Path $MyInvocation.MyCommand.Definition -Parent[m
+[32m+[m
+[32m+[m[32m$exe=""[m
+[32m+[m[32mif ($PSVersionTable.PSVersion -lt "6.0" -or $IsWindows) {[m
+[32m+[m[32m  # Fix case when both the Windows and Linux builds of Node[m
+[32m+[m[32m  # are installed in the same directory[m
+[32m+[m[32m  $exe=".exe"[m
+[32m+[m[32m}[m
+[32m+[m[32m$ret=0[m
+[32m+[m[32mif (Test-Path "$basedir/node$exe") {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "$basedir/node$exe"  "$basedir/../browserslist/cli.js" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "$basedir/node$exe"  "$basedir/../browserslist/cli.js" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m} else {[m
+[32m+[m[32m  # Support pipeline input[m
+[32m+[m[32m  if ($MyInvocation.ExpectingInput) {[m
+[32m+[m[32m    $input | & "node$exe"  "$basedir/../browserslist/cli.js" $args[m
+[32m+[m[32m  } else {[m
+[32m+[m[32m    & "node$exe"  "$basedir/../browserslist/cli.js" $args[m
+[32m+[m[32m  }[m
+[32m+[m[32m  $ret=$LASTEXITCODE[m
+[32m+[m[32m}[m
+[32m+[m[32mexit $ret[m
+[1mdiff --git a/frontend/node_modules/.bin/css-blank-pseudo b/frontend/node_modules/.bin/css-blank-pseudo[m
+[1mnew file mode 100644[m
+[1mindex 00000000..b9012a9a[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/css-blank-pseudo[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m#!/bin/sh[m
+[32m+[m[32mbasedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")[m
+[32m+[m
+[32m+[m[32mcase `uname` in[m
+[32m+[m[32m    *CYGWIN*|*MINGW*|*MSYS*)[m
+[32m+[m[32m        if command -v cygpath > /dev/null 2>&1; then[m
+[32m+[m[32m            basedir=`cygpath -w "$basedir"`[m
+[32m+[m[32m        fi[m
+[32m+[m[32m    ;;[m
+[32m+[m[32mesac[m
+[32m+[m
+[32m+[m[32mif [ -x "$basedir/node" ]; then[m
+[32m+[m[32m  exec "$basedir/node"  "$basedir/../css-blank-pseudo/dist/cli.cjs" "$@"[m
+[32m+[m[32melse[m[41m [m
+[32m+[m[32m  exec node  "$basedir/../css-blank-pseudo/dist/cli.cjs" "$@"[m
+[32m+[m[32mfi[m
+[1mdiff --git a/frontend/node_modules/.bin/css-blank-pseudo.cmd b/frontend/node_modules/.bin/css-blank-pseudo.cmd[m
+[1mnew file mode 100644[m
+[1mindex 00000000..f7241869[m
+[1m--- /dev/null[m
+[1m+++ b/frontend/node_modules/.bin/css-blank-pseudo.cmd[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32m@ECHO off[m
+[32m+[m[32mGOTO start[m
+[32m+[m[32m:find_dp0[m
+[32m+[m[32mSET dp0=%~dp0[m
+[32m+[m[32mEXIT /b[m
+[32m+[m[32m:start[m
+[32m+[m[32mSETLOCAL[m
+[32m+[m[32mCALL :find_dp0[m
+[32m+[m
+[32m+[m[32mIF EXIST "%dp0%\node.exe" ([m
+[32m+[m[32m  SET "_prog=%dp0%\node.exe"[m
+[32m+[m[32m) ELSE ([m
+[32m+[m[32m  SET "_prog=node"[m
+[32m+[m[32m  SET PATHEXT=%PATHEXT:;.JS;=;%[m
+[32m+[m[32m)[m
+[32m+[
