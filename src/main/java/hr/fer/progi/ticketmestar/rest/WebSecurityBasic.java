@@ -77,7 +77,9 @@ public class WebSecurityBasic {
                     registry.requestMatchers("/home/**").permitAll();
                     registry.requestMatchers("/albums/**").permitAll();
                     registry.requestMatchers("/following/**").permitAll();
+                    registry.requestMatchers("/me/**").permitAll();
                     registry.requestMatchers("/login/**").permitAll();
+                    registry.requestMatchers("/oauth2/**").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .headers(headers -> headers
@@ -88,7 +90,9 @@ public class WebSecurityBasic {
                         .loginProcessingUrl("/login")
                         .failureHandler(authenticationFailureHandler())
                         .defaultSuccessUrl("/", true))
-                .oauth2Login(withDefaults())
+                .oauth2Login(form -> form
+                        .defaultSuccessUrl("http://localhost:3000")
+                        .failureUrl("/error"))
                 .anonymous(anon -> anon.authorities("ROLE_ANONYMOUS"))
                 .build();
     }

@@ -55,6 +55,10 @@ public class SpotifyService {
         return searchUrl + "/search?q=" + query + "&type=" + type;
     }
 
+    public String buildMeUrl() {
+        return searchUrl + "/me";
+    }
+
     public String buildUserAlbumsUrl() {
         return searchUrl + "/me/albums";
     }

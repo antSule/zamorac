@@ -41,7 +41,7 @@ public class SpotifyController {
         final Cookie cookie = spotifyService.authorize(body);
 
         response.addCookie(cookie);
-        response.sendRedirect("/home");
+        response.sendRedirect("http://localhost:3000/");
 
     }
     @GetMapping("/error")
@@ -50,8 +50,17 @@ public class SpotifyController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<String> getUserData(final HttpServletRequest request) {
+        RestTemplate restTemplate = new RestTemplate();
 
-
+        return restTemplate.exchange(
+                spotifyService.buildMeUrl(),
+                HttpMethod.GET,
+                new HttpEntity<>(spotifyService.createAuthHeader(getAccessToken(request))),
+                String.class
+        );
+    }
     @GetMapping("/search")
     public ResponseEntity<String> search(@RequestParam("query") String query, @RequestParam("type") String type,
                                          final HttpServletRequest request) {
@@ -87,6 +96,7 @@ public class SpotifyController {
                 new HttpEntity<>(spotifyService.createAuthHeader(getAccessToken(request))),
                 String.class
         );
+
     }
 
     private String getAccessToken(final HttpServletRequest request) {

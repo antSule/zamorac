@@ -27,6 +27,7 @@ const HomePage = () =>{
         if(storedUsername) {
             setUsername(storedUsername);
         }
+
     }, []);
 
     const handleLogout = () => {
@@ -59,8 +60,9 @@ const HomePage = () =>{
                         </span>
                      )}
                  </div>
-
-                <a href="">Favourites</a>
+                 <RouterLink to="/favourites">
+                     Favourites
+                 </RouterLink>
                 <a href="">Filter</a>
                     {username ? (
                         <button className="button" onClick={handleLogout}>
@@ -74,11 +76,11 @@ const HomePage = () =>{
              </div>
         </div>
        </section>
-       
+
        <div className="searchBarWrapper">
          <input className="searchBar" type="text" placeholder="Search..." />
        </div>
-       
+
        <Swiper
         effect={'coverflow'}
         grabCursor={true}
@@ -123,7 +125,7 @@ const HomePage = () =>{
           </button>
       </div>
   </SwiperSlide>
-  
+
 ))}
 
         <div className="slider-controler">
@@ -135,7 +137,7 @@ const HomePage = () =>{
           </div>
           <div className="swiper-pagination"></div>
         </div>
-       </Swiper>      
+       </Swiper>
     </>
     );
 };

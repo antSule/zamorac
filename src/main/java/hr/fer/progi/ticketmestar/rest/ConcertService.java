@@ -6,6 +6,8 @@ import hr.fer.progi.ticketmestar.domain.Concert;
 import jakarta.transaction.Transactional;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,8 +29,19 @@ public class ConcertService  implements  UserDetailsService{
         return concertRepository.findAll();
     }
 
-    public Concert addConcert(Concert concert) {
-        return concertRepository.save(concert);
+    public ResponseEntity<?> addConcert(Concert concert) {
+        if (concertRepository.findByPerformerAndDateAndTime(
+                concert.getPerformer(),
+                concert.getDate(),
+                concert.getTime()).isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Concert with the same performer, date, and time already exists.");
+        }
+
+        Concert savedConcert = concertRepository.save(concert);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
     }
 
 

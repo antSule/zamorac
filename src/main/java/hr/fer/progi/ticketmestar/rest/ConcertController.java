@@ -4,6 +4,7 @@ import hr.fer.progi.ticketmestar.dao.ConcertRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import hr.fer.progi.ticketmestar.domain.Concert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class ConcertController {
         return concertService.concertList();
     }
 
-    @PostMapping(value="/add" ,consumes="application/json")
-    public Concert addConcert(@RequestBody Concert concert){
+    @PostMapping(value="/add", consumes="application/json")
+    public ResponseEntity<?> addConcert(@RequestBody Concert concert){
         return concertService.addConcert(concert);
     }
 }

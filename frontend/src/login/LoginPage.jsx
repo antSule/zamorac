@@ -8,6 +8,10 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    const handleSpotifyLogin = () => {
+        window.location.href='http://localhost:8080/oauth2/authorization/spotify';
+    };
+
     const handleSubmit = async(event) => {
         event.preventDefault();
 
@@ -76,7 +80,7 @@ const LoginPage = () => {
                     <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
                         Log In
                     </Button>
-                    <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
+                    <Button onClick={handleSpotifyLogin} variant="contained" fullWidth sx={{mt: 1}}>
                         Log In With Spotify
                     </Button>
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh'}}>
