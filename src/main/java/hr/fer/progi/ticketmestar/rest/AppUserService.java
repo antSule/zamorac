@@ -34,6 +34,14 @@ public class AppUserService implements UserDetailsService {
         }
     }
 
+    public Optional<AppUser> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+    public void saveUser(AppUser user) {
+        repository.save(user);
+    }
+
 
 
     /*

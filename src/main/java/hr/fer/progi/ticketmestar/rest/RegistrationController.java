@@ -4,14 +4,25 @@ package hr.fer.progi.ticketmestar.rest
 
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,5 +82,50 @@ public class RegistrationController {
         return ResponseEntity.ok("Evo me doma");
 
     }
+
+    @GetMapping("/artist")
+    public ResponseEntity<String> artist() {
+
+        return ResponseEntity.ok("Evo me artist");
+
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<String> user() {
+
+        return ResponseEntity.ok("Evo me user");
+
+    }
+
+
+    @PostMapping("/pick-role")
+    public void pickRole(@RequestBody String role, Authentication authentication, HttpServletResponse response) throws IOException {
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        String email = oAuth2User.getAttribute("email");
+
+        Optional<AppUser> userOptional = appUserService.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            AppUser user = userOptional.get();
+            user.setRole(role.equalsIgnoreCase("ARTIST") ? "ARTIST" : "USER");
+            appUserService.saveUser(user);
+
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase()));
+            OAuth2User updatedOAuth2User = new DefaultOAuth2User(
+                    authorities,
+                    oAuth2User.getAttributes(),
+                    "email"
+            );
+
+            OAuth2AuthenticationToken newAuth = new OAuth2AuthenticationToken(updatedOAuth2User, authorities, "google");
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+            response.sendRedirect("/home");
+        }
+        else {
+            response.sendRedirect("/error");
+        }
+    }
+
 
 }

@@ -8,37 +8,17 @@ import jakarta.validation.constraints.Email;
 public class AppUser {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String email;
     private String password;
-    private boolean isArtist;
+    private String role;
 
 
     //private Boolean locked = false;
     //private Boolean enabled = false;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isArtist() {
-        return isArtist;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -56,8 +36,28 @@ public class AppUser {
         this.password = password;
     }
 
-    public void setArtist(boolean artist) {
-        isArtist = artist;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class AppUser {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", isArtist=" + isArtist +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

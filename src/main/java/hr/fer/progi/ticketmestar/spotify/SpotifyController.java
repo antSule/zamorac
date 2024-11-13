@@ -41,9 +41,17 @@ public class SpotifyController {
         final Cookie cookie = spotifyService.authorize(body);
 
         response.addCookie(cookie);
-        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect("/home");
 
     }
+
+ /*
+    @GetMapping("/callback")
+    public String callback(){
+        return "vidovsnov";
+    }
+
+ */
     @GetMapping("/error")
     public ResponseEntity<Void> error(@RequestBody ErrorBody errorBody) {
         System.out.println(errorBody);

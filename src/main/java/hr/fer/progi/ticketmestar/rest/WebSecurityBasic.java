@@ -1,7 +1,16 @@
 package hr.fer.progi.ticketmestar.rest;
+import hr.fer.progi.ticketmestar.domain.AppUser;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,18 +19,129 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AnonymousConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityBasic {
+
+    @Value("${progi.fronted.url}")
+    private String frontendUrl;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable);
+
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/oauth2/**", "/css/**", "/js/**" , "/registration").permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                .requestMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+        );
+
+        http.formLogin(formLogin -> formLogin
+                .successHandler((request, response, authentication) -> {
+                    response.setStatus(HttpStatus.NO_CONTENT.value());
+                })
+                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+        );
+
+        http.oauth2Login(oauth2 -> oauth2
+                .successHandler((request, response, authentication) -> {
+                    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+                    String email = oAuth2User.getAttribute("email");
+
+                    Optional<AppUser> userOptional = appUserService.findByEmail(email);
+
+                    if (userOptional.isPresent()) {
+                        AppUser user = userOptional.get();
+                        String userRole = user.getRole();
+
+                        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userRole.toUpperCase()));
+
+                        OAuth2User updatedOAuth2User = new DefaultOAuth2User(
+                                authorities,
+                                oAuth2User.getAttributes(),
+                                "email"
+                        );
+
+                        authentication = new OAuth2AuthenticationToken(updatedOAuth2User, authorities, "google");
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                        response.sendRedirect(frontendUrl);
+                    } else {
+                        AppUser newUser = new AppUser();
+                        newUser.setUsername(email);
+                        newUser.setEmail(email);
+                        newUser.setRole("USER");
+                        appUserService.saveUser(newUser);
+
+                        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+                        OAuth2User newOAuth2User = new DefaultOAuth2User(
+                                authorities,
+                                oAuth2User.getAttributes(),
+                                "email"
+                        );
+
+                        authentication = new OAuth2AuthenticationToken(newOAuth2User, authorities, "google");
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                        response.sendRedirect("/pick-role");
+                    }
+                })
+        );
+
+        http.httpBasic(withDefaults());
+
+        http.exceptionHandling(configurer -> {
+            final RequestMatcher nonHtmlRequests = new NegatedRequestMatcher(new MediaTypeRequestMatcher(MediaType.TEXT_HTML));
+            configurer.defaultAuthenticationEntryPointFor(
+                    new Http403ForbiddenEntryPoint(), nonHtmlRequests
+            );
+        });
+
+
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "SESSION", "XSRF-TOKEN","access_token")
+                .logoutSuccessUrl("/login")
+        );
+
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
+        return http.build();
+    }
+
+    private GrantedAuthoritiesMapper authorityMapper() {
+        SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
+        authorityMapper.setDefaultAuthority("ROLE_ADMIN");
+        return authorityMapper;
+    }
+
 
     private final AppUserService appUserService;
     private final ConcertService concertService;
@@ -59,45 +179,6 @@ public class WebSecurityBasic {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .cors(withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .authenticationManager(authenticationManager()) // Set custom AuthenticationManager
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/registration/**").permitAll();
-                    registry.requestMatchers("/concerts/all").permitAll();
-                    registry.requestMatchers("/h2-console/**").permitAll();
-                    registry.requestMatchers("/concerts/add").permitAll();
-                    registry.requestMatchers("/getuser/**").permitAll();
-                    registry.requestMatchers("/allusers/**").permitAll();
-                    registry.requestMatchers("/callback").permitAll();
-                    registry.requestMatchers("/error/**").permitAll();
-                    registry.requestMatchers("/search/**").permitAll();
-                    registry.requestMatchers("/home/**").permitAll();
-                    registry.requestMatchers("/albums/**").permitAll();
-                    registry.requestMatchers("/following/**").permitAll();
-                    registry.requestMatchers("/me/**").permitAll();
-                    registry.requestMatchers("/login/**").permitAll();
-                    registry.requestMatchers("/oauth2/**").permitAll();
-                    registry.anyRequest().authenticated();
-                })
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/login")
-                        .failureHandler(authenticationFailureHandler())
-                        .defaultSuccessUrl("/", true))
-                .oauth2Login(form -> form
-                        .defaultSuccessUrl("http://localhost:3000")
-                        .failureUrl("/error"))
-                .anonymous(anon -> anon.authorities("ROLE_ANONYMOUS"))
-                .build();
-    }
-
-    @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, exception) -> {
             if (exception instanceof BadCredentialsException) {
@@ -110,99 +191,6 @@ public class WebSecurityBasic {
         };
     }
 
-    /*
-    @Value("${progi.fronted.url}")
-    private String frontendUrl;
 
-
-    @Bean
-    @Profile("basic-security")
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
-        http.formLogin(withDefaults());
-        http.oauth2Login(withDefaults());
-        http.httpBasic(withDefaults());
-        http.csrf(AbstractHttpConfigurer::disable);
-        return http.build();
-    }
-
-    @Bean
-    @Profile("oauth-security")
-    public SecurityFilterChain oauthFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                    auth.anyRequest().authenticated();
-                })
-                .oauth2Login(oauth2 -> {
-                    oauth2
-                            .userInfoEndpoint(
-                                    userInfoEndpoint -> userInfoEndpoint.userAuthoritiesMapper(this.authorityMapper()))
-                            .successHandler(
-                                    (request, response, authentication) -> {
-                                        response.sendRedirect(frontendUrl);
-                                    });
-                })
-                .exceptionHandling(handling -> handling.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
-                .build();
-    }
-
-
-    @Bean
-    @Profile("form-security")
-    public SecurityFilterChain spaFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
-                .anyRequest().authenticated());
-        http.formLogin(configurer -> {
-                    configurer.successHandler((request, response, authentication) ->
-                                    response.setStatus(HttpStatus.NO_CONTENT.value())
-                            )
-                            .failureHandler(new SimpleUrlAuthenticationFailureHandler());
-                }
-        );
-        http.exceptionHandling(configurer -> {
-            final RequestMatcher matcher = new NegatedRequestMatcher(
-                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML));
-            configurer
-                    .defaultAuthenticationEntryPointFor((request, response, authException) -> {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    }, matcher);
-        });
-        http.logout(configurer -> configurer
-                .logoutUrl("/logout")
-                .logoutSuccessHandler((request, response, authentication) ->
-                        response.setStatus(HttpStatus.NO_CONTENT.value())));
-        http.csrf(AbstractHttpConfigurer::disable);
-        return http.build();
-    }
-
-
-
-
-    @Bean
-    @Profile({ "basic-security", "form-security" })
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher(PathRequest.toH2Console());
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-        return http.build();
-    }
-
-
-
-    private GrantedAuthoritiesMapper authorityMapper() {
-        final SimpleAuthorityMapper authorityMapper = new SimpleAuthorityMapper();
-
-        authorityMapper.setDefaultAuthority("ROLE_ADMIN");
-
-        return authorityMapper;
-    }
-
-
-
-*/
 
 }
