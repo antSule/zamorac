@@ -1,5 +1,4 @@
-package hr.fer.progi.ticketmestar.rest
-        ;
+package hr.fer.progi.ticketmestar.rest;
 
 
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;

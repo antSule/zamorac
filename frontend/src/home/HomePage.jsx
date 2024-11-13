@@ -1,3 +1,4 @@
+import axios from "axios";
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from "react-router-dom";
@@ -19,21 +20,22 @@ import React, {useEffect} from 'react';
 
 const HomePage = () =>{
 
-    const [username, setUsername] = useState('');
+    const [user, setUser] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUsername = sessionStorage.getItem('username');
-        if(storedUsername) {
-            setUsername(storedUsername);
-        }
+        axios.get('http://localhost:8080/user-info', {withCredentials: true})
+    .then(response => {
+            setUser(response.data);
+        })
+            .catch(error=>{
+                console.error('Error occured: ', error);
+            })
 
     }, []);
 
     const handleLogout = () => {
-        sessionStorage.removeItem('username');
-        setUsername(null);
-        navigate("/");
+        window.location.href='http://localhost:8080/logout';
     }
 
     const handleButtonClick = () =>console.log("Klik");
@@ -54,17 +56,18 @@ const HomePage = () =>{
 
              <div className="flexCenter h-menu">
                  <div className="centerText">
-                     {username && (
+                     {user ? (
                          <span className="WelcomeText">
-                         Welcome, {username}
+                         Welcome, {user.name}
                         </span>
-                     )}
+                     ) :
+                     <span></span>}
                  </div>
                  <RouterLink to="/favourites">
                      Favourites
                  </RouterLink>
                 <a href="">Filter</a>
-                    {username ? (
+                    {user ? (
                         <button className="button" onClick={handleLogout}>
                             Log Out
                         </button>

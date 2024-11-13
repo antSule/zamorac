@@ -4,19 +4,18 @@ import 'swiper/css/navigation'
 import 'swiper/css/effect-coverflow';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './home/HomePage';
-import LoginPage from './login/LoginPage'
-import RegistrationPage from './registration/RegistrationPage'
-import Favourites from './favourites/Favourites'
+import LoginPage from './components/LoginPage'
+import Favourites from './components/Favourites'
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   return (
     <div>
         <Router>
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/registration" element={<RegistrationPage />} />
-                <Route path="/favourites" element={<Favourites />} />
+                <Route path="/" element={<LoginPage />} />
+                <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                <Route path="/favourites" element={<ProtectedRoute><Favourites /></ProtectedRoute>} />
             </Routes>
         </Router>
     </div>

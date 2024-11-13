@@ -88,7 +88,7 @@ public class WebSecurityBasic {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "SESSION", "XSRF-TOKEN","access_token")
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("http://localhost:3000")
         );
 
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
