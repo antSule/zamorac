@@ -21,7 +21,7 @@ public class ConcertController {
         this.concertService = concertService;
         this.concertRepository = concertRepository;
     }
-/*
+
     @GetMapping(value="/all")
     public List<Concert> listConcerts() {
         return concertService.concertList();
@@ -33,8 +33,8 @@ public class ConcertController {
     }
 
 
- */
 
+/*
 
     @PreAuthorize("hasAnyRole('USER', 'ARTIST')")
     @GetMapping("/all")
@@ -55,4 +55,6 @@ public class ConcertController {
     public String viewUserConcerts() {
         return "accessible only by user";
     }
+
+ */
 }
