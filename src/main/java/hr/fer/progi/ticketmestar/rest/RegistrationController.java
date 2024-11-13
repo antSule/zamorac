@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,12 +91,11 @@ public class RegistrationController {
 
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<String> user() {
-
-        return ResponseEntity.ok("Evo me user");
-
+    @GetMapping("/user-info")
+    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal){
+        return principal.getAttributes();
     }
+
 
 
     @PostMapping("/pick-role")

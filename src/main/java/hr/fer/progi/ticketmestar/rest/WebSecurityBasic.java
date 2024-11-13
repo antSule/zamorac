@@ -55,7 +55,6 @@ public class WebSecurityBasic {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/oauth2/**", "/css/**", "/js/**" , "/registration").permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .requestMatchers("/login").permitAll()
                 .anyRequest().authenticated()
@@ -70,46 +69,7 @@ public class WebSecurityBasic {
 
         http.oauth2Login(oauth2 -> oauth2
                 .successHandler((request, response, authentication) -> {
-                    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-                    String email = oAuth2User.getAttribute("email");
-
-                    Optional<AppUser> userOptional = appUserService.findByEmail(email);
-
-                    if (userOptional.isPresent()) {
-                        AppUser user = userOptional.get();
-                        String userRole = user.getRole();
-
-                        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userRole.toUpperCase()));
-
-                        OAuth2User updatedOAuth2User = new DefaultOAuth2User(
-                                authorities,
-                                oAuth2User.getAttributes(),
-                                "email"
-                        );
-
-                        authentication = new OAuth2AuthenticationToken(updatedOAuth2User, authorities, "google");
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                        response.sendRedirect(frontendUrl);
-                    } else {
-                        AppUser newUser = new AppUser();
-                        newUser.setUsername(email);
-                        newUser.setEmail(email);
-                        newUser.setRole("USER");
-                        appUserService.saveUser(newUser);
-
-                        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-                        OAuth2User newOAuth2User = new DefaultOAuth2User(
-                                authorities,
-                                oAuth2User.getAttributes(),
-                                "email"
-                        );
-
-                        authentication = new OAuth2AuthenticationToken(newOAuth2User, authorities, "google");
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                        response.sendRedirect("/pick-role");
-                    }
+                    response.sendRedirect("http://localhost:3000/home");
                 })
         );
 
