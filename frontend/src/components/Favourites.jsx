@@ -8,7 +8,7 @@ const Favourites = () => {
     const [followingArtists, setFollowingArtists] = useState([]);
 
     useEffect(() => {
-        fetch("/following", {
+        fetch("/api/following", {
             credentials: 'include'
         })
             .then((response) => response.json())

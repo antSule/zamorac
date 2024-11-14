@@ -6,7 +6,7 @@ const Concerts = () => {
     const [concert, setConcert] = useState([]);
 
     useEffect(() => {
-        axios.get('/concerts/all', {withCredentials: true})
+        axios.get('/api/concerts/all', {withCredentials: true})
             .then(response => setConcert(response.data))
             .catch(error => console.error('Error fetching concerts: ', error));
     }, []);
