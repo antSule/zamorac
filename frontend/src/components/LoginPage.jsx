@@ -12,10 +12,6 @@ const LoginPage = () => {
         window.location.href='http://localhost:8080/oauth2/authorization/google';
     }
 
-    const handleSpotifyLogin = () => {
-        window.location.href='http://localhost:8080/oauth2/authorization/spotify';
-    };
-
     const handleSubmit = async(event) => {
         event.preventDefault();
 
