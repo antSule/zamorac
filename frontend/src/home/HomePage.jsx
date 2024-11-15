@@ -23,15 +23,16 @@ const HomePage = () =>{
     const [user, setUser] = useState('');
 
     useEffect(() => {
-        axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', {withCredentials: true})
-    .then(response => {
+    const fetchUserInfo = async () => {
+        try {
+            const response = await axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', { withCredentials: true });
             setUser(response.data);
-        })
-            .catch(error=>{
-                console.error('Error occured: ', error);
-            })
-
-    }, []);
+        } catch (error) {
+            console.error('Error occurred: ', error);
+        }
+    };
+    fetchUserInfo();
+}, []);
 
     const handleLogout = () => {
         window.location.href='https://ticketmestarbackend-yqpn.onrender.com/api/logout';
