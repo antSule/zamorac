@@ -57,7 +57,7 @@ public class WebSecurityBasic {
 
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login", "/error").permitAll()
                 .anyRequest().authenticated()
         );
 
