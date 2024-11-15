@@ -69,7 +69,6 @@ const HomePage = () =>{
                  <RouterLink to="/favourites">
                      Favourites
                  </RouterLink>
-                <a href="http://localhost:3000/home">Filter</a>
                     {user ? (
                         <button className="button" onClick={handleLogout}>
                             Log Out
