@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
 
     useEffect(() => {
         axios
-            .get('/api/user-info', { withCredentials: true })
+            .get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', { withCredentials: true })
             .then((response) => {
                 if (response.data) {
                     setIsAuthenticated(true);
