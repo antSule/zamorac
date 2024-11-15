@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Profile({"form-security", "oauth-security"})
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
     @GetMapping
