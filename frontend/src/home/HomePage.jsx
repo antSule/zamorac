@@ -23,7 +23,7 @@ const HomePage = () =>{
     const [user, setUser] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/user-info', {withCredentials: true})
+        axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', {withCredentials: true})
     .then(response => {
             setUser(response.data);
         })
@@ -34,7 +34,7 @@ const HomePage = () =>{
     }, []);
 
     const handleLogout = () => {
-        window.location.href='http://localhost:8080/logout';
+        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/logout';
     }
 
     const handleButtonClick = () =>console.log("Klik");
