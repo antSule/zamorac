@@ -34,7 +34,7 @@ const HomePage = () =>{
     }, []);
 
     const handleLogout = () => {
-        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/logout';
+        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/api/logout';
     }
 
     const handleButtonClick = () =>console.log("Klik");
