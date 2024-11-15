@@ -38,7 +38,7 @@ public class RegistrationController {
     private PasswordEncoder passwordEncoder;
 
 
-    @PostMapping(value="/api/registration", consumes="application/json")
+    @PostMapping(value="/registration", consumes="application/json")
     public ResponseEntity<?> createUser(@RequestBody AppUser user){
 
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -66,43 +66,43 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    @GetMapping(value="/api/error")
+    @GetMapping(value="/error")
     public ResponseEntity<String> getError(@RequestParam String name){
         return ResponseEntity.ok("Error");
     }
 
-    @GetMapping(value="/api/getuser")
+    @GetMapping(value="/getuser")
     public UserDetails getUser(@RequestParam String name){
         return appUserService.loadUserByUsername(name);
     }
 
-    @GetMapping(value="/api/allusers")
+    @GetMapping(value="/allusers")
     public List<AppUser> getAllUsers(){
         return appUserRepository.findAll();
     }
 
-    @GetMapping("/api/home")
+    @GetMapping("/home")
     public ResponseEntity<String> home() {
 
         return ResponseEntity.ok("Evo me doma");
 
     }
 
-    @GetMapping("/api/artist")
+    @GetMapping("/artist")
     public ResponseEntity<String> artist() {
 
         return ResponseEntity.ok("Evo me artist");
 
     }
 
-    @GetMapping("/api/user-info")
+    @GetMapping("/user-info")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal){
         return principal.getAttributes();
     }
 
 
 
-    @PostMapping("/api/pick-role")
+    @PostMapping("/pick-role")
     public void pickRole(@RequestBody String role, Authentication authentication, HttpServletResponse response) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");
@@ -124,10 +124,10 @@ public class RegistrationController {
             OAuth2AuthenticationToken newAuth = new OAuth2AuthenticationToken(updatedOAuth2User, authorities, "google");
             SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-            response.sendRedirect("/api/home");
+            response.sendRedirect("/home");
         }
         else {
-            response.sendRedirect("/api/error");
+            response.sendRedirect("/error");
         }
     }
 
