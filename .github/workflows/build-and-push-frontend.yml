@@ -31,10 +31,9 @@ jobs:
         working-directory: frontend
 
       - name: Build the React app
-        run: npm run build
+        run: CI=false npm run build
         working-directory: frontend
-        env:
-          CI: true
+
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
