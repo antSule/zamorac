@@ -70,7 +70,7 @@ public class WebSecurityBasic {
 
         http.oauth2Login(oauth2 -> oauth2
                 .successHandler((request, response, authentication) -> {
-                    response.sendRedirect("http://localhost:3000/home");
+                    response.sendRedirect("https://ticketmestarfrontend-c9vl.onrender.com/home");
                 })
         );
 
@@ -89,7 +89,7 @@ public class WebSecurityBasic {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "SESSION", "XSRF-TOKEN","access_token")
-                .logoutSuccessUrl("http://localhost:3000")
+                .logoutSuccessUrl("https://ticketmestarfrontend-c9vl.onrender.com")
         );
 
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
