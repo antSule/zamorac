@@ -26,12 +26,12 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: 'frontend/yarn.lock'
 
-      - name: Yarn install
-        run: yarn install
+      - name: Install dependencies
+        run: npm install
         working-directory: frontend
 
-      - name: Yarn build
-        run: yarn run build
+      - name: Build the React app
+        run: npm run build
         working-directory: frontend
 
       - name: Set up Docker Buildx
