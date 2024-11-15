@@ -10,7 +10,7 @@ const Concerts = () => {
             .then(response => {
                 // Check if response.data is an array
                 if (Array.isArray(response.json().data)) {
-                    setConcert(response.json().data);
+                    setConcert(response.data);
                 } else {
                     console.error('Expected an array of concerts but got:', response.data);
                 }
