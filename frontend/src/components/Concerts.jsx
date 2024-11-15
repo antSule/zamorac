@@ -1,21 +1,29 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const Concerts = () => {
-
     const [concert, setConcert] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
-        axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/concerts/all', {withCredentials: true})
-            .then(response => setConcert(response.data))
-            .catch(error => console.error('Error fetching concerts: ', error));
+        axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/concerts/all', { withCredentials: true })
+            .then(response => {
+                // Check if response.data is an array
+                if (Array.isArray(response.data)) {
+                    setConcert(response.data);
+                } else {
+                    console.error('Expected an array of concerts but got:', response.data);
+                }
+            })
+            .catch(error => console.error('Error fetching concerts: ', error))
+            .finally(() => setLoading(false));  // Set loading to false once the request is complete
     }, []);
 
-    return(
+    return (
         <>
             <section className="h-wrapper">
                 <div className="flexCenter paddings innerWidth h-container">
-                    <img src="fakelogo.png" alt="logo" width={100}/>
+                    <img src="fakelogo.png" alt="logo" width={100} />
                     <div className="centerText">
                         Concerts
                     </div>
@@ -31,7 +39,9 @@ const Concerts = () => {
             }}>
                 <h2>Concerts Near You</h2>
 
-                {concert.length > 0 ? (
+                {loading ? (
+                    <p>Loading concerts...</p>
+                ) : concert.length > 0 ? (
                     <ul style={{ listStyleType: 'none', padding: 0, width: '80%' }}>
                         {concert.map((concert, index) => (
                             <li key={index} style={{
@@ -54,11 +64,11 @@ const Concerts = () => {
                         ))}
                     </ul>
                 ) : (
-                    <p>Loading concerts...</p>
+                    <p>No concerts found</p>
                 )}
             </div>
         </>
     );
-}
+};
 
 export default Concerts;
