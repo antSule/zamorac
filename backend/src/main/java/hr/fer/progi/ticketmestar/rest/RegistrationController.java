@@ -66,6 +66,11 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
+    @GetMapping(value="/api/error")
+    public ResponseEntity<String> getError(@RequestParam String name){
+        return ResponseEntity.ok("Error");
+    }
+
     @GetMapping(value="/api/getuser")
     public UserDetails getUser(@RequestParam String name){
         return appUserService.loadUserByUsername(name);
@@ -119,10 +124,10 @@ public class RegistrationController {
             OAuth2AuthenticationToken newAuth = new OAuth2AuthenticationToken(updatedOAuth2User, authorities, "google");
             SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-            response.sendRedirect("/home");
+            response.sendRedirect("/api/home");
         }
         else {
-            response.sendRedirect("/error");
+            response.sendRedirect("/api/error");
         }
     }
 
