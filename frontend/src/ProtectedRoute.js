@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
 
     useEffect(() => {
         axios
-            .get('http://localhost:8080/api/user-info', { withCredentials: true })
+            .get('/api/user-info', { withCredentials: true })
             .then((response) => {
                 if (response.data) {
                     setIsAuthenticated(true);
