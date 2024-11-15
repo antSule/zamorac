@@ -50,7 +50,7 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ghcr.io/antSule/zamorac/frontend:latest
+          tags: ghcr.io/antsule/zamorac/frontend:latest
 
       - name: Trigger release
         if: ${{ env.FRONTEND_DEPLOY_HOOK }}
