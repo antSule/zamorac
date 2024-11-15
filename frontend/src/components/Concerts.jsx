@@ -6,7 +6,7 @@ const Concerts = () => {
     const [concert, setConcert] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/concerts/all', {withCredentials: true})
+        axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/concerts/all', {withCredentials: true})
             .then(response => setConcert(response.data))
             .catch(error => console.error('Error fetching concerts: ', error));
     }, []);
