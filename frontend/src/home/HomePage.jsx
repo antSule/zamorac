@@ -23,7 +23,7 @@ const HomePage = () =>{
     const [user, setUser] = useState('');
 
     useEffect(() => {
-        axios.get('https://ticketmestarbackend-yqpn.onrender.com/user-info', {withCredentials: true})
+        axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', {withCredentials: true})
     .then(response => {
             setUser(response.data);
         })
