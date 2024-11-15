@@ -9,7 +9,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
-        window.location.href='http://localhost:8080/oauth2/authorization/google';
+        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/oauth2/authorization/google';
     }
 
     const handleSubmit = async(event) => {
