@@ -20,7 +20,7 @@ const RegistrationPage = () => {
         };
 
         try {
-            const response = await fetch("/api/registration", {
+            const response = await fetch("http://localhost:8080/api/registration", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

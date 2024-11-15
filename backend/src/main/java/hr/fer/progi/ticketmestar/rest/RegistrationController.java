@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/api")
 public class RegistrationController {
 
     @Autowired
@@ -39,7 +38,7 @@ public class RegistrationController {
     private PasswordEncoder passwordEncoder;
 
 
-    @PostMapping(value="/registration", consumes="application/json")
+    @PostMapping(value="/api/registration", consumes="application/json")
     public ResponseEntity<?> createUser(@RequestBody AppUser user){
 
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -67,38 +66,38 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    @GetMapping(value="/getuser")
+    @GetMapping(value="/api/getuser")
     public UserDetails getUser(@RequestParam String name){
         return appUserService.loadUserByUsername(name);
     }
 
-    @GetMapping(value="/allusers")
+    @GetMapping(value="/api/allusers")
     public List<AppUser> getAllUsers(){
         return appUserRepository.findAll();
     }
 
-    @GetMapping("/home")
+    @GetMapping("/api/home")
     public ResponseEntity<String> home() {
 
         return ResponseEntity.ok("Evo me doma");
 
     }
 
-    @GetMapping("/artist")
+    @GetMapping("/api/artist")
     public ResponseEntity<String> artist() {
 
         return ResponseEntity.ok("Evo me artist");
 
     }
 
-    @GetMapping("/user-info")
+    @GetMapping("/api/user-info")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal){
         return principal.getAttributes();
     }
 
 
 
-    @PostMapping("/pick-role")
+    @PostMapping("/api/pick-role")
     public void pickRole(@RequestBody String role, Authentication authentication, HttpServletResponse response) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");

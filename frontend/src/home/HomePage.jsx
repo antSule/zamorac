@@ -24,7 +24,7 @@ const HomePage = () =>{
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('/api/user-info', {withCredentials: true})
+        axios.get('http://localhost:8080/api/user-info', {withCredentials: true})
     .then(response => {
             setUser(response.data);
         })
