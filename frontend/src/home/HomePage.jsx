@@ -26,6 +26,7 @@ const HomePage = () =>{
     const fetchUserInfo = async () => {
         try {
             const response = await axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', { withCredentials: true });
+            console.log(response.data);
             setUser(response.data);
         } catch (error) {
             console.error('Error occurred: ', error);
