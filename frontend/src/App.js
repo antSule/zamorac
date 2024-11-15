@@ -17,7 +17,6 @@ function App() {
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
                 <Route path="/concerts" element={<ProtectedRoute><Concerts /></ProtectedRoute>} />
-                <Route path="/favourites" element={<ProtectedRoute><Favourites /></ProtectedRoute>} />
             </Routes>
         </Router>
     </div>
