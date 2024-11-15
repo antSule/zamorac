@@ -5,7 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import './home.css';
 import './header.css';
 import {EffectCoverflow,Pagination,Navigation} from 'swiper/modules';
-import {Swiper,SwiperSlide,useSwiper} from 'swiper/react'
+import {Swiper,SwiperSlide} from 'swiper/react'
 import './slajder.css'
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -21,7 +21,6 @@ import React, {useEffect} from 'react';
 const HomePage = () =>{
 
     const [user, setUser] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/user-info', {withCredentials: true})
