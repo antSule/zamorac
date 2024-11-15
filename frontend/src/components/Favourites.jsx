@@ -8,7 +8,7 @@ const Favourites = () => {
     const [followingArtists, setFollowingArtists] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/following", {
+        fetch("https://ticketmestarbackend-yqpn.onrender.com/api/following", {
             credentials: 'include'
         })
             .then((response) => response.json())
