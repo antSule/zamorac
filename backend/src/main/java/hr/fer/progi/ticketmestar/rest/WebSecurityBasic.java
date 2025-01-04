@@ -52,12 +52,12 @@ public class WebSecurityBasic {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
+        http.cors(withDefaults());
 
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                .requestMatchers("/login", "/error", "/actuator/**").permitAll()
+                .requestMatchers("/login", "/error", "/actuator/**", "/concerts/**").permitAll()
                 .anyRequest().authenticated()
         );
 
@@ -70,7 +70,7 @@ public class WebSecurityBasic {
 
         http.oauth2Login(oauth2 -> oauth2
                 .successHandler((request, response, authentication) -> {
-                    response.sendRedirect("https://ticketmestarfrontend-c9vl.onrender.com/home");
+                    response.sendRedirect("http://localhost:8080/home");
                 })
         );
 

@@ -13,35 +13,37 @@ public class Concert {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
     private LocalDate date;
     private LocalTime time;
     private String performer;
+    private String venue;
+    private Double latitude;
+    private Double longitude;
+    private String url;
+    private String city;
+    private String event;
+    private String imageUrl;
 
     public Concert(){}
 
-    public Concert(Long id, LocalDate date, LocalTime time, String performer) {
-        this.id = id;
+    public Concert(LocalDate date, LocalTime time, String performer, String venue, Double latitude, Double longitude, String url, String city, String event, String imageUrl) {
         this.date = date;
         this.time = time;
         this.performer = performer;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.venue = venue;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.url = url;
+        this.city = city;
+        this.event = event;
+        this.imageUrl = imageUrl;
     }
 
     public String getPerformer() {
         return performer;
     }
 
-    public void setPerformer(String performer) {
-        this.performer = performer;
-    }
+    public void setPerformer(String performer) { this.performer = performer; }
 
     public LocalTime getTime() {
         return time;
@@ -59,13 +61,47 @@ public class Concert {
         this.date = date;
     }
 
+    public String getVenue() { return venue; }
+
+    public void setVenue(String venue) {this.venue = venue;}
+
+    public Double getLatitude() { return latitude; }
+
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public String getUrl() { return url; }
+
+    public void setUrl(String url) { this.url = url; }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public String getEvent() { return event; }
+
+    public void setEvent(String event) { this.event = event; }
+
+    public String getImageUrl() { return imageUrl; }
+
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+
     @Override
     public String toString() {
         return "Concert{" +
-                "id=" + id +
                 ", date=" + date +
                 ", time=" + time +
                 ", performer='" + performer + '\'' +
+                ", venue='" + venue + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", url='" + url + '\'' +
+                ", city=" + city +
+                ", event=" + event +
                 '}';
     }
 }

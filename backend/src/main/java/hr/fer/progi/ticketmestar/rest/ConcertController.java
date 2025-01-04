@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -32,7 +33,24 @@ public class ConcertController {
         return concertService.addConcert(concert);
     }
 
+    //DODANO
+    @Autowired
+    private TicketMasterService ticketMasterService;
 
+    @GetMapping("/concerts")
+    public ResponseEntity<List<Concert>> getConcerts(
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false) String artist,
+            @RequestParam(required = false) String latitude,
+            @RequestParam(required = false) String longitude,
+            @RequestParam(required = false) String radius) {
+
+        List<Concert> concerts = ticketMasterService.searchConcerts(date, artist, latitude, longitude, radius);
+
+        return ResponseEntity.ok(concerts);
+    }
+
+    //DODANO
 
 /*
 

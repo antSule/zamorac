@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Concerts</title>
+    <link rel="stylesheet" href="ticketmaster.css"/>
+</head>
+<body>
+<h1>Search for Concerts</h1>
+
+<form id="parameters-form">
+    <label for="concert-date">Select the date of the concert:</label><br>
+    <input type="date" id="concert-date" name="concert-date"><br>
+    <label for="artist-name">Artist name</label><br>
+    <input type="text" id="artist-name" name="artist-name"><br>
+    <label for="location">Location</label><br>
+    <input type="text" id="location" name="location" readonly>
+    <div class="button-group">
+        <button type="button" id="button-location" name="button-location">Select location</button><br>
+        <button type="button" id="button-clear-location" name="button-clear-location">Clear location</button><br>
+    </div>
+    <label for="radius">Radius in km</label><br>
+    <input type="text" id="radius" name="radius"><br>
+    <button type="submit">Send parameters</button>
+</form>
+<script src="ticket.js"></script>
+</body>
+</html>

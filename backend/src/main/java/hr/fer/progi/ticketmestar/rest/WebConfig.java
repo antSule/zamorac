@@ -17,6 +17,10 @@ public class WebConfig {
                         .allowedMethods("GET", "POST", "PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
+                //DODANo
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:63342")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
     }

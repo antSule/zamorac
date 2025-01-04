@@ -1,5 +1,7 @@
 package hr.fer.progi.ticketmestar.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.dao.ConcertRepository;
 import hr.fer.progi.ticketmestar.domain.Concert;
@@ -13,6 +15,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,7 +49,6 @@ public class ConcertService  implements  UserDetailsService{
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
