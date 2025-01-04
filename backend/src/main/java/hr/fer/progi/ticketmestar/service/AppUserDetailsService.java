@@ -1,6 +1,8 @@
 package hr.fer.progi.ticketmestar.service;
 
 import hr.fer.progi.ticketmestar.domain.AppUser;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
@@ -14,5 +16,10 @@ public interface AppUserDetailsService {
      * @return created appUser object in the system with ID set
      * @throws IllegalArgumentException if given appUser is null or its ID is not null
      */
-   AppUser createAppUser(AppUser appUser);
+    AppUser createAppUser(AppUser appUser);
+
+    UserDetails loadUserByUsername(String username);
+
+    UserDetails loadUserByEmailAndAuthProvider(String email);
+    UserDetails loadUserByUsernameAndAuthProvider(String username);
 }

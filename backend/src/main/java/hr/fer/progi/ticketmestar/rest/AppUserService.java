@@ -1,5 +1,6 @@
 package hr.fer.progi.ticketmestar.rest;
 
+
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,19 +43,4 @@ public class AppUserService implements UserDetailsService {
         repository.save(user);
     }
 
-
-
-    /*
-    @Value("${progi.admin.password}")
-    private String adminPasswordHash;
-
-    @Override
-    public UserDetails loadUserByUsername(String username){
-        if ("admin".equals(username))
-            return new User(username, adminPasswordHash, commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
-        else throw new UsernameNotFoundException("No user " + username);
-    }
-
-
-     */
 }

@@ -13,9 +13,11 @@ public class Concert {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
     private LocalDate date;
     private LocalTime time;
     private String performer;
+    private Long performerId;
     private String venue;
     private Double latitude;
     private Double longitude;
@@ -25,6 +27,13 @@ public class Concert {
     private String imageUrl;
 
     public Concert(){}
+
+    public Concert(LocalDate date, LocalTime time, String performer, Long performerId) {
+        this.date = date;
+        this.time = time;
+        this.performer = performer;
+        this.performerId = performerId;
+    }
 
     public Concert(LocalDate date, LocalTime time, String performer, String venue, Double latitude, Double longitude, String url, String city, String event, String imageUrl) {
         this.date = date;
@@ -37,6 +46,14 @@ public class Concert {
         this.city = city;
         this.event = event;
         this.imageUrl = imageUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPerformer() {
@@ -89,6 +106,13 @@ public class Concert {
 
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
+    public Long getPerformerId() {
+        return performerId;
+    }
+
+    public void setPerformerId(Long performerId) {
+        this.performerId = performerId;
+    }
 
     @Override
     public String toString() {

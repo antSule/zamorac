@@ -1,10 +1,10 @@
 package hr.fer.progi.ticketmestar.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.dao.ConcertRepository;
 import hr.fer.progi.ticketmestar.domain.Concert;
+import hr.fer.progi.ticketmestar.dto.AddConcertDto;
 import jakarta.transaction.Transactional;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ConcertService  implements  UserDetailsService{
+public class ConcertService{
 
     ConcertRepository concertRepository;
 
@@ -35,24 +32,35 @@ public class ConcertService  implements  UserDetailsService{
         return concertRepository.findAll();
     }
 
-    public ResponseEntity<?> addConcert(Concert concert) {
-        if (concertRepository.findByPerformerAndDateAndTime(
-                concert.getPerformer(),
-                concert.getDate(),
-                concert.getTime()).isPresent()) {
+    public ResponseEntity<?> addConcert(AddConcertDto concertDto) {
+        if (concertRepository.findByPerformerIdAndDateAndTime(
+                concertDto.getPerformerId().toString(),
+                concertDto.getDate(),
+                concertDto.getTime()).isPresent()) {
 
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("Concert with the same performer, date, and time already exists.");
         }
 
+        Concert concert = new Concert(concertDto.getDate(), concertDto.getTime(),concertDto.getPerformer(), concertDto.getPerformerId());
         Concert savedConcert = concertRepository.save(concert);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public List<Concert> findConcertsByUserId(Long userId){
+        return concertRepository.findByPerformerId(userId);
+    }
+
+    public Optional<Concert> findConcertById(Long id){
+        return concertRepository.findById(id);
+    }
+
+    public void deleteConcert(Long id){
+        if (!concertRepository.existsById(id)) {
+            throw new IllegalArgumentException("Concert not found");
+        }
+        concertRepository.deleteById(id);
     }
 }
 

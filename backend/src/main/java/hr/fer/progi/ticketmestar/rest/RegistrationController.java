@@ -1,6 +1,5 @@
 package hr.fer.progi.ticketmestar.rest;
 
-
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import jakarta.servlet.http.HttpServletResponse;
@@ -98,37 +97,6 @@ public class RegistrationController {
     @GetMapping("/user-info")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal){
         return principal.getAttributes();
-    }
-
-
-
-    @PostMapping("/pick-role")
-    public void pickRole(@RequestBody String role, Authentication authentication, HttpServletResponse response) throws IOException {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        String email = oAuth2User.getAttribute("email");
-
-        Optional<AppUser> userOptional = appUserService.findByEmail(email);
-
-        if (userOptional.isPresent()) {
-            AppUser user = userOptional.get();
-            user.setRole(role.equalsIgnoreCase("ARTIST") ? "ARTIST" : "USER");
-            appUserService.saveUser(user);
-
-            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase()));
-            OAuth2User updatedOAuth2User = new DefaultOAuth2User(
-                    authorities,
-                    oAuth2User.getAttributes(),
-                    "email"
-            );
-
-            OAuth2AuthenticationToken newAuth = new OAuth2AuthenticationToken(updatedOAuth2User, authorities, "google");
-            SecurityContextHolder.getContext().setAuthentication(newAuth);
-
-            response.sendRedirect("/home");
-        }
-        else {
-            response.sendRedirect("/error");
-        }
     }
 
 
