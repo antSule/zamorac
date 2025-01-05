@@ -1,122 +1,89 @@
 package hr.fer.progi.ticketmestar.spotify;
 
-import hr.fer.progi.ticketmestar.rest.AppUserController;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
+import hr.fer.progi.ticketmestar.spotify.SpotifyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
-@RequestMapping
+@RequestMapping("/spotify")
 public class SpotifyController {
 
     private final SpotifyService spotifyService;
-
-    private final AppUserController appUserController;
+    private final OAuth2AuthorizedClientService authorizedClientService;
 
     @Autowired
-    public SpotifyController(final SpotifyService spotifyService,
-                             final AppUserController appUserController) {
+    public SpotifyController(SpotifyService spotifyService, OAuth2AuthorizedClientService authorizedClientService) {
         this.spotifyService = spotifyService;
-        this.appUserController = appUserController;
+        this.authorizedClientService = authorizedClientService;
     }
 
-    @GetMapping("/callback")
-    public void callback(@RequestParam("code") String code, @RequestParam("state") String state,
-                         HttpServletResponse response) throws IOException {
+    private String getAccessToken() {
+        OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
-        RestTemplate restTemplate = new RestTemplate();
-        final String body = restTemplate.postForEntity(
-                        spotifyService.buildTokenUrl(),
-                        spotifyService.createTokenRequestBody(code),
-                        String.class)
-                .getBody();
-
-        final Cookie cookie = spotifyService.authorize(body);
-
-        response.addCookie(cookie);
-        response.sendRedirect("/home");
-
-    }
-
- /*
-    @GetMapping("/callback")
-    public String callback(){
-        return "vidovsnov";
-    }
-
- */
-    @GetMapping("/error")
-    public ResponseEntity<Void> error(@RequestBody ErrorBody errorBody) {
-        System.out.println(errorBody);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<String> getUserData(final HttpServletRequest request) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        return restTemplate.exchange(
-                spotifyService.buildMeUrl(),
-                HttpMethod.GET,
-                new HttpEntity<>(spotifyService.createAuthHeader(getAccessToken(request))),
-                String.class
-        );
-    }
-    @GetMapping("/search")
-    public ResponseEntity<String> search(@RequestParam("query") String query, @RequestParam("type") String type,
-                                         final HttpServletRequest request) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        return restTemplate.exchange(
-                spotifyService.buildSearchUrl(query, type),
-                HttpMethod.GET,
-                new HttpEntity<>(spotifyService.createAuthHeader(getAccessToken(request))),
-                String.class
-        );
-    }
-
-    @GetMapping("/albums")
-    public ResponseEntity<String> getUserAlbums(final HttpServletRequest request) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        return restTemplate.exchange(
-                spotifyService.buildUserAlbumsUrl(),
-                HttpMethod.GET,
-                new HttpEntity<>(spotifyService.createAuthHeader(getAccessToken(request))),
-                String.class
-        );
-    }
-
-    @GetMapping("/following")
-    public ResponseEntity<String> getUserFollowing(final HttpServletRequest request) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        return restTemplate.exchange(
-                spotifyService.buildUserFollowingUrl(),
-                HttpMethod.GET,
-                new HttpEntity<>(spotifyService.createAuthHeader(getAccessToken(request))),
-                String.class
-        );
-
-    }
-
-    private String getAccessToken(final HttpServletRequest request) {
-        String token = null;
-
-        for (Cookie cookie : request.getCookies()) {
-            if ("access_token".equals(cookie.getName())) {
-                token = cookie.getValue();
-            }
+        if (authentication == null) {
+            throw new IllegalStateException("User is not authenticated.");
         }
-        return token;
+
+        String registrationId = authentication.getAuthorizedClientRegistrationId();
+        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                registrationId, authentication.getName());
+
+        if (client == null) {
+            throw new IllegalStateException("No authorized client found for the current user.");
+        }
+
+        return client.getAccessToken().getTokenValue();
     }
 
+    @GetMapping("/me/albums")
+    public ResponseEntity<Map<String, Object>> getUserAlbums() {
+        try {
+            String accessToken = getAccessToken();
+            Map<String, Object> albums = spotifyService.getUserAlbums(accessToken);
+            return ResponseEntity.ok(albums);
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
+        }
+    }
 
+    @GetMapping("/me/playlists")
+    public ResponseEntity<Map<String, Object>> getUserPlaylists() {
+        try {
+            String accessToken = getAccessToken();
+            Map<String, Object> playlists = spotifyService.getUserPlaylists(accessToken);
+            return ResponseEntity.ok(playlists);
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> search(@RequestParam("query") String query, @RequestParam("type") String type) {
+        try {
+            String accessToken = getAccessToken();
+            Map<String, Object> searchResults = spotifyService.search(query, type, accessToken); // Corrected to match service method
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/me/following")
+    public ResponseEntity<Map<String, Object>> getUserFollowing() {
+        try {
+            String accessToken = getAccessToken();
+            Map<String, Object> following = spotifyService.getUserFollowing(accessToken);
+            return ResponseEntity.ok(following);
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
+        }
+    }
 }

@@ -20,6 +20,7 @@ import React, {useEffect} from 'react';
 
 const HomePage = () =>{
 
+    console.log()
     const [user, setUser] = useState('');
 
     useEffect(() => {

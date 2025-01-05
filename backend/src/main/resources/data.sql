@@ -28,3 +28,32 @@ INSERT INTO concert (date, time, performer) VALUES
 ('2024-12-18', '18:00:00', 'Maroon 5'),
 ('2024-12-19', '20:00:00', 'Katy Perry'),
 ('2024-12-20', '21:00:00', 'Foo Fighters');
+
+DROP TABLE IF EXISTS app_users;
+DROP TABLE IF EXISTS user_roles;
+
+CREATE TABLE app_users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    enabled BOOLEAN NOT NULL,
+    auth_provider VARCHAR(50),
+    verification_code VARCHAR(255),
+    verification_expiration DATETIME,
+    spotify_user_id VARCHAR(255)
+);
+
+CREATE TABLE user_roles (
+    user_id BIGINT NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES app_users(id) ON DELETE CASCADE
+);
+
+
+INSERT INTO app_users (username, email, password, enabled, auth_provider)
+VALUES ('admin', 'admin@admin.com', '$2b$12$UVbYTEkHs6LI/ElOE/3Oqej54doY6rC6d0al6lMUHqWF0HNgyWcxm', true, '2');
+
+INSERT INTO user_roles (user_id, role) VALUES
+((SELECT id FROM app_users WHERE username = 'admin'), 'ADMIN');
+
