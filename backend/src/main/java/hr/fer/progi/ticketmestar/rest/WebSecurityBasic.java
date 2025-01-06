@@ -59,7 +59,7 @@ public class WebSecurityBasic {
 
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                .requestMatchers("/login", "/error", "/actuator/**", "/auth/**").permitAll()
+                .requestMatchers("/login", "/error", "/actuator/**", "/concerts/**", "/auth/**").permitAll()
                 .anyRequest().authenticated()
         );
 
@@ -106,6 +106,7 @@ public class WebSecurityBasic {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:63342"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "*"));
         configuration.setAllowCredentials(true);
