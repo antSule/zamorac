@@ -66,12 +66,15 @@ public class RegistrationController {
     }
 
     @GetMapping(value="/error")
-    public ResponseEntity<String> getError(@RequestParam String name){
+    public ResponseEntity<String> getError(@RequestParam(required = false) String name){
         return ResponseEntity.ok("Error");
     }
 
     @GetMapping(value="/getuser")
-    public UserDetails getUser(@RequestParam String name){
+    public UserDetails getUser(@RequestParam(required = false) String name){
+        if (name == null) {
+            throw new IllegalArgumentException("Name parameter is required");
+        }
         return appUserService.loadUserByUsername(name);
     }
 
