@@ -65,7 +65,7 @@ async function init() {
             //console.log('Geografska širina:', selectedLocation.lat());
             //console.log('Geografska dužina:', selectedLocation.lng());
 
-            window.location.href = 'http://localhost:63342/zamorac/frontend/src/TicketMaster/TicketMaster.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE'
+            window.location.href = 'http://localhost:3000/ticketmaster'
         } else {
             window.alert('Molimo odaberite lokaciju prije potvrde!');
         }

@@ -51,7 +51,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             System.out.println("Spotify login");
             handleSpotifyLogin(oauth2AuthenticationToken, response);
         } else {
-            response.sendRedirect("/home");
+            response.sendRedirect("http://localhost:3000/home");
         }
     }
 
@@ -76,7 +76,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         updateSecurityContext(appUser, oAuth2User);
 
-        response.sendRedirect("/home");
+        response.sendRedirect("http://localhost:3000/home");
     }
 
     private void handleSpotifyLogin(OAuth2AuthenticationToken authenticationToken, HttpServletResponse response) throws IOException {
@@ -127,7 +127,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
 
-        response.sendRedirect("/home");
+        response.sendRedirect("http://localhost:3000/home");
     }
 
     private void updateSecurityContext(AppUser appUser, OAuth2User oAuth2User) {

@@ -67,7 +67,7 @@ const Ticketmaster = () => {
           alert("No concerts match your search criteria. Please try different parameters.");
         } else {
           localStorage.setItem('concerts', JSON.stringify(data));
-          window.open('http://localhost:63342/zamorac/frontend/src/ConcertDetails/concertsResults.html?_ijt=c8u86g04tnip2cvvamban0k8k7&_ij_reload=RELOAD_ON_SAVE', '_blank');
+          window.open('http://localhost:3000/ConcertDetails', '_blank');
         }
       });
   };

@@ -26,7 +26,7 @@ const HomePage = () =>{
     useEffect(() => {
     const fetchUserInfo = async () => {
         try {
-            const response = await axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', { withCredentials: true });
+            const response = await axios.get('http://localhost:8080/user-info', { withCredentials: true });
             console.log(response.data);
             setUser(response.data);
         } catch (error) {
@@ -37,7 +37,7 @@ const HomePage = () =>{
 }, []);
 
     const handleLogout = () => {
-        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/api/logout';
+        window.location.href='http://localhost:8080/logout';
     }
 
     const handleButtonClick = () =>console.log("Klik");

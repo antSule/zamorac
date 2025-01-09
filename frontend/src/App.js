@@ -9,6 +9,7 @@ import Concerts from './components/Concerts'
 import Favourites from './components/Favourites'
 import ProtectedRoute from './ProtectedRoute';
 import Ticketmaster from './TicketMaster/ticketmaster';
+import ConcertDetails from './ConcertDetails/ConcertDetails'
 
 function App() {
   return (
