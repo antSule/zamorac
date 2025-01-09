@@ -1,3 +1,13 @@
+
+.naslov {
+    color:  rgba(9, 51, 26, 0.937);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: xx-large;
+    font-family: "Poppins",sans-serif;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
 body {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
@@ -5,17 +15,23 @@ body {
     margin: 0;
 }
 
+  input:focus {
+    border-bottom: 2px solid rgb(61, 193, 121);
+  }
+
 html, body {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: url(./slike/koncertslika.jpg);
+    background-size: cover;
 }
 
 form {
-    background-color: #ffffff;
-    border-radius: 8px;
+    background-color: #ffffffc9;
+    border-radius: 60px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px 40px;
     width: 100%;
@@ -23,50 +39,47 @@ form {
     text-align: center;
 }
 
-h1 {
-    color: #1DB954;
-    margin-bottom: 20px;
-}
+
 
 label {
     display: block;
-    font-weight: bold;
     margin-top: 15px;
-    color: #333333;
+    font-weight: bold;
+    color: rgb(21, 82, 48);
+    font-family: "Poppins",sans-serif;
 }
 
-input {
-    width: 92%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
+
 
 button {
-    background-color: #1DB954;
+    background-color:  rgba(9, 51, 26, 0.937);
     color: #ffffff;
     border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #159c41;
+    background-color: #ffff;
+    color: rgb(61, 193, 121);
+    border: 1px solid rgb(61, 193, 121);
 }
 
 button#button-clear-location {
-    background-color: #ff4c4c;
+    background-color: #4d1818;
     color: #ffffff;
+
     margin-left: 5px;
 }
 
 button#button-clear-location:hover {
-    background-color: #e03e3e;
+    color: #792727;
+    border: 1px solid #792727;
+    background-color:white;
+    
 }
 
 .button-group {
@@ -74,4 +87,19 @@ button#button-clear-location:hover {
     justify-content: center;
     gap: 10px;
     margin-bottom: 25px;
+}
+
+input{
+    margin: 15px 0;
+    font-size: 16px;
+    padding: 5px;
+    width: 250px;
+    border: 1px solid rgb(10, 180, 44);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: rgba(9, 9, 9, 0.059);
+    color: rgb(21, 82, 48);
+    outline: none;
+      
 }
