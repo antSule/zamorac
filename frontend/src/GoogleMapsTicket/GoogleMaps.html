@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Google Maps</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.11/index.min.js">
+    </script>
+    <link rel="stylesheet" href="styleMaps.css"/>
+</head>
+<body>
+<gmpx-api-loader key="AIzaSyC6IETLem5xZwOoi2Z14i03DK7WDVuWsT0" solution-channel="GMP_GE_mapsandplacesautocomplete_v2">
+</gmpx-api-loader>
+<gmp-map center="45.8150,15.9819" zoom="13" map-id="DEMO_MAP_ID">
+    <div slot="control-block-start-inline-start" class="place-picker-container">
+        <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
+    </div>
+    <gmp-advanced-marker></gmp-advanced-marker>
+</gmp-map>
+<button id="potvrda-lokacije-btn" class="potvrda-btn">Confirm location</button>
+<script src="indexMaps.js"></script>
+</body>
+</html>

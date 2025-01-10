@@ -56,16 +56,24 @@ async function init() {
      const confirmButton = document.getElementById('potvrda-lokacije-btn');
      confirmButton.addEventListener('click', () => {
         if (selectedLocation) {
+
+            const lat = selectedLocation.lat();
+            const lng = selectedLocation.lng();
+            /*
             const locationData = {
                 lat: selectedLocation.lat(),
                 lng: selectedLocation.lng()
             };
             localStorage.setItem('selectedLocation', JSON.stringify(locationData));
-            //console.log('Potvrđena lokacija:', selectedLocation);
+            console.log('Potvrđena lokacija:', selectedLocation);*/
             //console.log('Geografska širina:', selectedLocation.lat());
             //console.log('Geografska dužina:', selectedLocation.lng());
 
-            window.location.href = 'http://localhost:3000/ticketmaster'
+            const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
+
+            window.location.href = url;
+
+            //window.location.href = 'http://localhost:3000/addNewConcert?lat=${locationData.lat}&lng=${locationData.lng}'
         } else {
             window.alert('Molimo odaberite lokaciju prije potvrde!');
         }

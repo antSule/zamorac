@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
 import './ticketmaster.css';
-
+import { useNavigate } from 'react-router-dom';
 
 const Ticketmaster = () => {
-  const [date, setDate] = useState("");
-  const [artist, setArtist] = useState("");
-  const [location, setLocation] = useState("");
-  const [radius, setRadius] = useState("");
+    const navigate = useNavigate();
+    const [date, setDate] = useState("");
+    const [artist, setArtist] = useState("");
+    const [location, setLocation] = useState("");
+    const [radius, setRadius] = useState("");
 
   useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const lat = queryParams.get('lat');
+    const lng = queryParams.get('lng');
+
+    if (lat && lng) {
+        const locationText = `Lat: ${lat}, Lng: ${lng}`;
+        setLocation(locationText);
+    }
     const savedDate = localStorage.getItem("concert-date");
     const savedArtist = localStorage.getItem("artist-name");
     const savedRadius = localStorage.getItem("radius");
@@ -17,23 +26,25 @@ const Ticketmaster = () => {
     if (savedDate) setDate(savedDate);
     if (savedArtist) setArtist(savedArtist);
     if (savedRadius) setRadius(savedRadius);
-    if (savedLocation) {
-      const locationData = JSON.parse(savedLocation);
-      const locationText = `Lat: ${locationData.lat}, Lng: ${locationData.lng}`;
-      setLocation(locationText);
-    }
+    if (savedLocation) setLocation(savedLocation);
   }, []);
 
-  const handleLocationClick = () => {
+    useEffect(() => {
     if (date) localStorage.setItem("concert-date", date);
     if (artist) localStorage.setItem("artist-name", artist);
     if (radius) localStorage.setItem("radius", radius);
+    if (location) localStorage.setItem("selectedLocation", JSON.stringify({ lat: location.split(",")[0].split(":")[1].trim(), lng: location.split(",")[1].split(":")[1].trim() }));
+    }, [date, artist, location, radius]);
 
-    window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMaps/GoogleMaps.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE';
+  const handleLocationClick = () => {
+        setLocation("");
+        localStorage.removeItem("selectedLocation");
+        window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMapsTicket/GoogleMaps.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE';
   };
 
   const handleClearLocation = () => {
     setLocation("");
+    localStorage.removeItem("selectedLocation");
   };
 
   const handleSubmit = (event) => {

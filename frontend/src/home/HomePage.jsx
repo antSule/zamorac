@@ -37,6 +37,8 @@ const HomePage = () =>{
 }, []);
 
     const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.clear();
         window.location.href='http://localhost:8080/logout';
     }
 
@@ -60,11 +62,17 @@ const HomePage = () =>{
                  <div className="centerText">
                      {user ? (
                          <span className="WelcomeText">
-                         Welcome, {user.name}
+                         Welcome,
                         </span>
                      ) :
                      <span></span>}
                  </div>
+                 <RouterLink to="/addNewConcert">
+                    Add Concert
+                 </RouterLink>
+                 <RouterLink to="/ticketmaster">
+                    Search Concerts
+                 </RouterLink>
                  <RouterLink to="/concerts">
                      Concerts
                  </RouterLink>
