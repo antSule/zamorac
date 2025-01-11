@@ -8,6 +8,7 @@ const AddNewConcert = () => {
     const [concertDate, setConcertDate] = useState("");
     const [concertTime, setConcertTime] = useState("");
     const [performerName, setPerformerName] = useState("");
+    const [city, setCity] = useState("");
     const [locationDetails, setLocationDetails] = useState("");
     const [eventName, setEventName] = useState("");
     const [venueDetails, setVenueDetails] = useState("");
@@ -26,6 +27,7 @@ const AddNewConcert = () => {
         const savedDate = localStorage.getItem("concert-date");
         const savedTime = localStorage.getItem("concert-time");
         const savedPerformer = localStorage.getItem("performer-name");
+        const savedCity = localStorage.getItem("city");
         const savedLocation = localStorage.getItem("concert-location");
         const savedVenue = localStorage.getItem("venue-details");
         const savedEvent = localStorage.getItem("event-name");
@@ -34,6 +36,7 @@ const AddNewConcert = () => {
         if (savedDate) setConcertDate(savedDate);
         if (savedTime) setConcertTime(savedTime);
         if (savedPerformer) setPerformerName(savedPerformer);
+        if (savedCity) setCity(savedCity);
         if (savedLocation) setLocationDetails(savedLocation);
         if (savedVenue) setVenueDetails(savedVenue);
         if (savedEvent) setEventName(savedEvent);
@@ -44,11 +47,12 @@ const AddNewConcert = () => {
         if (concertDate) localStorage.setItem("concert-date", concertDate);
         if (concertTime) localStorage.setItem("concert-time", concertTime);
         if (performerName) localStorage.setItem("performer-name", performerName);
+        if (city) localStorage.setItem("city", city);
         if (locationDetails) localStorage.setItem("concert-location", JSON.stringify({ lat: locationDetails.split(",")[0].split(":")[1].trim(), lng: locationDetails.split(",")[1].split(":")[1].trim() }));
         if (venueDetails) localStorage.setItem("venue-details", venueDetails);
         if (eventName) localStorage.setItem("event-name", eventName);
         if (imageUrl) localStorage.setItem("image-url", imageUrl);
-    }, [concertDate, concertTime, performerName, locationDetails, venueDetails, eventName, imageUrl]);
+    }, [concertDate, concertTime, performerName, city, locationDetails, venueDetails, eventName, imageUrl]);
 
     const openLocationSelector = () => {
         setLocationDetails("");
@@ -69,6 +73,7 @@ const AddNewConcert = () => {
             date: concertDate,
             time: concertTime,
             performer: performerName,
+            city: city,
             venue: venueDetails,
             event: eventName,
             imageUrl: imageUrl
@@ -82,7 +87,6 @@ const AddNewConcert = () => {
         }
 
         const token = localStorage.getItem("token");
-        console.log(token);
 
         fetch("http://localhost:8080/concerts/add", {
             method: 'POST',
@@ -134,6 +138,14 @@ const AddNewConcert = () => {
                     id="performer-name"
                     value={performerName}
                     onChange={(e) => setPerformerName(e.target.value)}
+                />
+
+                <label htmlFor="city">City:</label>
+                <input
+                    type="text"
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
                 />
 
                 <label htmlFor="concert-location">Select Location:</label>

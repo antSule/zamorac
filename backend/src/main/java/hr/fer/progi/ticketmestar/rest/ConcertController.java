@@ -40,7 +40,6 @@ public class ConcertController {
         this.userRepository = userRepository;
     }
 
-    //DODANO
     @Autowired
     private TicketMasterService ticketMasterService;
 
@@ -72,7 +71,6 @@ public class ConcertController {
         return ResponseEntity.ok(concerts);
     }
 
-    //DODANO
     @PreAuthorize("hasRole('USER') or hasRole('ARTIST')")
     @GetMapping("/all")
     public ResponseEntity<List<Concert>> getAllConcerts(Principal principal) {
@@ -93,6 +91,7 @@ public class ConcertController {
         concert.setDate(concertDto.getDate());
         concert.setTime(concertDto.getTime());
         concert.setPerformer(concertDto.getPerformer());
+        concert.setCity(concertDto.getCity());
         concert.setVenue(concertDto.getVenue());
         concert.setEvent(concertDto.getEvent());
         concert.setImageUrl(concertDto.getImageUrl());

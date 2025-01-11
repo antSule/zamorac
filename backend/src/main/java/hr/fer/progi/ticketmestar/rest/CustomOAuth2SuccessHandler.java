@@ -5,6 +5,7 @@ import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
 import hr.fer.progi.ticketmestar.domain.Role;
+import hr.fer.progi.ticketmestar.responses.LoginResponse;
 import hr.fer.progi.ticketmestar.spotify.SpotifyService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

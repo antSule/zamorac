@@ -67,6 +67,12 @@ const HomePage = () =>{
                      ) :
                      <span></span>}
                  </div>
+                 <RouterLink to="/manage-concerts">
+                    Manage Concerts
+                 </RouterLink>
+                 <RouterLink to="/manage-users">
+                    Manage Users
+                 </RouterLink>
                  <RouterLink to="/addNewConcert">
                     Add Concert
                  </RouterLink>

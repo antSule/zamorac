@@ -14,6 +14,8 @@ import ProtectedRoute from './ProtectedRoute';
 import Ticketmaster from './TicketMaster/ticketmaster';
 import ConcertDetails from './ConcertDetails/ConcertDetails';
 import AddNewConcert from './AddNewConcert/AddNewConcert';
+import ManageUsers from './components/ManageUsers';
+import ManageConcerts from './components/ManageConcerts';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
                 <Route path="/ticketmaster" element ={<ProtectedRoute><Ticketmaster/></ProtectedRoute>}/>
                 <Route path="/ConcertDetails" element ={<ProtectedRoute><ConcertDetails/></ProtectedRoute>}/>
                 <Route path="/addNewConcert" element ={<ProtectedRoute><AddNewConcert/></ProtectedRoute>}/>
+                <Route path="/manage-users" element ={<ProtectedRoute><ManageUsers/></ProtectedRoute>}/>
+                <Route path="/manage-concerts" element ={<ProtectedRoute><ManageConcerts/></ProtectedRoute>}/>
             </Routes>
         </Router>
     </div>
