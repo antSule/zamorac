@@ -8,6 +8,7 @@ import hr.fer.progi.ticketmestar.domain.Concert;
 import hr.fer.progi.ticketmestar.dto.AddConcertDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +18,12 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/concerts")
@@ -35,7 +40,6 @@ public class ConcertController {
         this.userRepository = userRepository;
     }
 
-    //DODANO
     @Autowired
     private TicketMasterService ticketMasterService;
 
@@ -47,12 +51,26 @@ public class ConcertController {
             @RequestParam(required = false) String longitude,
             @RequestParam(required = false) String radius) {
 
-        List<Concert> concerts = ticketMasterService.searchConcerts(date, artist, latitude, longitude, radius);
+        List<Concert> ticketmasterConcerts = ticketMasterService.searchConcerts(date, artist, latitude, longitude, radius);
 
+        LocalDate dateLocal = null;
+
+        if (date != null && !date.isBlank()) {
+            try {
+                dateLocal = LocalDate.parse(date);
+            } catch (DateTimeParseException e) {
+                return ResponseEntity.badRequest().body(Collections.emptyList());
+            }
+        }
+
+        List<Concert> databaseConcerts = concertRepository.findConcert(dateLocal, artist);
+
+        List<Concert> concerts = new ArrayList<>();
+        concerts.addAll(ticketmasterConcerts);
+        concerts.addAll(databaseConcerts);
         return ResponseEntity.ok(concerts);
     }
 
-    //DODANO
     @PreAuthorize("hasRole('USER') or hasRole('ARTIST')")
     @GetMapping("/all")
     public ResponseEntity<List<Concert>> getAllConcerts(Principal principal) {
@@ -66,11 +84,18 @@ public class ConcertController {
     @PreAuthorize("hasRole('ARTIST')")
     @PostMapping(value="/add", consumes="application/json")
     public ResponseEntity<?> addConcert(@RequestBody AddConcertDto concertDto, Principal principal){
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AppUser currentUser = (AppUser) authentication.getPrincipal();
-        concertDto.setPerformer(currentUser.getUsername());
-        concertDto.setPerformerId(currentUser.getId());
-        return concertService.addConcert(concertDto);
+        //AppUser currentUser = (AppUser) authentication.getPrincipal();
+        Concert concert = new Concert();
+        concert.setDate(concertDto.getDate());
+        concert.setTime(concertDto.getTime());
+        concert.setPerformer(concertDto.getPerformer());
+        concert.setCity(concertDto.getCity());
+        concert.setVenue(concertDto.getVenue());
+        concert.setEvent(concertDto.getEvent());
+        concert.setImageUrl(concertDto.getImageUrl());
+        return concertService.addNewConcert(concertDto);
     }
 
 

@@ -4,17 +4,44 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 const LoginPage = () => {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
-        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/api/oauth2/authorization/google';
+        window.location.href='http://localhost:8080/oauth2/authorization/google';
     }
 
     const handleSubmit = async(event) => {
         event.preventDefault();
 
+        try {
+            const response = await fetch("http://localhost:8080/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Invalid email or password");
+            }
+
+            const data = await response.json();
+            console.log("Response Data:", data);
+            const token = data.token;
+
+            localStorage.setItem("token", token);
+
+            navigate("/home");
+        } catch (error) {
+            console.error("Login error:", error.message);
+            alert("Login failed: " + error.message);
+        }
     }
     return (
         <Container maxWidth="xs">
@@ -30,45 +57,35 @@ const LoginPage = () => {
                 <Typography component="h1" variant="h5" sx={{textAlign:"center"}}>
                     Login
                 </Typography>
+                <Button component={RouterLink} to="/register" fullWidth sx={{ mt: 2, textTransform: "none" }}>
+                  Don't have an account? Sign Up here!
+                </Button>
                 <Button onClick={handleGoogleLogin} variant="contained" fullWidth sx={{mt: 1}}>
                     Log In With Google
                 </Button>
-                {/*<Box*/}
-                {/*    component='form'*/}
-                {/*    onSubmit={handleSubmit}*/}
-                {/*    noValidate*/}
-                {/*    sx={{mt: 1}}*/}
-                {/*>*/}
-                {/*    <TextField*/}
-                {/*        placeholder="Username"*/}
-                {/*        fullWidth*/}
-                {/*        required*/}
-                {/*        autoFocus*/}
-                {/*        value={username}*/}
-                {/*        onChange={(e) => setUsername(e.target.value)}*/}
-                {/*        sx={{mb: 2}}*/}
-                {/*    />*/}
-                {/*    <TextField*/}
-                {/*        placeholder="Password"*/}
-                {/*        fullWidth*/}
-                {/*        required*/}
-                {/*        type="password"*/}
-                {/*        value={password}*/}
-                {/*        onChange={(e) => setPassword(e.target.value)}*/}
-                {/*    />*/}
-                {/*    <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>*/}
-                {/*        Log In*/}
-                {/*    </Button>*/}
-                {/*    <Button onClick={handleSpotifyLogin} variant="contained" fullWidth sx={{mt: 1}}>*/}
-                {/*        Log In With Spotify*/}
-                {/*    </Button>*/}
-                    {/*<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh'}}>*/}
-                    {/*    <Button style={{fontSize: '13px', padding: '0px 10px'}}>*/}
-                    {/*        <RouterLink to="/registration">Don't have an account? Register here!</RouterLink>*/}
-                    {/*    </Button>*/}
-                    {/*</div>*/}
-                {/*</Box>*/}
-            </Paper>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <TextField
+                    placeholder="Email"
+                    fullWidth
+                    required
+                    autoFocus
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{ mb: 2 }}
+                />
+                <TextField
+                    placeholder="Password"
+                    fullWidth
+                    required
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
+                    Log In
+                </Button>
+            </Box>
+          </Paper>
         </Container>
     )
 };

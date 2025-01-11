@@ -1,36 +1,48 @@
 import { Avatar, Box, Button, Container, FormControlLabel, Grid, Link, Paper, TextField, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import { CheckBox } from "@mui/icons-material";
+import { Checkbox } from "@mui/material";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
+
+const ROLES = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
 
 const RegistrationPage = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
+    const [selectedRoles, setSelectedRoles] = useState([]);
     const navigate = useNavigate();
+
+    const handleRoleChange = (role) => {
+            setSelectedRoles((prevRoles) =>
+                prevRoles.includes(role)
+                    ? prevRoles.filter((r) => r !== role)
+                    : [...prevRoles, role]
+            );
+        };
 
     const handleSubmit = async(event) => {
         event.preventDefault();
+        alert("If the data is valid, we will send you a verification code to your email.");
 
         const userPayload = {
             username: username,
             email: email,
             password: password,
+            role: selectedRoles,
         };
 
         try {
-            const response = await fetch("https://ticketmestarbackend-yqpn.onrender.com/api/registration", {
+            const response = await fetch("http://localhost:8080/auth/signup", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userPayload),
             });
 
             if (response.ok) {
-                console.log('Registration successful');
-                navigate("/login");
+                navigate("/verify", { state: { email } });
             } else{
                 console.error('Registration failed');
             }
@@ -84,12 +96,27 @@ const RegistrationPage = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                        Select roles:
+                    </Typography>
+                    {ROLES.map((role) => (
+                        <FormControlLabel
+                            key={role}
+                            control={
+                                <Checkbox
+                                    checked={selectedRoles.includes(role)}
+                                    onChange={() => handleRoleChange(role)}
+                                />
+                            }
+                            label={role}
+                        />
+                    ))}
                     <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
                         Register
                     </Button>
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh'}}>
                         <Button style={{fontSize: '13px', padding: '0px 10px'}}>
-                            <RouterLink to="/login">Already have an account? Log in.</RouterLink>
+                            <RouterLink to="/">Already have an account? Log in.</RouterLink>
                         </Button>
                     </div>
                 </Box>

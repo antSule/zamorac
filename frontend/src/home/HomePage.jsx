@@ -26,7 +26,7 @@ const HomePage = () =>{
     useEffect(() => {
     const fetchUserInfo = async () => {
         try {
-            const response = await axios.get('https://ticketmestarbackend-yqpn.onrender.com/api/user-info', { withCredentials: true });
+            const response = await axios.get('http://localhost:8080/user-info', { withCredentials: true });
             console.log(response.data);
             setUser(response.data);
         } catch (error) {
@@ -37,7 +37,9 @@ const HomePage = () =>{
 }, []);
 
     const handleLogout = () => {
-        window.location.href='https://ticketmestarbackend-yqpn.onrender.com/api/logout';
+        localStorage.removeItem("token");
+        localStorage.clear();
+        window.location.href='http://localhost:8080/logout';
     }
 
     const handleButtonClick = () =>console.log("Klik");
@@ -60,11 +62,23 @@ const HomePage = () =>{
                  <div className="centerText">
                      {user ? (
                          <span className="WelcomeText">
-                         Welcome, {user.name}
+                         Welcome,
                         </span>
                      ) :
                      <span></span>}
                  </div>
+                 <RouterLink to="/manage-concerts">
+                    Manage Concerts
+                 </RouterLink>
+                 <RouterLink to="/manage-users">
+                    Manage Users
+                 </RouterLink>
+                 <RouterLink to="/addNewConcert">
+                    Add Concert
+                 </RouterLink>
+                 <RouterLink to="/ticketmaster">
+                    Search Concerts
+                 </RouterLink>
                  <RouterLink to="/concerts">
                      Concerts
                  </RouterLink>

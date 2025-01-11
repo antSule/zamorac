@@ -56,16 +56,24 @@ async function init() {
      const confirmButton = document.getElementById('potvrda-lokacije-btn');
      confirmButton.addEventListener('click', () => {
         if (selectedLocation) {
+
+            const lat = selectedLocation.lat();
+            const lng = selectedLocation.lng();
+            /*
             const locationData = {
                 lat: selectedLocation.lat(),
                 lng: selectedLocation.lng()
             };
             localStorage.setItem('selectedLocation', JSON.stringify(locationData));
-            //console.log('Potvrđena lokacija:', selectedLocation);
+            console.log('Potvrđena lokacija:', selectedLocation);*/
             //console.log('Geografska širina:', selectedLocation.lat());
             //console.log('Geografska dužina:', selectedLocation.lng());
 
-            window.location.href = 'http://localhost:63342/zamorac/frontend/src/TicketMaster/TicketMaster.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE'
+            const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
+
+            window.location.href = url;
+
+            //window.location.href = 'http://localhost:3000/addNewConcert?lat=${locationData.lat}&lng=${locationData.lng}'
         } else {
             window.alert('Molimo odaberite lokaciju prije potvrde!');
         }

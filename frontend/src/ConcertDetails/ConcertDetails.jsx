@@ -1,48 +1,30 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import "./concerts.css";
+import "./styleConcert.css";
 
-const Concerts = () => {
+const ConcertsResults = () => {
   const [concerts, setConcerts] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    
+    const storedConcerts = JSON.parse(localStorage.getItem("concerts"));
 
-    if (token) {
-      axios
-        .get("http://localhost:8080/concerts/all", {
-          headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          if (Array.isArray(response.data)) {
-            setConcerts(response.data);
-          } else {
-            console.error("Expected an array of concerts but got:", response.data);
-          }
-        })
-        .catch((error) => console.error("Error fetching concerts: ", error))
-        .finally(() => setLoading(false));
-    } else {
-      console.error("No token found. User might not be authenticated.");
-      setLoading(false);
+    if (!storedConcerts || storedConcerts.length === 0) {
+      alert("No concerts found.");
+      return;
     }
+
+    setConcerts(storedConcerts);
   }, []);
 
   return (
     <div id="concerts-container">
-      {loading ? (
-        <p>Loading concerts...</p>
-      ) : concerts.length > 0 ? (
+      {concerts.length > 0 ? (
         concerts.map((concert, index) => (
           <div className="concert" key={index}>
             <div className="concert-image">
               <img
                 src={concert.imageUrl || "default-image.jpg"}
-                alt={concert.event || "Concert"}
+                alt={concert.name || "Concert"}
               />
             </div>
             <div className="concert-details">
@@ -62,6 +44,9 @@ const Concerts = () => {
               <p>
                 <strong>Venue:</strong> {concert.venue}
               </p>
+              <a href={concert.url} target="_blank" rel="noopener noreferrer">
+                Buy tickets
+              </a>
             </div>
           </div>
         ))
@@ -72,4 +57,4 @@ const Concerts = () => {
   );
 };
 
-export default Concerts;
+export default ConcertsResults;

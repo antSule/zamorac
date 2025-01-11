@@ -5,6 +5,7 @@ import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
 import hr.fer.progi.ticketmestar.domain.Role;
+import hr.fer.progi.ticketmestar.responses.LoginResponse;
 import hr.fer.progi.ticketmestar.spotify.SpotifyService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             System.out.println("Spotify login");
             handleSpotifyLogin(oauth2AuthenticationToken, response);
         } else {
-            response.sendRedirect("/home");
+            response.sendRedirect("http://localhost:3000/home");
         }
     }
 
@@ -65,7 +66,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             appUser = new AppUser();
             appUser.setEmail(email);
             appUser.setUsername(name);
-            appUser.setRole(Set.of(Role.NULL_USER, Role.USER));
+            appUser.setRole(Set.of(Role.NULL_USER));
             appUser.setEnabled(true);
             appUser.setPassword("dummy_password");
             appUser.setAuthenticationProvider(AuthenticationProvider.GOOGLE);
@@ -76,7 +77,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         updateSecurityContext(appUser, oAuth2User);
 
-        response.sendRedirect("/home");
+        if (appUser.getRole().contains(Role.NULL_USER)) {
+            response.sendRedirect("http://localhost:3000/select-role");
+        } else {
+            response.sendRedirect("http://localhost:3000/home");
+        }
     }
 
     private void handleSpotifyLogin(OAuth2AuthenticationToken authenticationToken, HttpServletResponse response) throws IOException {
@@ -127,7 +132,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
 
-        response.sendRedirect("/home");
+        response.sendRedirect("http://localhost:3000/home");
     }
 
     private void updateSecurityContext(AppUser appUser, OAuth2User oAuth2User) {
