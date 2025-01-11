@@ -25,7 +25,7 @@ html, body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url(./slike/koncertslika.jpg);
+    background: url(../slike/koncertslika.jpg);
     background-size: cover;
 }
 
