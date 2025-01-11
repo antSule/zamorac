@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-/*import './concertAdd.css';*/
+import './concertAdd.css';
 
 const AddNewConcert = () => {
     const navigate = useNavigate();
@@ -109,7 +109,7 @@ const AddNewConcert = () => {
     return (
         <div className="concert-add-container">
             <form id="concert-add-form" onSubmit={handleFormSubmit}>
-                <div className="form-header">Add Your Concert</div>
+                <div className="naslov">Add Your Concert</div>
 
                 <label htmlFor="concert-date">Select Concert Date:</label>
                 <input
@@ -144,7 +144,7 @@ const AddNewConcert = () => {
                 />
                 <div className="button-group">
                     <button type="button" onClick={openLocationSelector}>Select Location</button>
-                    <button type="button" onClick={clearLocation}>Clear Location</button>
+                    <button type="button" id="button-clear-location" onClick={clearLocation}>Clear Location</button>
                 </div>
 
                 <label htmlFor="venue">Venue Name:</label>
@@ -171,7 +171,7 @@ const AddNewConcert = () => {
                     onChange={(e) => setImageUrl(e.target.value)}
                 />
 
-                <button type="submit">Add Concert</button>
+                <button type="submit" id = "button-addConcert">Add Concert</button>
             </form>
         </div>
     );
