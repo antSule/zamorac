@@ -8,6 +8,7 @@ import hr.fer.progi.ticketmestar.domain.Concert;
 import hr.fer.progi.ticketmestar.dto.AddConcertDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,6 +86,7 @@ public class ConcertController {
     @PreAuthorize("hasRole('ARTIST')")
     @PostMapping(value="/add", consumes="application/json")
     public ResponseEntity<?> addConcert(@RequestBody AddConcertDto concertDto, Principal principal){
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //AppUser currentUser = (AppUser) authentication.getPrincipal();
         Concert concert = new Concert();

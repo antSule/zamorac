@@ -33,6 +33,9 @@ public class AddConcertDto {
         this.time = time;
     }
 
+    public AddConcertDto() {
+    }
+
     public AddConcertDto(LocalDate date, LocalTime time, String performer, String venue, Double latitude,
                          Double longitude, String url, String city, String event, String imageUrl) {
         this.date = date;

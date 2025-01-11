@@ -23,6 +23,7 @@ const RegistrationPage = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
+        alert("If the data is valid, we will send you a verification code to your email.");
 
         const userPayload = {
             username: username,
