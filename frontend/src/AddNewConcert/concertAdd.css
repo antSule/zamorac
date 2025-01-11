@@ -1,27 +1,27 @@
-.naslov {
-    color:  rgba(9, 51, 26, 0.937);
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: xx-large;
-    font-family: "Poppins",sans-serif;
-    margin-bottom: 40px;
-    font-weight: 700;
-}
 body {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     margin: 0;
+    background-color: #f4f4f4; 
 }
 
-html, body {
-    height: 100%;
+.concert-add-container {
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url(../slike/koncertslika.jpg);
+    background: url(../slike/koncertslika.jpg) no-repeat center center;
     background-size: cover;
+}
+
+.naslov {
+    color: rgba(9, 51, 26, 0.937);
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: xx-large;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
 }
 
 form {
@@ -39,11 +39,32 @@ label {
     margin-top: 15px;
     font-weight: bold;
     color: rgb(21, 82, 48);
-    font-family: "Poppins",sans-serif;
+    font-family: "Poppins", sans-serif;
+}
+
+input {
+    margin: 5px 0;
+    font-size: 15px;
+    padding: 5px;
+    width: 250px;
+    border: 1px solid rgb(10, 180, 44);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: rgba(9, 9, 9, 0.059);
+    color: rgb(21, 82, 48);
+    outline: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 button {
-    background-color:  rgba(9, 51, 26, 0.937);
+    background-color: rgba(9, 51, 26, 0.937);
     color: #ffffff;
     border: none;
     padding: 5px 10px;
@@ -63,39 +84,15 @@ button:hover {
 button#button-clear-location {
     background-color: #4d1818;
     color: #ffffff;
-
     margin-left: 5px;
 }
 
 button#button-clear-location:hover {
     color: #792727;
     border: 1px solid #792727;
-    background-color:white;
-    
+    background-color: white;
 }
 
-.button-group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-input{
-    margin: 5px 0;
-    font-size: 15px;
-    padding: 5px;
-    width: 250px;
-    border: 1px solid rgb(10, 180, 44);
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background: rgba(9, 9, 9, 0.059);
-    color: rgb(21, 82, 48);
-    outline: none;
-    
-}
-
-button#button-addConcert{
+button#button-addConcert {
     margin-left: 10px;
 }

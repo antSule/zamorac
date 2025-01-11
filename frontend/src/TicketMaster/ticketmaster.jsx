@@ -84,7 +84,7 @@ const Ticketmaster = () => {
   };
 
   return (
-    <div>
+    <div className="ticketmaster">
       <form id="parameters-form" onSubmit={handleSubmit}>
         <div className="naslov">Search for concerts</div>
         <label htmlFor="concert-date">Select the date of the concert:</label>
