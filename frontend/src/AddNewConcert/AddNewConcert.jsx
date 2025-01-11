@@ -82,6 +82,7 @@ const AddNewConcert = () => {
         }
 
         const token = localStorage.getItem("token");
+        console.log(token);
 
         fetch("http://localhost:8080/concerts/add", {
             method: 'POST',
