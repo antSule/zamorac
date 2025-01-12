@@ -113,7 +113,7 @@ const AddNewConcert = () => {
 
     return (
         <div className="concert-add-container">
-            <form id="concert-add-form" onSubmit={handleFormSubmit}>
+            <form id="concert-add-form" className="formANC" onSubmit={handleFormSubmit}>
                 <div className="naslov">Add Your Concert</div>
 
                 <label htmlFor="concert-date">Select Concert Date:</label>

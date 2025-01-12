@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './selectrolepage.css';
 
 const SelectRolePage = () => {
     const [selectedRoles, setSelectedRoles] = useState([]);
@@ -47,26 +48,29 @@ const SelectRolePage = () => {
     };
 
     return (
-        <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-            <h2>Select Role</h2>
-            <p>Please select your roles:</p>
-            {roles.map((role) => (
-                <div key={role}>
-                    <label>
-                        <input
-                            type="checkbox"
-                            value={role}
-                            onChange={handleRoleChange}
-                        />
-                        {role}
-                    </label>
-                </div>
-            ))}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <button onClick={handleSubmit} disabled={loading} style={{ marginTop: "10px" }}>
-                {loading ? "Setting roles..." : "Set Roles"}
-            </button>
-        </div>
+        <div className="selectrole">
+  <form>
+    <img src="/fakelogo.png" alt="logo" width={100} />
+    <h2 className="naslov">Select Role</h2>
+    <p className="text">Please select your roles:</p>
+    <div className="checkbox-container">
+      {roles.map((role) => (
+        <label key={role} className="checkbox">
+          <input
+            type="checkbox"
+            value={role}
+            onChange={handleRoleChange}
+          />
+          {role}
+        </label>
+      ))}
+    </div>
+    {error && <p style={{ color: "red" }}>{error}</p>}
+    <button onClick={handleSubmit} disabled={loading} style={{ marginTop: "10px" }}>
+      {loading ? "Setting roles..." : "Set Roles"}
+    </button>
+  </form>
+</div>
     );
 };
 
