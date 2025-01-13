@@ -1,29 +1,33 @@
 package hr.fer.progi.ticketmestar.rest;
 
-import hr.fer.progi.ticketmestar.dao.AppUserRepository;
-import hr.fer.progi.ticketmestar.dao.ConcertRepository;
-import hr.fer.progi.ticketmestar.domain.AppUser;
-import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
-import hr.fer.progi.ticketmestar.domain.Concert;
-import hr.fer.progi.ticketmestar.dto.AddConcertDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import hr.fer.progi.ticketmestar.dao.AppUserRepository;
+import hr.fer.progi.ticketmestar.dao.ConcertRepository;
+import hr.fer.progi.ticketmestar.domain.AppUser;
+import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
+import hr.fer.progi.ticketmestar.domain.Concert;
+import hr.fer.progi.ticketmestar.dto.AddConcertDto;
 
 @RestController
 @RequestMapping("/concerts")
@@ -39,6 +43,12 @@ public class ConcertController {
         this.concertRepository = concertRepository;
         this.userRepository = userRepository;
     }
+
+    //@GetMapping("/concerts/artist/{artistId}")
+    //public List<Concert> getConcertsByArtist(@PathVariable String artistId) {
+    //return concertService.findConcertsByArtist(artistId);
+//}
+
 
     @Autowired
     private TicketMasterService ticketMasterService;
