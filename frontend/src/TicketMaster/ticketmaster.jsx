@@ -1,13 +1,41 @@
 import React, { useState, useEffect } from "react";
 import './ticketmaster.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Ticketmaster = () => {
-    const navigate = useNavigate();
-    const [date, setDate] = useState("");
-    const [artist, setArtist] = useState("");
-    const [location, setLocation] = useState("");
-    const [radius, setRadius] = useState("");
+  const navigate = useNavigate();
+  const [date, setDate] = useState("");
+  const [artist, setArtist] = useState("");
+  const [location, setLocation] = useState("");
+  const [radius, setRadius] = useState("");
+  const [hasAccess, setHasAccess] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const headers = token
+      ? {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      : undefined;
+
+    axios
+      .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+      .then((response) => {
+        const userRoles = response.data.roles || [];
+        if (userRoles.includes('USER') || userRoles.includes('ADMIN')) {
+          setHasAccess(true);
+        } else {
+          setHasAccess(false);
+        }
+      })
+      .catch((err) => {
+        setError('Error verifying user roles.');
+        console.error(err);
+      });
+  }, []);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -15,8 +43,8 @@ const Ticketmaster = () => {
     const lng = queryParams.get('lng');
 
     if (lat && lng) {
-        const locationText = `Lat: ${lat}, Lng: ${lng}`;
-        setLocation(locationText);
+      const locationText = `Lat: ${lat}, Lng: ${lng}`;
+      setLocation(locationText);
     }
     const savedDate = localStorage.getItem("concert-date");
     const savedArtist = localStorage.getItem("artist-name");
@@ -26,20 +54,29 @@ const Ticketmaster = () => {
     if (savedDate) setDate(savedDate);
     if (savedArtist) setArtist(savedArtist);
     if (savedRadius) setRadius(savedRadius);
-    if (savedLocation) setLocation(savedLocation);
+    if (savedLocation) {
+      const parsedLocation = JSON.parse(savedLocation);
+      if (parsedLocation && parsedLocation.lat && parsedLocation.lng) {
+        setLocation(`Lat: ${parsedLocation.lat}, Lng: ${parsedLocation.lng}`);
+      }
+    }
   }, []);
 
-    useEffect(() => {
-    if (date) localStorage.setItem("concert-date", date);
-    if (artist) localStorage.setItem("artist-name", artist);
-    if (radius) localStorage.setItem("radius", radius);
-    if (location) localStorage.setItem("selectedLocation", JSON.stringify({ lat: location.split(",")[0].split(":")[1].trim(), lng: location.split(",")[1].split(":")[1].trim() }));
-    }, [date, artist, location, radius]);
+  if (!hasAccess) {
+    return (
+      <div className="no-access-container">
+        <div className="no-access-message">
+          <h2>⚠️ Access Denied</h2>
+          <p>You do not have permission to access this page.</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleLocationClick = () => {
-        setLocation("");
-        localStorage.removeItem("selectedLocation");
-        window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMapsTicket/GoogleMaps.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE';
+    setLocation("");
+    localStorage.removeItem("selectedLocation");
+    window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMapsTicket/GoogleMaps.html';
   };
 
   const handleClearLocation = () => {
@@ -66,7 +103,18 @@ const Ticketmaster = () => {
     }
     if (location && radius) query += `${query ? '&' : '?'}radius=${radius}`;
 
-    fetch(`http://localhost:8080/concerts/concerts${query}`, { method: 'GET' })
+    const token = localStorage.getItem("token");
+    const headers = token
+      ? {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        }
+      : { 'Content-Type': 'application/json' };
+
+    fetch(`http://localhost:8080/concerts/concerts${query}`, {
+      method: 'GET',
+      headers: headers,
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('No concerts match your search criteria. Please try different parameters.');
@@ -80,6 +128,9 @@ const Ticketmaster = () => {
           localStorage.setItem('concerts', JSON.stringify(data));
           window.open('http://localhost:3000/ConcertDetails', '_blank');
         }
+      })
+      .catch(error => {
+        console.error('Error:', error);
       });
   };
 

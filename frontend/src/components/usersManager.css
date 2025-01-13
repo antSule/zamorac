@@ -22,3 +22,7 @@
     padding: 10px 20px;
     cursor: pointer;
 }
+body {
+    overflow-y: auto;
+    height: 100%;
+}

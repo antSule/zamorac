@@ -59,7 +59,7 @@ const Favourites = () => {
             style={{
               fontSize: "6rem",
               fontWeight: "bold",
-              color: "white", 
+              color: "white",
             }}
           >
             Favourites
@@ -82,8 +82,8 @@ const Favourites = () => {
           style={{
             width: "80%",
             maxWidth: "600px",
-            backgroundColor: "white", // Svjetlija pozadina kartica
-            borderRadius: "20px", // Zaobljeniji kutovi
+            backgroundColor: "white",
+            borderRadius: "20px",
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
             padding: "20px",
             textAlign: "center",
@@ -93,7 +93,7 @@ const Favourites = () => {
             style={{
               fontSize: "4.5rem",
               marginBottom: "20px",
-              color: "#02310B", // Tamno zelena boja za naslov
+              color: "#02310B",
             }}
           >
             Favourite Artists
@@ -108,7 +108,7 @@ const Favourites = () => {
                   justifyContent: "center",
                   margin: "15px 0",
                   fontSize: "2rem",
-                  color: "#054210", // Svjetlija tamno zelena boja za tekst
+                  color: "#054210",
                 }}
               >
                 <span style={{ marginRight: "8px" }}>
@@ -132,7 +132,7 @@ const Favourites = () => {
                   style={{
                     marginLeft: "15px",
                     padding: "8px 15px",
-                    backgroundColor: "#2d6a4f", 
+                    backgroundColor: "#2d6a4f",
                     color: "white",
                     border: "none",
                     borderRadius: "5px",
@@ -159,8 +159,8 @@ const Favourites = () => {
           style={{
             width: "80%",
             maxWidth: "600px",
-            backgroundColor: "white", 
-            borderRadius: "20px", 
+            backgroundColor: "white",
+            borderRadius: "20px",
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
             padding: "15px",
             textAlign: "center",
@@ -170,7 +170,7 @@ const Favourites = () => {
             style={{
               fontSize: "4.5rem",
               marginBottom: "20px",
-              color: "#02310B", // Tamno zelena boja za naslov
+              color: "#02310B",
             }}
           >
             Favourite Genres
@@ -186,7 +186,7 @@ const Favourites = () => {
                   backgroundColor: "#eee",
                   borderRadius: "5px",
                   fontSize: "1.8rem",
-                  color: "#054210", 
+                  color: "#054210",
                 }}
               >
                 {genre}

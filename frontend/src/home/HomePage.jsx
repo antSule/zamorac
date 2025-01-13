@@ -39,7 +39,6 @@ const HomePage = () =>{
                 headers, 
             })
             .then((response) => {
-                console.log(response.data);
                 setUser(response.data.name); 
                 setRoles(response.data.roles || []);
             })
