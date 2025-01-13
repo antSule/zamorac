@@ -37,7 +37,12 @@ const AddNewConcert = () => {
         if (savedTime) setConcertTime(savedTime);
         if (savedPerformer) setPerformerName(savedPerformer);
         if (savedCity) setCity(savedCity);
-        if (savedLocation) setLocationDetails(savedLocation);
+        if (savedLocation) {
+            const location = JSON.parse(savedLocation);
+            if (location.lat && location.lng) {
+                setLocationDetails(`Lat: ${location.lat}, Lng: ${location.lng}`);
+            }
+        }
         if (savedVenue) setVenueDetails(savedVenue);
         if (savedEvent) setEventName(savedEvent);
         if (savedImageUrl) setImageUrl(savedImageUrl);
@@ -69,6 +74,12 @@ const AddNewConcert = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
+        const token = localStorage.getItem("token");
+        const headers = {
+            'Content-Type': 'application/json',
+            ...(token && { 'Authorization': `Bearer ${token}` }),
+        };
+
         let concertData = {
             date: concertDate,
             time: concertTime,
@@ -79,26 +90,28 @@ const AddNewConcert = () => {
             imageUrl: imageUrl
         };
 
-        if (locationDetails) {
+        if (locationDetails && locationDetails.includes(',') && locationDetails.includes(':')) {
             const [latPart, lngPart] = locationDetails.split(',');
-            const lat = latPart.split(':')[1].trim();
-            const lng = lngPart.split(':')[1].trim();
-            concertData = { ...concertData, latitude: lat, longitude: lng };
-        }
+            const lat = latPart.split(':')[1]?.trim();
+            const lng = lngPart.split(':')[1]?.trim();
 
-        const token = localStorage.getItem("token");
+            if (lat && lng) {
+                concertData = { ...concertData, latitude: lat, longitude: lng };
+            }
+        }
 
         fetch("http://localhost:8080/concerts/add", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers,
             body: JSON.stringify(concertData),
+            credentials: 'include',
         })
         .then(response => {
+            console.log("Response status:", response.status);
             if (!response.ok) {
-                throw new Error('Failed to add concert.');
+                return response.text().then((text) => {
+                    throw new Error(`Failed to add concert: ${text}`);
+                });
             }
             return response.json();
         })
@@ -107,9 +120,11 @@ const AddNewConcert = () => {
             navigate('/home');
         })
         .catch(error => {
+            console.error("Error details:", error);
             alert('Error: ' + error.message);
         });
     };
+
 
     return (
         <div className="concert-add-container">

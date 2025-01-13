@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./usersManager.css";
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([]);
@@ -7,16 +8,13 @@ const ManageUsers = () => {
     const [successMessage, setSuccessMessage] = useState(null);
     const [selectedUserId, setSelectedUserId] = useState('');
     const [newRoles, setNewRoles] = useState([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
     const roles = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (headers) => {
         try {
-            const response = await axios.get('/admin/all', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await axios.get('/admin/all', { withCredentials:true,headers });
             setUsers(response.data);
         } catch (err) {
             setError('Error fetching users.');
@@ -24,16 +22,12 @@ const ManageUsers = () => {
         }
     };
 
-    const deleteUser = async (userId) => {
+    const deleteUser = async (userId, headers) => {
         try {
-            await axios.get(`/admin/delete?userId=${userId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            await axios.get(`/admin/delete?userId=${userId}`, { withCredentials:true,headers });
             setSuccessMessage('User deleted successfully.');
-            fetchUsers();
+            fetchUsers(headers);
+            setShowDeleteModal(false);
         } catch (err) {
             setError('Error deleting user.');
             console.error(err);
@@ -41,6 +35,15 @@ const ManageUsers = () => {
     };
 
     const handleRoleChange = (e) => {
+        const token = localStorage.getItem("token");
+        const headers = token
+          ? {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            }
+          : undefined;
+
+
         const role = e.target.value;
         setNewRoles((prevRoles) =>
             prevRoles.includes(role)
@@ -49,7 +52,7 @@ const ManageUsers = () => {
         );
     };
 
-    const changeUserRole = async () => {
+    const changeUserRole = async (headers) => {
         if (!selectedUserId || newRoles.length === 0) return;
 
         try {
@@ -57,23 +60,46 @@ const ManageUsers = () => {
             const url = `http://localhost:8080/admin/roles?userId=${selectedUserId}&roles=${encodeURIComponent(rolesParam)}`;
             console.log(url);
 
-            await axios.get(url, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            await axios.get(url, { withCredentials:true,headers });
 
             setSuccessMessage('User roles updated successfully.');
-            fetchUsers();
+            fetchUsers(headers);
         } catch (err) {
             setError('Error changing user role.');
             console.error(err);
         }
     };
 
+    const handleDeleteClick = (userId) => {
+        setUserToDelete(userId);
+        setShowDeleteModal(true);
+    };
+
+    const handleConfirmDelete = () => {
+        const token = localStorage.getItem("token");
+        const headers = token
+            ? {
+                 'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${token}`,
+               }
+             : undefined;
+            deleteUser(userToDelete, headers);
+            setShowDeleteModal(false);
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
+    };
+
     useEffect(() => {
-        fetchUsers();
+       const token = localStorage.getItem("token");
+       const headers = token
+         ? {
+             'Content-Type': 'application/json',
+             'Authorization': `Bearer ${token}`,
+           }
+         : undefined;
+        fetchUsers(headers);
     }, []);
 
     return (
@@ -87,7 +113,7 @@ const ManageUsers = () => {
                 {users.map((user) => (
                     <li key={user.id}>
                         <span>{user.username} ({user.email})</span>
-                        <button onClick={() => deleteUser(user.id)}>Delete</button>
+                        <button onClick={() => handleDeleteClick(user.id)}>Delete</button>
                         <button onClick={() => setSelectedUserId(user.id)}>Change Role</button>
                     </li>
                 ))}
@@ -110,6 +136,16 @@ const ManageUsers = () => {
                         </div>
                     ))}
                     <button onClick={changeUserRole}>Update Role</button>
+                </div>
+            )}
+
+            {showDeleteModal && (
+                <div className="delete-modal">
+                    <div className="modal-content">
+                        <h4> Are you sure you want to delete this user? </h4>
+                        <button onClick={handleConfirmDelete}>Yes</button>
+                        <button onClick={handleCancelDelete}>No</button>
+                    </div>
                 </div>
             )}
         </div>

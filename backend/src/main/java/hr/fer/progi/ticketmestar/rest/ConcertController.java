@@ -86,16 +86,44 @@ public class ConcertController {
     public ResponseEntity<?> addConcert(@RequestBody AddConcertDto concertDto, Principal principal){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //AppUser currentUser = (AppUser) authentication.getPrincipal();
-        Concert concert = new Concert();
-        concert.setDate(concertDto.getDate());
-        concert.setTime(concertDto.getTime());
-        concert.setPerformer(concertDto.getPerformer());
-        concert.setCity(concertDto.getCity());
-        concert.setVenue(concertDto.getVenue());
-        concert.setEvent(concertDto.getEvent());
-        concert.setImageUrl(concertDto.getImageUrl());
-        return concertService.addNewConcert(concertDto);
+
+        Long userId;
+        AuthenticationProvider authProvider = null;
+
+        if (authentication.getPrincipal() instanceof AppUser) {
+            AppUser currentUser = (AppUser) authentication.getPrincipal();
+            userId = currentUser.getId();
+        } else if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
+            DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            String email = oauth2User.getAttribute("email");
+            System.out.println(email);
+
+            if (authentication instanceof OAuth2AuthenticationToken) {
+                OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
+                String registrationId = oauth2Token.getAuthorizedClientRegistrationId();
+
+                if ("google".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.GOOGLE;
+                } else if ("spotify".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.SPOTIFY;
+                } else {
+                    throw new IllegalStateException("Unsupported authentication provider: " + registrationId);
+                }
+            } else {
+                throw new IllegalStateException("Authentication is not an instance of OAuth2AuthenticationToken");
+            }
+
+            AppUser currentUser = userRepository.findByEmailAndAuthenticationProvider(email, authProvider)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            userId = currentUser.getId();
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
+        }
+
+        concertDto.setPerformerId(userId);
+
+        return concertService.addConcert(concertDto);
     }
 
 
@@ -137,14 +165,15 @@ public class ConcertController {
         } else {
             throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
         }
-
+        System.out.println(userId);
         List<Concert> myConcerts = concertService.findConcertsByUserId(userId);
+        System.out.println(myConcerts);
         return ResponseEntity.ok(myConcerts);
     }
 
     @PreAuthorize("hasRole('ARTIST')")
     @PostMapping(value="/delete")
-    public ResponseEntity<List<Concert>> removeConcert(Long concertId, Principal principal){
+    public ResponseEntity<List<Concert>> removeConcert(@RequestParam Long concertId, Principal principal){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Long userId;

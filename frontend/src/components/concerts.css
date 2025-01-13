@@ -1,9 +1,17 @@
 #concerts-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px;
+  height: 100vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+#concerts-container h1 {
+    width: 100%;
+    text-align: center;
 }
 
 .concert {

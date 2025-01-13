@@ -35,6 +35,20 @@ public class Concert {
         this.performerId = performerId;
     }
 
+    public Concert(LocalDate date, LocalTime time, String performer, Long performerId, String venue, Double latitude, Double longitude, String url, String city, String event, String imageUrl) {
+        this.date = date;
+        this.time = time;
+        this.performer = performer;
+        this.performerId = performerId;
+        this.venue = venue;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.url = url;
+        this.city = city;
+        this.event = event;
+        this.imageUrl = imageUrl;
+    }
+
     public Concert(LocalDate date, LocalTime time, String performer, String venue, Double latitude, Double longitude, String url, String city, String event, String imageUrl) {
         this.date = date;
         this.time = time;

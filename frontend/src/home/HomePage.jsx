@@ -67,6 +67,9 @@ const HomePage = () =>{
                      ) :
                      <span></span>}
                  </div>
+                 <RouterLink to="/my-concerts">
+                    My Concerts
+                 </RouterLink>
                  <RouterLink to="/manage-concerts">
                     Manage Concerts
                  </RouterLink>

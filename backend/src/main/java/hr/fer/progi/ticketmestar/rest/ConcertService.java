@@ -42,26 +42,11 @@ public class ConcertService{
                     .body("Concert with the same performer, date, and time already exists.");
         }
 
-        Concert concert = new Concert(concertDto.getDate(), concertDto.getTime(),concertDto.getPerformer(), concertDto.getPerformerId());
-        Concert savedConcert = concertRepository.save(concert);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
-    }
-
-    public ResponseEntity<?> addNewConcert(AddConcertDto concertDto) {
-        List<Concert> existingConcerts = concertRepository.findConcert(
-                concertDto.getDate(),
-                concertDto.getPerformer());
-
-        if (!existingConcerts.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Concert with the same performer, date, and time already exists.");
-        }
-
         Concert concert = new Concert(
                 concertDto.getDate(),
                 concertDto.getTime(),
                 concertDto.getPerformer(),
+                concertDto.getPerformerId(),
                 concertDto.getVenue(),
                 concertDto.getLatitude(),
                 concertDto.getLongitude(),
@@ -74,6 +59,24 @@ public class ConcertService{
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
     }
+
+    /*
+    public ResponseEntity<?> addNewConcert(AddConcertDto concertDto) {
+        List<Concert> existingConcerts = concertRepository.findConcert(
+                concertDto.getDate(),
+                concertDto.getPerformer());
+
+        if (!existingConcerts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Concert with the same performer, date, and time already exists.");
+        }
+
+
+        Concert savedConcert = concertRepository.save(concert);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
+    }
+    */
 
     public List<Concert> findConcertsByUserId(Long userId){
         return concertRepository.findByPerformerId(userId);

@@ -6,31 +6,27 @@ const Concerts = () => {
   const [concerts, setConcerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+ useEffect(() => {
+     const token = localStorage.getItem("token");
+     const headers = token
+       ? {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`,
+         }
+       : undefined;
 
-    if (token) {
-      axios
-        .get("http://localhost:8080/concerts/all", {
-          headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          if (Array.isArray(response.data)) {
-            setConcerts(response.data);
-          } else {
-            console.error("Expected an array of concerts but got:", response.data);
-          }
-        })
-        .catch((error) => console.error("Error fetching concerts: ", error))
-        .finally(() => setLoading(false));
-    } else {
-      console.error("No token found. User might not be authenticated.");
-      setLoading(false);
-    }
-  }, []);
+     axios
+       .get("http://localhost:8080/concerts/all", { withCredentials:true,headers })
+       .then((response) => {
+         if (Array.isArray(response.data)) {
+           setConcerts(response.data);
+         } else {
+           console.error("Expected an array of concerts but got:", response.data);
+         }
+       })
+       .catch((error) => console.error("Error fetching concerts: ", error))
+       .finally(() => setLoading(false));
+   }, []);
 
   return (
     <div id="concerts-container">
@@ -41,7 +37,7 @@ const Concerts = () => {
           <div className="concert" key={index}>
             <div className="concert-image">
               <img
-                src={concert.imageUrl || "default-image.jpg"}
+                src={concert.imageUrl || "/fakelogo.png"}
                 alt={concert.event || "Concert"}
               />
             </div>

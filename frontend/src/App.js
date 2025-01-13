@@ -9,6 +9,7 @@ import RegistrationPage from "./components/RegistrationPage";
 import VerifyPage from "./components/VerifyPage";
 import SelectRolePage from "./components/SelectRolePage";
 import Concerts from './components/Concerts'
+import MyConcerts from './components/MyConcerts'
 import Favourites from './components/Favourites'
 import ProtectedRoute from './ProtectedRoute';
 import Ticketmaster from './TicketMaster/ticketmaster';
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/select-role" element={<SelectRolePage />} />
                 <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
                 <Route path="/concerts" element={<ProtectedRoute><Concerts /></ProtectedRoute>} />
+                <Route path="/my-concerts" element={<ProtectedRoute><MyConcerts /></ProtectedRoute>} />
                 <Route path="/ticketmaster" element ={<ProtectedRoute><Ticketmaster/></ProtectedRoute>}/>
                 <Route path="/ConcertDetails" element ={<ProtectedRoute><ConcertDetails/></ProtectedRoute>}/>
                 <Route path="/addNewConcert" element ={<ProtectedRoute><AddNewConcert/></ProtectedRoute>}/>

@@ -1,36 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './concertsManager.css';
 
-const ManageConcerts = () => {
+const MyConcerts = () => {
   const [concerts, setConcerts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
 
-  const fetchConcerts = async (headers) => {
-    try {
-      const response = await axios.get('http://localhost:8080/concerts/all', { withCredentials:true,headers });
-      setConcerts(response.data);
-    } catch (err) {
-      setError('Error fetching concerts.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchMyConcerts = async (headers) => {
+      try {
+        const response = await axios.get("http://localhost:8080/concerts/me", { withCredentials:true,headers });
+        const data = response.data;
+        console.log(data);
+        if (Array.isArray(data)) {
+          setConcerts(data);
+        } else if (data && Array.isArray(data.concerts)) {
+          setConcerts(data.concerts);
+        } else {
+          console.error("Unexpected data format:", data);
+          setConcerts([]);
+        }
+      } catch (err) {
+        setError("Error fetching your concerts.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const deleteConcert = async (concertId, headers) => {
     try {
-      await axios.get(`http://localhost:8080/admin/remove?concertId=${concertId}`, { withCredentials:true,headers });
-      fetchConcerts();
+      await axios.post(`http://localhost:8080/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
+      fetchMyConcerts(headers);
       alert('Concert successfully deleted!');
     } catch (err) {
       setError('Error deleting concert.');
       console.error(err);
     }
   };
+
 
   const handleDeleteClick = (concertId) => {
     setConcertToDelete(concertId);
@@ -61,7 +70,7 @@ const ManageConcerts = () => {
              'Authorization': `Bearer ${token}`,
            }
          : undefined;
-    fetchConcerts(headers);
+    fetchMyConcerts(headers);
   }, []);
 
   return (
@@ -108,4 +117,4 @@ const ManageConcerts = () => {
   );
 };
 
-export default ManageConcerts;
+export default MyConcerts;
