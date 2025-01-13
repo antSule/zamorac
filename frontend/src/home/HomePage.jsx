@@ -20,26 +20,42 @@ import React, {useEffect} from 'react';
 
 const HomePage = () =>{
 
-    console.log()
     const [user, setUser] = useState('');
+    const [roles, setRoles] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-    const fetchUserInfo = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/user-info', { withCredentials: true });
-            console.log(response.data);
-            setUser(response.data);
-        } catch (error) {
-            console.error('Error occurred: ', error);
-        }
-    };
-    fetchUserInfo();
-}, []);
+        const token = localStorage.getItem('token');
+        const headers = token
+            ? {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, 
+              }
+            : undefined;
+
+        axios
+            .get('http://localhost:8080/user-info', {
+                withCredentials: true, 
+                headers, 
+            })
+            .then((response) => {
+                console.log(response.data);
+                setUser(response.data.name); 
+                setRoles(response.data.roles || []);
+            })
+            .catch((error) => {
+                console.error('Error occurred: ', error);
+            });
+    }, [navigate]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.clear();
         window.location.href='http://localhost:8080/logout';
+    }
+
+    const hasRole = (...requiredRoles) => {
+        return requiredRoles.some(role => roles.includes(role));
     }
 
     const handleButtonClick = () =>console.log("Klik");
@@ -62,32 +78,20 @@ const HomePage = () =>{
                  <div className="centerText">
                      {user ? (
                          <span className="WelcomeText">
-                         Welcome,
+                         Welcome, {user}
                         </span>
-                     ) :
-                     <span></span>}
+                     ) : 
+                     <span>Welcome, Guest</span>}
                  </div>
-                 <RouterLink to="/my-concerts">
-                    My Concerts
-                 </RouterLink>
-                 <RouterLink to="/manage-concerts">
-                    Manage Concerts
-                 </RouterLink>
-                 <RouterLink to="/manage-users">
-                    Manage Users
-                 </RouterLink>
-                 <RouterLink to="/addNewConcert">
-                    Add Concert
-                 </RouterLink>
-                 <RouterLink to="/ticketmaster">
-                    Search Concerts
-                 </RouterLink>
-                 <RouterLink to="/concerts">
-                     Concerts
-                 </RouterLink>
-                 <RouterLink to="/favourites">
-                     Favourites
-                 </RouterLink>
+                 {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/my-concerts">My Concerts</RouterLink>)}
+                 {hasRole('ADMIN') && (<RouterLink to="/manage-concerts">Manage Concerts</RouterLink>)}
+                 {hasRole('ADMIN') && (<RouterLink to="/manage-users">Manage Users</RouterLink>)}
+                 {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/addNewConcert">Add Concert</RouterLink>)}
+                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/ticketmaster">Search Concerts</RouterLink>)}
+                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/concerts">Concerts</RouterLink>)}
+                 {hasRole('SPOTIFY') && (<RouterLink to="/favourites">Favourites</RouterLink>)}
+                 
+                 
                     {user ? (
                         <button className="button" onClick={handleLogout}>
                             Log Out

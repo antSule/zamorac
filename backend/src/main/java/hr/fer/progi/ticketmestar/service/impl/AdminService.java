@@ -49,4 +49,10 @@ public class AdminService {
         }
         concertRepository.deleteById(id);
     }
+
+    @Transactional
+    public Set<Role> getUserRoles(Long id){
+        AppUser user = appUserRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " does not exist."));
+        return user.getRole();
+    }
 }

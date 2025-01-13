@@ -7,6 +7,7 @@ const MyConcerts = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
+  const [hasAccess, setHasAccess] = useState(false);
 
   const fetchMyConcerts = async (headers) => {
       try {
@@ -63,15 +64,42 @@ const MyConcerts = () => {
   };
 
   useEffect(() => {
-      const token = localStorage.getItem("token");
-       const headers = token
-         ? {
-             'Content-Type': 'application/json',
-             'Authorization': `Bearer ${token}`,
-           }
-         : undefined;
-    fetchMyConcerts(headers);
-  }, []);
+      const token = localStorage.getItem('token');
+      const headers = token
+        ? {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined;
+
+      axios
+        .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+        .then((response) => {
+          const userRoles = response.data.roles || [];
+          if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
+            setHasAccess(true);
+            fetchMyConcerts(headers);
+          } else {
+            setHasAccess(false);
+          }
+        })
+        .catch((err) => {
+          setError('Error checking user roles.');
+          console.error(err);
+          setHasAccess(false);
+        });
+    }, []);
+
+    if (!hasAccess) {
+      return (
+        <div className="no-access-container">
+          <div className="no-access-message">
+            <h2>⚠️ Access Denied</h2>
+            <p>You do not have permission to access this page.</p>
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div id="concerts-container">
