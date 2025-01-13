@@ -84,12 +84,12 @@ const HomePage = () =>{
                      <span>Welcome, Guest</span>}
                  </div>
                  {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/my-concerts">My Concerts</RouterLink>)}
-                 {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/manage-concerts">Manage Concerts</RouterLink>)}
+                 {hasRole('ADMIN') && (<RouterLink to="/manage-concerts">Manage Concerts</RouterLink>)}
                  {hasRole('ADMIN') && (<RouterLink to="/manage-users">Manage Users</RouterLink>)}
                  {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/addNewConcert">Add Concert</RouterLink>)}
                  {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/ticketmaster">Search Concerts</RouterLink>)}
                  {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/concerts">Concerts</RouterLink>)}
-                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/favourites">Favourites</RouterLink>)}
+                 {hasRole('SPOTIFY') && (<RouterLink to="/favourites">Favourites</RouterLink>)}
                  
                  
                     {user ? (

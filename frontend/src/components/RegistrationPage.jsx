@@ -187,9 +187,9 @@ const RegistrationPage = () => {
                             onChange={() => handleRoleChange(role)}
                             sx={{
                                 color: "rgba(9, 51, 26, 0.937)",
-                                transform: "scale(1.5)", // Increase the overall size
+                                transform: "scale(1.5)",
                                 '& .MuiSvgIcon-root': {
-                                    fontSize: 28, // Adjust the size of the icon
+                                    fontSize: 28,
                                 },
                                 '&.Mui-checked': {
                                     color: "rgb(61, 193, 121)",

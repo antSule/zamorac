@@ -1,99 +1,85 @@
-import { Avatar, Box, Button, Container, FormControlLabel, Grid, Link, Paper, TextField, Typography } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {Link as RouterLink, useNavigate} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Favourites = () => {
+  const [followingArtists, setFollowingArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
 
-    const [followingArtists, setFollowingArtists] = useState([]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const headers = token
+      ? {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      : undefined;
 
-    useEffect(() => {
-        fetch("https://ticketmestarbackend-yqpn.onrender.com/api/following", {
-            credentials: 'include'
-        })
-            .then((response) => response.json())
-            .then((data) => setFollowingArtists(data.artists.items))
-            .catch((error) => console.error("Error fetching data:", error));
-    }, []);
+    axios
+      .get("http://localhost:8080/user-info", { withCredentials: true, headers })
+      .then((response) => {
+        const userRoles = response.data.roles || [];
+        if (userRoles.includes('SPOTIFY')) {
+          setHasAccess(true);
+          fetchFollowingArtists(headers);
+        } else {
+          setHasAccess(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user roles: ", error);
+        setHasAccess(false);
+      });
+  }, []);
 
-    const uniqueGenres = new Set();
-    followingArtists.forEach(artist => {
-        artist.genres.forEach(genre => uniqueGenres.add(genre));
-    });
-    const genresArray = Array.from(uniqueGenres);
+  const fetchFollowingArtists = async (headers) => {
+    try {
+      const response = await axios.get("http://localhost:8080/following", { withCredentials: true, headers });
+      setFollowingArtists(response.data.artists.items);
+    } catch (error) {
+      console.error("Error fetching following artists: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  if (!hasAccess) {
+    return (
+      <div className="no-access-container">
+        <div className="no-access-message">
+          <h2>⚠️ Access Denied</h2>
+          <p>You do not have permission to access this page.</p>
+        </div>
+      </div>
+    );
+  }
 
-    return(
-        <>
-            <section className=" h-wrapper">
-                <div className="flexCenter paddings innerWidth h-container">
-                    <img src="fakelogo.png" alt="logo" width={100}/>
-                    <div className="centerText">
-                        Favourites
-                    </div>
-
-                    <div className="flexCenter h-menu">
-                    </div>
-                </div>
-            </section>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '100vh',
-            }}>
-                <h2>Favorite Artists</h2>
-                <div>
-                    {followingArtists.map((artist, index) => (
-                        <div
-                            key={index}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                margin: '10px 0'
-                            }}
-                        >
-                            <span style={{marginRight: '8px'}}>{index + 1}. {artist.name}</span>
-                            {artist.images.length > 0 && (
-                                <img
-                                    src={artist.images[1].url}
-                                    alt={`${artist.name} profile`}
-                                    style={{
-                                        width: '35px',
-                                        height: '35px',
-                                        objectFit: 'cover',
-                                        marginLeft: '8px'
-                                    }}
-                                />
-                            )}
-                        </div>
-                    ))}
-                </div>
+  return (
+    <div id="favourites-container">
+      {loading ? (
+        <p>Loading favourites...</p>
+      ) : followingArtists.length > 0 ? (
+        followingArtists.map((artist, index) => (
+          <div className="artist" key={index}>
+            <div className="artist-image">
+              <img
+                src={artist.images[1]?.url || "/fakelogo.png"}
+                alt={artist.name || "Artist"}
+              />
             </div>
-
-            <div style={{marginTop: '20px', textAlign: 'center'}}>
-                <h3>Favorite Genres</h3>
-                <div>
-                    {genresArray.map((genre, index) => (
-                        <span
-                            key={index}
-                            style={{
-                                display: 'inline-block',
-                                margin: '5px',
-                                padding: '5px 10px',
-                                backgroundColor: '#eee',
-                                borderRadius: '5px'
-                            }}
-                        >
-                            {genre}
-                        </span>
-                    ))}
-                </div>
+            <div className="artist-details">
+              <h3>{artist.name}</h3>
+              <p>
+                <strong>Genres:</strong> {artist.genres.join(", ")}
+              </p>
             </div>
-        </>
-    )
+          </div>
+        ))
+      ) : (
+        <p>No favourite artists found.</p>
+      )}
+    </div>
+  );
 };
 
 export default Favourites;

@@ -28,6 +28,7 @@ const ManageUsers = () => {
         try {
             const response = await axios.get(`/admin/userroles?userId=${userId}`, {withCredentials:true, headers});
             setCurrentRoles(response.data);
+            setNewRoles(response.data);
         } catch(err){
             setError('Error fetching user roles.');
             console.log(err);
@@ -47,15 +48,6 @@ const ManageUsers = () => {
     };
 
     const handleRoleChange = (e) => {
-        const token = localStorage.getItem("token");
-        const headers = token
-          ? {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            }
-          : undefined;
-
-
         const role = e.target.value;
         setNewRoles((prevRoles) =>
             prevRoles.includes(role)
@@ -141,9 +133,15 @@ const ManageUsers = () => {
         }
     }, [selectedUserId]);
 
-
     if(!hasAdminRole){
-        return <p>You do not have permission to access this content.</p>
+        return (
+            <div className="no-access-container">
+                <div className="no-access-message">
+                    <h2>⚠️ Access Denied</h2>
+                    <p>You do not have permission to access this page.</p>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -168,7 +166,7 @@ const ManageUsers = () => {
                     <h3>Change Role for User ID: {selectedUserId}</h3>
                     <p>Current Roles:</p>
                     <ul>
-                        {currentRoles.map((role)=> (
+                        {currentRoles.map((role) => (
                             <li key={role}>{role}</li>
                         ))}
                     </ul>
@@ -180,6 +178,7 @@ const ManageUsers = () => {
                                     type="checkbox"
                                     value={role}
                                     onChange={handleRoleChange}
+                                    checked={newRoles.includes(role)}
                                 />
                                 {role}
                             </label>
