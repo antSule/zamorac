@@ -71,7 +71,7 @@ public class ConcertController {
         return ResponseEntity.ok(concerts);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ARTIST')")
+    @PreAuthorize("hasRole('USER') or hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<Concert>> getAllConcerts(Principal principal) {
         List<Concert> concerts = concertService.concertList();
@@ -81,7 +81,7 @@ public class ConcertController {
         return ResponseEntity.ok(concerts);
     }
 
-    @PreAuthorize("hasRole('ARTIST')")
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
     @PostMapping(value="/add", consumes="application/json")
     public ResponseEntity<?> addConcert(@RequestBody AddConcertDto concertDto, Principal principal){
 
@@ -127,7 +127,7 @@ public class ConcertController {
     }
 
 
-    @PreAuthorize("hasRole('ARTIST')")
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping(value = "/me")
     public ResponseEntity<List<Concert>> getMyConcerts(Principal principal) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -171,7 +171,7 @@ public class ConcertController {
         return ResponseEntity.ok(myConcerts);
     }
 
-    @PreAuthorize("hasRole('ARTIST')")
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
     @PostMapping(value="/delete")
     public ResponseEntity<List<Concert>> removeConcert(@RequestParam Long concertId, Principal principal){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

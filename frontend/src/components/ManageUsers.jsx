@@ -8,8 +8,10 @@ const ManageUsers = () => {
     const [successMessage, setSuccessMessage] = useState(null);
     const [selectedUserId, setSelectedUserId] = useState('');
     const [newRoles, setNewRoles] = useState([]);
+    const [currentRoles, setCurrentRoles] = useState([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
+    const [hasAdminRole, setHasAdminRole] = useState(false);
     const roles = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
 
     const fetchUsers = async (headers) => {
@@ -19,6 +21,16 @@ const ManageUsers = () => {
         } catch (err) {
             setError('Error fetching users.');
             console.error(err);
+        }
+    };
+
+    const fetchCurrentRoles = async (userId, headers) => {
+        try {
+            const response = await axios.get(`/admin/userroles?userId=${userId}`, {withCredentials:true, headers});
+            setCurrentRoles(response.data);
+        } catch(err){
+            setError('Error fetching user roles.');
+            console.log(err);
         }
     };
 
@@ -99,8 +111,40 @@ const ManageUsers = () => {
              'Authorization': `Bearer ${token}`,
            }
          : undefined;
-        fetchUsers(headers);
+
+        axios.get('http://localhost:8080/user-info', {withCredentials: true, headers})
+        .then((response) => {
+            const userRoles = response.data.roles || [];
+            if(userRoles.includes('ADMIN')){
+                setHasAdminRole(true);
+                fetchUsers(headers);
+            } else {
+                setHasAdminRole(false);
+            }
+        })
+        .catch((err) => {
+            setError('Error fetching user roles.');
+            console.log(err);
+        })
     }, []);
+
+    useEffect(() => {
+        if (selectedUserId) {
+            const token = localStorage.getItem("token");
+            const headers = token
+                ? {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+                : undefined;
+            fetchCurrentRoles(selectedUserId, headers);
+        }
+    }, [selectedUserId]);
+
+
+    if(!hasAdminRole){
+        return <p>You do not have permission to access this content.</p>
+    }
 
     return (
         <div>
@@ -122,6 +166,12 @@ const ManageUsers = () => {
             {selectedUserId && (
                 <div>
                     <h3>Change Role for User ID: {selectedUserId}</h3>
+                    <p>Current Roles:</p>
+                    <ul>
+                        {currentRoles.map((role)=> (
+                            <li key={role}>{role}</li>
+                        ))}
+                    </ul>
                     <p>Select roles for the user:</p>
                     {roles.map((role) => (
                         <div key={role}>
