@@ -7,7 +7,7 @@ const Favourites = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/spotify/me/following", {
+    fetch("http://https://ticketmestarbackend-yqpn.onrender.com/spotify/me/following", {
       credentials: "include",
     })
       .then((response) => {

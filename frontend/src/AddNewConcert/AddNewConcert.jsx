@@ -63,7 +63,7 @@ const AddNewConcert = () => {
         setLocationDetails("");
         localStorage.removeItem("concert-location");
 
-        window.location.href = 'http://localhost:3000/google-maps';
+        window.location.href = 'http://https://ticketmestarfrontend-c9vl.onrender.com/google-maps';
     };
 
     const clearLocation = () => {
@@ -100,7 +100,7 @@ const AddNewConcert = () => {
             }
         }
 
-        fetch("http://localhost:8080/concerts/add", {
+        fetch("http://https://ticketmestarbackend-yqpn.onrender.com/concerts/add", {
             method: 'POST',
             headers,
             body: JSON.stringify(concertData),

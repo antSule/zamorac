@@ -10,18 +10,18 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
-        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+        window.location.href = 'https://ticketmestarbackend-yqpn.onrender.com/oauth2/authorization/google';
     };
 
     const handleSpotifyLogin = () => {
-        window.location.href = 'http://localhost:8080/oauth2/authorization/spotify';
+        window.location.href = 'https://ticketmestarbackend-yqpn.onrender.com/oauth2/authorization/spotify';
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8080/auth/login", {
+            const response = await fetch("http://https://ticketmestarbackend-yqpn.onrender.com/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,7 +69,6 @@ const LoginPage = () => {
                 </Typography>
 
                 <Button
-                    style={{ fontFamily: "Poppins, sans-serif"}}
                     component={RouterLink}
                     to="/register"
                     fullWidth
@@ -95,7 +94,6 @@ const LoginPage = () => {
                 </Button>
 
                 <Button
-                    style={{ fontFamily: "Poppins, sans-serif"}}
                     onClick={handleGoogleLogin}
                     variant="contained"
                     fullWidth
@@ -120,7 +118,6 @@ const LoginPage = () => {
                 </Button>
 
                 <Button
-                    style={{ fontFamily: "Poppins, sans-serif"}}
                     onClick={handleSpotifyLogin}
                     variant="contained"
                     fullWidth
@@ -208,7 +205,6 @@ const LoginPage = () => {
                 />
 
                 <Button
-                    style={{ fontFamily: "Poppins, sans-serif"}}
                     type="submit"
                     variant="contained"
                     fullWidth

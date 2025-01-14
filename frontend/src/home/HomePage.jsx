@@ -34,7 +34,7 @@ const HomePage = () =>{
             : undefined;
 
         axios
-            .get('http://localhost:8080/user-info', {
+            .get('http://https://ticketmestarbackend-yqpn.onrender.com/user-info', {
                 withCredentials: true, 
                 headers, 
             })
@@ -50,7 +50,7 @@ const HomePage = () =>{
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.clear();
-        window.location.href='http://localhost:8080/logout';
+        window.location.href='http://https://ticketmestarbackend-yqpn.onrender.com/logout';
     }
 
     const hasRole = (...requiredRoles) => {

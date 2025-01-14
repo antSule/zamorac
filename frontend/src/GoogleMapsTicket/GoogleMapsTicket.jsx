@@ -28,7 +28,7 @@ const GoogleMapsTicket = () => {
     if (selectedLocation) {
       const lat = selectedLocation.lat();
       const lng = selectedLocation.lng();
-      const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
+      const url = `http://https://ticketmestarfrontend-c9vl.onrender.com/ticketmaster?lat=${lat}&lng=${lng}`;
       window.location.href = url;
     } else {
       alert("Molimo odaberite lokaciju prije potvrde!");
