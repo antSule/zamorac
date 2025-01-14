@@ -69,6 +69,7 @@ const LoginPage = () => {
                 </Typography>
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     component={RouterLink}
                     to="/register"
                     fullWidth
@@ -94,6 +95,7 @@ const LoginPage = () => {
                 </Button>
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     onClick={handleGoogleLogin}
                     variant="contained"
                     fullWidth
@@ -118,6 +120,7 @@ const LoginPage = () => {
                 </Button>
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     onClick={handleSpotifyLogin}
                     variant="contained"
                     fullWidth
@@ -205,6 +208,7 @@ const LoginPage = () => {
                 />
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     type="submit"
                     variant="contained"
                     fullWidth
