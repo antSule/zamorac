@@ -63,7 +63,7 @@ const AddNewConcert = () => {
         setLocationDetails("");
         localStorage.removeItem("concert-location");
 
-        window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMapsAdd/GoogleMaps.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE';
+        window.location.href = 'http://localhost:3000/google-maps';
     };
 
     const clearLocation = () => {

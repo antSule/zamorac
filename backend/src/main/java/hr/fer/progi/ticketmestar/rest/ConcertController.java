@@ -53,13 +53,50 @@ public class ConcertController {
     @Autowired
     private TicketMasterService ticketMasterService;
 
+    @PreAuthorize("hasRole('USER') or hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping("/concerts")
     public ResponseEntity<List<Concert>> getConcerts(
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String artist,
             @RequestParam(required = false) String latitude,
             @RequestParam(required = false) String longitude,
-            @RequestParam(required = false) String radius) {
+            @RequestParam(required = false) String radius,
+            Authentication authentication) {
+
+
+        Long userId;
+        AuthenticationProvider authProvider = null;
+
+        if (authentication.getPrincipal() instanceof AppUser) {
+            AppUser currentUser = (AppUser) authentication.getPrincipal();
+            userId = currentUser.getId();
+        } else if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
+            DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            String email = oauth2User.getAttribute("email");
+            System.out.println(email);
+
+            if (authentication instanceof OAuth2AuthenticationToken) {
+                OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
+                String registrationId = oauth2Token.getAuthorizedClientRegistrationId();
+
+                if ("google".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.GOOGLE;
+                } else if ("spotify".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.SPOTIFY;
+                } else {
+                    throw new IllegalStateException("Unsupported authentication provider: " + registrationId);
+                }
+            } else {
+                throw new IllegalStateException("Authentication is not an instance of OAuth2AuthenticationToken");
+            }
+
+            AppUser currentUser = userRepository.findByEmailAndAuthenticationProvider(email, authProvider)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            userId = currentUser.getId();
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
+        }
 
         List<Concert> ticketmasterConcerts = ticketMasterService.searchConcerts(date, artist, latitude, longitude, radius);
 

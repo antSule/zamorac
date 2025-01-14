@@ -13,6 +13,8 @@ import MyConcerts from './components/MyConcerts'
 import Favourites from './components/Favourites'
 import ProtectedRoute from './ProtectedRoute';
 import Ticketmaster from './TicketMaster/ticketmaster';
+import GoogleMapsAdd from './GoogleMapsAdd/GoogleMapsAdd';
+import GoogleMapsTicket from './GoogleMapsTicket/GoogleMapsTicket';
 import ConcertDetails from './ConcertDetails/ConcertDetails';
 import AddNewConcert from './AddNewConcert/AddNewConcert';
 import ManageUsers from './components/ManageUsers';
@@ -33,6 +35,8 @@ function App() {
                 <Route path="/favourites" element={<ProtectedRoute><Favourites /></ProtectedRoute>} />
                 <Route path="/my-concerts" element={<ProtectedRoute><MyConcerts /></ProtectedRoute>} />
                 <Route path="/ticketmaster" element ={<ProtectedRoute><Ticketmaster/></ProtectedRoute>}/>
+                <Route path="/google-maps" element ={<ProtectedRoute><GoogleMapsAdd/></ProtectedRoute>}/>
+                <Route path="/google-maps-ticket" element ={<ProtectedRoute><GoogleMapsTicket/></ProtectedRoute>}/>
                 <Route path="/ConcertDetails" element ={<ProtectedRoute><ConcertDetails/></ProtectedRoute>}/>
                 <Route path="/addNewConcert" element ={<ProtectedRoute><AddNewConcert/></ProtectedRoute>}/>
                 <Route path="/manage-users" element ={<ProtectedRoute><ManageUsers/></ProtectedRoute>}/>
