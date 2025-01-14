@@ -1,29 +1,33 @@
 package hr.fer.progi.ticketmestar.rest;
 
-import hr.fer.progi.ticketmestar.dao.AppUserRepository;
-import hr.fer.progi.ticketmestar.dao.ConcertRepository;
-import hr.fer.progi.ticketmestar.domain.AppUser;
-import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
-import hr.fer.progi.ticketmestar.domain.Concert;
-import hr.fer.progi.ticketmestar.dto.AddConcertDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import hr.fer.progi.ticketmestar.dao.AppUserRepository;
+import hr.fer.progi.ticketmestar.dao.ConcertRepository;
+import hr.fer.progi.ticketmestar.domain.AppUser;
+import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
+import hr.fer.progi.ticketmestar.domain.Concert;
+import hr.fer.progi.ticketmestar.dto.AddConcertDto;
 
 @RestController
 @RequestMapping("/concerts")
@@ -40,16 +44,59 @@ public class ConcertController {
         this.userRepository = userRepository;
     }
 
+    //@GetMapping("/concerts/artist/{artistId}")
+    //public List<Concert> getConcertsByArtist(@PathVariable String artistId) {
+    //return concertService.findConcertsByArtist(artistId);
+//}
+
+
     @Autowired
     private TicketMasterService ticketMasterService;
 
+    @PreAuthorize("hasRole('USER') or hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping("/concerts")
     public ResponseEntity<List<Concert>> getConcerts(
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String artist,
             @RequestParam(required = false) String latitude,
             @RequestParam(required = false) String longitude,
-            @RequestParam(required = false) String radius) {
+            @RequestParam(required = false) String radius,
+            Authentication authentication) {
+
+
+        Long userId;
+        AuthenticationProvider authProvider = null;
+
+        if (authentication.getPrincipal() instanceof AppUser) {
+            AppUser currentUser = (AppUser) authentication.getPrincipal();
+            userId = currentUser.getId();
+        } else if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
+            DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            String email = oauth2User.getAttribute("email");
+            System.out.println(email);
+
+            if (authentication instanceof OAuth2AuthenticationToken) {
+                OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
+                String registrationId = oauth2Token.getAuthorizedClientRegistrationId();
+
+                if ("google".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.GOOGLE;
+                } else if ("spotify".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.SPOTIFY;
+                } else {
+                    throw new IllegalStateException("Unsupported authentication provider: " + registrationId);
+                }
+            } else {
+                throw new IllegalStateException("Authentication is not an instance of OAuth2AuthenticationToken");
+            }
+
+            AppUser currentUser = userRepository.findByEmailAndAuthenticationProvider(email, authProvider)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            userId = currentUser.getId();
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
+        }
 
         List<Concert> ticketmasterConcerts = ticketMasterService.searchConcerts(date, artist, latitude, longitude, radius);
 
@@ -71,7 +118,7 @@ public class ConcertController {
         return ResponseEntity.ok(concerts);
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ARTIST')")
+    @PreAuthorize("hasRole('USER') or hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<Concert>> getAllConcerts(Principal principal) {
         List<Concert> concerts = concertService.concertList();
@@ -81,25 +128,53 @@ public class ConcertController {
         return ResponseEntity.ok(concerts);
     }
 
-    @PreAuthorize("hasRole('ARTIST')")
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
     @PostMapping(value="/add", consumes="application/json")
     public ResponseEntity<?> addConcert(@RequestBody AddConcertDto concertDto, Principal principal){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //AppUser currentUser = (AppUser) authentication.getPrincipal();
-        Concert concert = new Concert();
-        concert.setDate(concertDto.getDate());
-        concert.setTime(concertDto.getTime());
-        concert.setPerformer(concertDto.getPerformer());
-        concert.setCity(concertDto.getCity());
-        concert.setVenue(concertDto.getVenue());
-        concert.setEvent(concertDto.getEvent());
-        concert.setImageUrl(concertDto.getImageUrl());
-        return concertService.addNewConcert(concertDto);
+
+        Long userId;
+        AuthenticationProvider authProvider = null;
+
+        if (authentication.getPrincipal() instanceof AppUser) {
+            AppUser currentUser = (AppUser) authentication.getPrincipal();
+            userId = currentUser.getId();
+        } else if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
+            DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            String email = oauth2User.getAttribute("email");
+            System.out.println(email);
+
+            if (authentication instanceof OAuth2AuthenticationToken) {
+                OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
+                String registrationId = oauth2Token.getAuthorizedClientRegistrationId();
+
+                if ("google".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.GOOGLE;
+                } else if ("spotify".equalsIgnoreCase(registrationId)) {
+                    authProvider = AuthenticationProvider.SPOTIFY;
+                } else {
+                    throw new IllegalStateException("Unsupported authentication provider: " + registrationId);
+                }
+            } else {
+                throw new IllegalStateException("Authentication is not an instance of OAuth2AuthenticationToken");
+            }
+
+            AppUser currentUser = userRepository.findByEmailAndAuthenticationProvider(email, authProvider)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            userId = currentUser.getId();
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
+        }
+
+        concertDto.setPerformerId(userId);
+
+        return concertService.addConcert(concertDto);
     }
 
 
-    @PreAuthorize("hasRole('ARTIST')")
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping(value = "/me")
     public ResponseEntity<List<Concert>> getMyConcerts(Principal principal) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -137,14 +212,15 @@ public class ConcertController {
         } else {
             throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
         }
-
+        System.out.println(userId);
         List<Concert> myConcerts = concertService.findConcertsByUserId(userId);
+        System.out.println(myConcerts);
         return ResponseEntity.ok(myConcerts);
     }
 
-    @PreAuthorize("hasRole('ARTIST')")
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
     @PostMapping(value="/delete")
-    public ResponseEntity<List<Concert>> removeConcert(Long concertId, Principal principal){
+    public ResponseEntity<List<Concert>> removeConcert(@RequestParam Long concertId, Principal principal){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Long userId;

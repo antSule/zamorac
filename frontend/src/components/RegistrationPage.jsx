@@ -3,6 +3,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Checkbox } from "@mui/material";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
+import './registrationpage.css'
 
 const ROLES = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
 
@@ -52,77 +53,197 @@ const RegistrationPage = () => {
     };
 
     return (
-        <Container maxWidth="xs">
-            <Paper elevation={10} sx={{ marginTop: 8, padding: 2}}>
-                <Avatar sx={{
-                    mx: "auto",
-                    bgcolor: "secondary.main",
-                    textAlign: "center",
-                    mb: 1
-                }}>
-                    <PersonIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h5" sx={{textAlign:"center"}}>
+        <div className="registration">
+            <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+                <img src="/fakelogo.png" alt="logo" width={100} style={{ marginBottom: "20px" }} />
+
+                <Typography
+                    component="h1"
+                    className="naslov"
+                    variant="h5"
+                    sx={{
+                        textAlign: "center",
+                        marginBottom: "20px",
+                        fontWeight: 700,
+                        fontSize: "xx-large",
+                        fontFamily: "Poppins, sans-serif",
+                    }}
+                >
                     Registration
                 </Typography>
-                <Box
-                    component='form'
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{mt: 1}}
-                >
-                    <TextField
-                        placeholder="Username"
-                        fullWidth
-                        required
-                        autoFocus
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        sx={{mb: 2}}
-                    />
-                    <TextField
-                        placeholder="Email"
-                        fullWidth
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        sx={{mb: 2}}
-                    />
-                    <TextField
-                        placeholder="Password"
-                        fullWidth
-                        required
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                        Select roles:
-                    </Typography>
-                    {ROLES.map((role) => (
-                        <FormControlLabel
-                            key={role}
-                            control={
-                                <Checkbox
-                                    checked={selectedRoles.includes(role)}
-                                    onChange={() => handleRoleChange(role)}
-                                />
-                            }
-                            label={role}
+
+                <TextField
+    placeholder="Username"
+    fullWidth
+    required
+    autoFocus
+    value={username}
+    onChange={(e) => setUsername(e.target.value)}
+    sx={{
+        mb: 2,
+        fontFamily: '"Poppins", sans-serif',
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        width: "100%",
+        '& .MuiOutlinedInput-root': {
+            borderRadius: "20px",
+            '& fieldset': {
+                borderColor: "rgba(9, 51, 26, 0.937)",
+            },
+            '&:hover fieldset': {
+                borderColor: "rgba(9, 51, 26, 0.937)",
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: "rgb(61, 193, 121)",
+            },
+        },
+        '& .MuiInputBase-input': {
+            fontSize: "14px",
+            fontFamily: '"Poppins", sans-serif',
+        },
+    }}
+/>
+<TextField
+    placeholder="Email"
+    fullWidth
+    required
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    sx={{
+        mb: 2,
+        fontFamily: '"Poppins", sans-serif',
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        width: "100%",
+        '& .MuiOutlinedInput-root': {
+            borderRadius: "20px",
+            '& fieldset': {
+                borderColor: "rgba(9, 51, 26, 0.937)",
+            },
+            '&:hover fieldset': {
+                borderColor: "rgba(9, 51, 26, 0.937)",
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: "rgb(61, 193, 121)",
+            },
+        },
+        '& .MuiInputBase-input': {
+            fontSize: "14px",
+            fontFamily: '"Poppins", sans-serif',
+        },
+    }}
+/>
+<TextField
+    placeholder="Password"
+    fullWidth
+    required
+    type="password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    sx={{
+        mb: 2,
+        fontFamily: '"Poppins", sans-serif',
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        width: "100%",
+        '& .MuiOutlinedInput-root': {
+            borderRadius: "20px",
+            '& fieldset': {
+                borderColor: "rgba(9, 51, 26, 0.937)",
+            },
+            '&:hover fieldset': {
+                borderColor: "rgba(9, 51, 26, 0.937)",
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: "rgb(61, 193, 121)",
+            },
+        },
+        '& .MuiInputBase-input': {
+            fontSize: "14px",
+            fontFamily: '"Poppins", sans-serif',
+        },
+    }}
+/>
+
+      <Typography
+    variant="h6" 
+    sx={{
+        fontSize: "18px", 
+        fontWeight:"700",
+        color: "rgba(16, 125, 60, 0.937)", 
+        mb: 0.5, 
+        textAlign: "left",
+    }}
+>
+    Select roles:
+</Typography>
+
+                {ROLES.map((role) => (
+                    <FormControlLabel
+                        key={role}
+                        control={
+                            <Checkbox
+                            checked={selectedRoles.includes(role)}
+                            onChange={() => handleRoleChange(role)}
+                            sx={{
+                                color: "rgba(9, 51, 26, 0.937)",
+                                transform: "scale(1.5)",
+                                '& .MuiSvgIcon-root': {
+                                    fontSize: 28,
+                                },
+                                '&.Mui-checked': {
+                                    color: "rgb(61, 193, 121)",
+                                },
+                            }}
                         />
-                    ))}
-                    <Button type="submit" variant="contained" fullWidth sx={{mt: 1}}>
-                        Register
+                        
+                        }
+                        label={role}
+                        sx={{
+                            fontFamily: '"Poppins", sans-serif',
+                        }}
+                    />
+                ))}
+                <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                        mt: 2,
+                        backgroundColor: "rgba(9, 51, 26, 0.937)",
+                        color: "#ffffff",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "20px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        transition: "background-color 0.3s ease",
+                        '&:hover': {
+                            backgroundColor: "#ffff",
+                            color: "rgb(61, 193, 121)",
+                            border: "1px solid rgb(61, 193, 121)",
+                        },
+                    }}
+                >
+                    Register
+                </Button>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "5vh" }}>
+                    <Button
+                        component={RouterLink}
+                        to="/"
+                        style={{
+                            fontSize: "13px",
+                            padding: "0px 10px",
+                            textDecoration: "underline",
+                        }}
+                    >
+                        Already have an account? Log in.
                     </Button>
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '5vh'}}>
-                        <Button style={{fontSize: '13px', padding: '0px 10px'}}>
-                            <RouterLink to="/">Already have an account? Log in.</RouterLink>
-                        </Button>
-                    </div>
-                </Box>
-            </Paper>
-        </Container>
-    )
+                </div>
+            </form>
+        </div>
+    );
 };
+
 
 export default RegistrationPage;

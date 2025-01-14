@@ -1,0 +1,105 @@
+.naslov {
+    color: rgba(16, 125, 60, 0.937);
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+}
+
+body {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    height: 100%;
+}
+
+.selectrole {
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; 
+    margin: 10px 0;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1.2,1.2);
+}
+.text{
+    font-size: 18px;
+    color: rgba(16, 80, 60, 0.937);
+    font-weight: 700;
+}
+.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: rgba(9, 51, 26, 0.937);
+    font-family: "Poppins", sans-serif;
+}
+
+.checkbox input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 2px solid rgba(9, 51, 26, 0.937);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.checkbox input:checked {
+    background-color: rgb(61, 193, 121);
+    border-color: rgb(61, 193, 121);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M20.29 5.71l-10 10a1 1 0 01-1.42 0l-5-5a1 1 0 111.42-1.42L9 13.59l9.29-9.3a1 1 0 111.42 1.42z'/%3E%3C/svg%3E");
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+form {
+    background-color: #ffffffc9;
+    border-radius: 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+
+button {
+    margin-top: 16px;
+    background-color: rgba(9, 51, 26, 0.937);
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transform: scale(1);
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+}
+
+button:hover {
+    background-color: #ffff;
+    color: rgb(61, 193, 121);
+    border: 1px solid rgb(61, 193, 121);
+    overflow: hidden;
+}
+
+
+form img {
+    margin-bottom: 20px;
+}

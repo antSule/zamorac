@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import './verifypage.css'; 
 
 function VerifyPage() {
   const [code, setCode] = useState("");
@@ -12,7 +13,6 @@ function VerifyPage() {
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-        console.log({ email, code });
         const response = await fetch("http://localhost:8080/auth/verify", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -51,23 +51,26 @@ function VerifyPage() {
   };
 
   return (
-    <div>
-      <h1>Verify Email</h1>
-      <form onSubmit={handleVerify}>
-        <input
-          type="text"
-          placeholder="Enter verification code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          required
-        />
-        <button type="submit">Verify</button>
-      </form>
-       <button onClick={handleResend} style={{ marginTop: "10px" }}>
-            Resend Verification Code
-       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
+    <div className="center-container">
+      <div className="form-wrapper">
+      <img src="/fakelogo.png" alt="logo" width={100} style={{ marginBottom: "20px" }} />
+        <h1 className="verifynaslov">Verify Email</h1>
+        <form onSubmit={handleVerify}>
+          <input
+            type="text"
+            placeholder="Enter verification code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+          />
+          <button type="submit">Verify</button>
+        </form>
+        <button onClick={handleResend} style={{ marginTop: "10px" }}>
+          Resend Verification Code
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {message && <p style={{ color: "green" }}>{message}</p>}
+      </div>
     </div>
   );
 }

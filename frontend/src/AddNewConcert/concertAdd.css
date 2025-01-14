@@ -2,51 +2,54 @@ body {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f4f4f4; 
+    background-color: #f4f4f4;
 }
 
 .concert-add-container {
-    height: 100vh; 
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: url(../slike/koncertslika.jpg) no-repeat center center;
     background-size: cover;
+    padding: 5px; 
 }
 
 .naslov {
     color: rgba(9, 51, 26, 0.937);
-    margin-bottom: 40px;
+    margin-bottom: 10px; 
     text-align: center;
-    font-size: xx-large;
+    font-size: large; 
     font-family: "Poppins", sans-serif;
     font-weight: 700;
 }
 
-form {
+.formANC {
     background-color: #ffffffc9;
-    border-radius: 60px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px 40px;
-    width: 100%;
-    max-width: 500px;
+    border-radius: 20px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px; 
+    width: 90%;
+    max-width: 450px; 
     text-align: center;
+    box-sizing: border-box;
 }
 
 label {
     display: block;
-    margin-top: 15px;
+    margin-top: 8px; 
     font-weight: bold;
     color: rgb(21, 82, 48);
     font-family: "Poppins", sans-serif;
+    font-size: 13px; 
 }
 
 input {
-    margin: 5px 0;
-    font-size: 15px;
-    padding: 5px;
-    width: 250px;
+    margin: 3px 0;
+    font-size: 10px;
+    padding: 4px;
+    width: 80%; 
     border: 1px solid rgb(10, 180, 44);
     border-top: none;
     border-left: none;
@@ -54,25 +57,27 @@ input {
     background: rgba(9, 9, 9, 0.059);
     color: rgb(21, 82, 48);
     outline: none;
+    box-sizing: border-box;
 }
 
 .button-group {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 25px;
+    gap: 5px; 
+    margin-top: 10px; 
+    flex-wrap: nowrap; 
 }
 
 button {
     background-color: rgba(9, 51, 26, 0.937);
     color: #ffffff;
     border: none;
-    padding: 5px 10px;
-    border-radius: 20px;
+    padding: 4px 8px; 
+    border-radius: 15px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     transition: background-color 0.4s ease;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 button:hover {
@@ -84,7 +89,7 @@ button:hover {
 button#button-clear-location {
     background-color: #4d1818;
     color: #ffffff;
-    margin-left: 5px;
+    margin-left: 3px;
 }
 
 button#button-clear-location:hover {
@@ -94,5 +99,5 @@ button#button-clear-location:hover {
 }
 
 button#button-addConcert {
-    margin-left: 10px;
+    margin-left: 5px;
 }

@@ -26,7 +26,17 @@ const Ticketmaster = () => {
     if (savedDate) setDate(savedDate);
     if (savedArtist) setArtist(savedArtist);
     if (savedRadius) setRadius(savedRadius);
-    if (savedLocation) setLocation(savedLocation);
+    if (savedLocation) {
+        try {
+            const location = JSON.parse(savedLocation);
+            if (location.lat && location.lng) {
+                setLocation(`Lat: ${location.lat}, Lng: ${location.lng}`);
+            }
+        } catch (error) {
+            console.error("Invalid location data in localStorage, clearing it", error);
+            localStorage.removeItem("concert-location");
+        }
+    }
   }, []);
 
     useEffect(() => {
@@ -39,7 +49,7 @@ const Ticketmaster = () => {
   const handleLocationClick = () => {
         setLocation("");
         localStorage.removeItem("selectedLocation");
-        window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMapsTicket/GoogleMaps.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE';
+        window.location.href = 'http://localhost:3000/google-maps-ticket';
   };
 
   const handleClearLocation = () => {
@@ -66,7 +76,18 @@ const Ticketmaster = () => {
     }
     if (location && radius) query += `${query ? '&' : '?'}radius=${radius}`;
 
-    fetch(`http://localhost:8080/concerts/concerts${query}`, { method: 'GET' })
+    const token = localStorage.getItem("token");
+    const headers = token
+        ? {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          }
+        : { 'Content-Type': 'application/json' };
+
+    fetch(`http://localhost:8080/concerts/concerts${query}`, {
+        method: 'GET',
+        headers: headers,
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('No concerts match your search criteria. Please try different parameters.');
@@ -80,13 +101,16 @@ const Ticketmaster = () => {
           localStorage.setItem('concerts', JSON.stringify(data));
           window.open('http://localhost:3000/ConcertDetails', '_blank');
         }
+      })
+      .catch(error => {
+        alert(error.message);
       });
   };
 
   return (
     <div className="ticketmaster">
       <form id="parameters-form" onSubmit={handleSubmit}>
-        <div className="naslov">Search for concerts</div>
+        <div className="naslovTM">Search for concerts</div>
         <label htmlFor="concert-date">Select the date of the concert:</label>
         <br />
         <input

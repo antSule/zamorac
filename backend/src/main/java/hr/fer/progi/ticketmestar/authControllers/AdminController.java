@@ -62,4 +62,10 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/userroles")
+    public ResponseEntity<Set<Role>> getUserRoles(@RequestParam Long userId){
+        Set<Role> roles = adminService.getUserRoles(userId);
+        return ResponseEntity.ok(roles);
+    }
+
 }

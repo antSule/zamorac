@@ -23,7 +23,7 @@ const ConcertsResults = () => {
           <div className="concert" key={index}>
             <div className="concert-image">
               <img
-                src={concert.imageUrl || "default-image.jpg"}
+                src={concert.imageUrl || "/fakelogo.png"}
                 alt={concert.name || "Concert"}
               />
             </div>

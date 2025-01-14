@@ -8,15 +8,11 @@ const ManageConcerts = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
+  const [hasAccess, setHasAccess] = useState(false);
 
-  const fetchConcerts = async () => {
+  const fetchConcerts = async (headers) => {
     try {
-      const response = await axios.get('http://localhost:8080/concerts/all', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await axios.get('http://localhost:8080/concerts/all', { withCredentials:true,headers });
       setConcerts(response.data);
     } catch (err) {
       setError('Error fetching concerts.');
@@ -26,14 +22,9 @@ const ManageConcerts = () => {
     }
   };
 
-  const deleteConcert = async (concertId) => {
+  const deleteConcert = async (concertId, headers) => {
     try {
-      await axios.get(`http://localhost:8080/admin/remove?concertId=${concertId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      await axios.get(`http://localhost:8080/admin/remove?concertId=${concertId}`, { withCredentials:true,headers });
       fetchConcerts();
       alert('Concert successfully deleted!');
     } catch (err) {
@@ -48,7 +39,14 @@ const ManageConcerts = () => {
   };
 
   const handleConfirmDelete = () => {
-    deleteConcert(concertToDelete);
+      const token = localStorage.getItem("token");
+      const headers = token
+          ? {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}`,
+             }
+           : undefined;
+    deleteConcert(concertToDelete, headers);
     setShowDeleteModal(false);
   };
 
@@ -57,8 +55,41 @@ const ManageConcerts = () => {
   };
 
   useEffect(() => {
-    fetchConcerts();
-  }, []);
+      const token = localStorage.getItem('token');
+      const headers = token
+        ? {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined;
+
+      axios
+        .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+        .then((response) => {
+          const userRoles = response.data.roles || [];
+          if (userRoles.includes('ADMIN')) {
+            setHasAccess(true);
+            fetchConcerts(headers);
+          } else {
+            setHasAccess(false);
+          }
+        })
+        .catch((err) => {
+          setError('Error verifying user roles.');
+          console.error(err);
+        });
+    }, []);
+
+    if (!hasAccess) {
+      return (
+        <div className="no-access-container">
+          <div className="no-access-message">
+            <h2>⚠️ Access Denied</h2>
+            <p>You do not have permission to access this page.</p>
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div id="concerts-container">
@@ -72,12 +103,12 @@ const ManageConcerts = () => {
           <div className="concert" key={index}>
             <div className="concert-image">
               <img
-                src={concert.imageUrl || 'default-image.jpg'}
+                src={concert.imageUrl || '/fakelogo.png'}
                 alt={concert.name || 'Concert'}
               />
             </div>
             <div className="concert-details">
-              <h3>{concert.name}</h3>
+              <h3>{concert.event}</h3>
               <p><strong>Performer:</strong> {concert.performer}</p>
               <p><strong>City:</strong> {concert.city}</p>
               <p><strong>Date:</strong> {concert.date}</p>

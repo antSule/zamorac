@@ -1,6 +1,16 @@
 package hr.fer.progi.ticketmestar.service.impl;
 
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
 import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
@@ -10,15 +20,6 @@ import hr.fer.progi.ticketmestar.dto.RegisterUserDto;
 import hr.fer.progi.ticketmestar.dto.VerifyUserDto;
 import hr.fer.progi.ticketmestar.responses.SignupResponse;
 import jakarta.mail.MessagingException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
 
 @Service
 public class AuthenticationService {
@@ -113,17 +114,27 @@ public class AuthenticationService {
         String subject = "Account Verification";
         String verificationCode = user.getVerificationCode();
         String htmlMessage = "<html>"
-                + "<body style=\"font-family: Arial, sans-serif;\">"
-                + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
-                + "<h2 style=\"color: #333;\">Welcome to our app!</h2>"
-                + "<p style=\"font-size: 16px;\">Please enter the verification code below to continue:</p>"
-                + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
-                + "<h3 style=\"color: #333;\">Verification Code:</h3>"
-                + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + verificationCode + "</p>"
-                + "</div>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
+    + "<head>"
+    + "<meta charset='UTF-8'>"
+    + "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
+    + "<title>Verification Page</title>"
+    + "</head>"
+    + "<body style='box-sizing: border-box; font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center;'>"
+    + "<div style='background-color: #ffffffc9; padding: 40px; border-radius: 60px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); max-width: 500px; text-align: center;'>"
+    + "<img src='/fakelogo.png' alt='logo' style='width: 100px; margin-bottom: 20px;'>"
+    + "<h1 style='color: rgba(16, 125, 60, 0.937); font-family: \"Poppins\", sans-serif; font-weight: 700; font-size: 30px; text-align: center;'>"
+    + "Welcome to Our App!"
+    + "</h1>"
+    + "<p style='font-size: 18px; color: rgba(16, 80, 60, 0.937); font-weight: 700;'>"
+    + "Please enter the verification code below to continue:"
+    + "</p>"
+    + "<div style='background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);'>"
+    + "<h3 style='color: rgba(9, 51, 26, 0.937); font-family: \"Poppins\", sans-serif;'>Verification Code:</h3>"
+    + "<p style='font-size: 18px; font-weight: bold; color: rgba(24, 225, 161, 0.937);'>" + verificationCode + "</p>"
+    + "</div>"
+    + "</div>"
+    + "</body>"
+    + "</html>";
 
         try {
             emailService.sendVerificationEmail(user.getEmail(), subject, htmlMessage);
