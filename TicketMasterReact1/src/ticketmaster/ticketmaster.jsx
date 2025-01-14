@@ -55,7 +55,7 @@ const Ticketmaster = () => {
     }
     if (location && radius) query += `${query ? '&' : '?'}radius=${radius}`;
 
-    fetch(`http://https://ticketmestarbackend-yqpn.onrender.com/concerts/concerts${query}`, { method: 'GET' })
+    fetch(`https://ticketmestarbackend-yqpn.onrender.com/concerts/concerts${query}`, { method: 'GET' })
       .then(response => {
         if (!response.ok) {
           throw new Error('No concerts match your search criteria. Please try different parameters.');

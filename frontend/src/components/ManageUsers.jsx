@@ -61,7 +61,7 @@ const ManageUsers = () => {
 
         try {
             const rolesParam = newRoles.join(',');
-            const url = `http://https://ticketmestarbackend-yqpn.onrender.com/admin/roles?userId=${selectedUserId}&roles=${encodeURIComponent(rolesParam)}`;
+            const url = `https://ticketmestarbackend-yqpn.onrender.com/admin/roles?userId=${selectedUserId}&roles=${encodeURIComponent(rolesParam)}`;
             console.log(url);
 
             await axios.get(url, { withCredentials:true,headers });
@@ -104,7 +104,7 @@ const ManageUsers = () => {
            }
          : undefined;
 
-        axios.get('http://https://ticketmestarbackend-yqpn.onrender.com/user-info', {withCredentials: true, headers})
+        axios.get('https://ticketmestarbackend-yqpn.onrender.com/user-info', {withCredentials: true, headers})
         .then((response) => {
             const userRoles = response.data.roles || [];
             if(userRoles.includes('ADMIN')){

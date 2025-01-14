@@ -9,7 +9,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://https://ticketmestarfrontend-c9vl.onrender.com](http://https://ticketmestarfrontend-c9vl.onrender.com) to view it in your browser.
+Open [https://ticketmestarfrontend-c9vl.onrender.com](https://ticketmestarfrontend-c9vl.onrender.com) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.

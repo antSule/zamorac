@@ -52,7 +52,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             System.out.println("Spotify login");
             handleSpotifyLogin(oauth2AuthenticationToken, response);
         } else {
-            response.sendRedirect("http://https://ticketmestarfrontend-c9vl.onrender.com/home");
+            response.sendRedirect("https://ticketmestarfrontend-c9vl.onrender.com/home");
         }
     }
 
@@ -78,9 +78,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         updateSecurityContext(appUser, oAuth2User);
 
         if (appUser.getRole().contains(Role.NULL_USER)) {
-            response.sendRedirect("http://https://ticketmestarfrontend-c9vl.onrender.com/select-role");
+            response.sendRedirect("https://ticketmestarfrontend-c9vl.onrender.com/select-role");
         } else {
-            response.sendRedirect("http://https://ticketmestarfrontend-c9vl.onrender.com/home");
+            response.sendRedirect("https://ticketmestarfrontend-c9vl.onrender.com/home");
         }
     }
 
@@ -132,7 +132,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
 
-        response.sendRedirect("http://https://ticketmestarfrontend-c9vl.onrender.com/home");
+        response.sendRedirect("https://ticketmestarfrontend-c9vl.onrender.com/home");
     }
 
     private void updateSecurityContext(AppUser appUser, OAuth2User oAuth2User) {

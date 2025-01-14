@@ -8,7 +8,7 @@ const ArtistConcerts = () => {
 
   useEffect(() => {
     // Fetch koncerata za odabranog izvođača
-    fetch(`http://https://ticketmestarbackend-yqpn.onrender.com/concerts/artist/${artistId}`, {
+    fetch(`https://ticketmestarbackend-yqpn.onrender.com/concerts/artist/${artistId}`, {
       credentials: "include",
     })
       .then((response) => {

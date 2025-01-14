@@ -21,7 +21,7 @@ const LoginPage = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://https://ticketmestarbackend-yqpn.onrender.com/auth/login", {
+            const response = await fetch("https://ticketmestarbackend-yqpn.onrender.com/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

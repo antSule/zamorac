@@ -28,7 +28,7 @@ const SelectRolePage = () => {
 
         try {
             const query = new URLSearchParams({ roles: selectedRoles }).toString();
-            const response = await fetch(`http://https://ticketmestarbackend-yqpn.onrender.com/auth/setrole?${query}`, {
+            const response = await fetch(`https://ticketmestarbackend-yqpn.onrender.com/auth/setrole?${query}`, {
                 method: "GET",
                 credentials: "include",
             });

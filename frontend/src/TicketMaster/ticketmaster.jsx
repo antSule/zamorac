@@ -49,7 +49,7 @@ const Ticketmaster = () => {
   const handleLocationClick = () => {
         setLocation("");
         localStorage.removeItem("selectedLocation");
-        window.location.href = 'http://https://ticketmestarfrontend-c9vl.onrender.com/google-maps-ticket';
+        window.location.href = 'https://ticketmestarfrontend-c9vl.onrender.com/google-maps-ticket';
   };
 
   const handleClearLocation = () => {
@@ -84,7 +84,7 @@ const Ticketmaster = () => {
           }
         : { 'Content-Type': 'application/json' };
 
-    fetch(`http://https://ticketmestarbackend-yqpn.onrender.com/concerts/concerts${query}`, {
+    fetch(`https://ticketmestarbackend-yqpn.onrender.com/concerts/concerts${query}`, {
         method: 'GET',
         headers: headers,
     })
@@ -99,7 +99,7 @@ const Ticketmaster = () => {
           alert("No concerts match your search criteria. Please try different parameters.");
         } else {
           localStorage.setItem('concerts', JSON.stringify(data));
-          window.open('http://https://ticketmestarfrontend-c9vl.onrender.com/ConcertDetails', '_blank');
+          window.open('https://ticketmestarfrontend-c9vl.onrender.com/ConcertDetails', '_blank');
         }
       })
       .catch(error => {

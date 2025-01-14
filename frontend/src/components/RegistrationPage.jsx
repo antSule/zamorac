@@ -34,7 +34,7 @@ const RegistrationPage = () => {
         };
 
         try {
-            const response = await fetch("http://https://ticketmestarbackend-yqpn.onrender.com/auth/signup", {
+            const response = await fetch("https://ticketmestarbackend-yqpn.onrender.com/auth/signup", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
