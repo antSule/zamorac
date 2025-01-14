@@ -13,6 +13,10 @@ const LoginPage = () => {
         window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
 
+    const handleSpotifyLogin = () => {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/spotify';
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -65,6 +69,7 @@ const LoginPage = () => {
                 </Typography>
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     component={RouterLink}
                     to="/register"
                     fullWidth
@@ -90,6 +95,7 @@ const LoginPage = () => {
                 </Button>
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     onClick={handleGoogleLogin}
                     variant="contained"
                     fullWidth
@@ -111,6 +117,31 @@ const LoginPage = () => {
                     }}
                 >
                     Log In With Google
+                </Button>
+
+                <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
+                    onClick={handleSpotifyLogin}
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                        mt: 1,
+                        backgroundColor: 'rgba(9, 51, 26, 0.937)',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '10px 20px',
+                        borderRadius: '20px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        transition: 'background-color 0.3s ease',
+                        '&:hover': {
+                            backgroundColor: '#ffff',
+                            color: 'rgb(61, 193, 121)',
+                            border: '1px solid rgb(61, 193, 121)',
+                        },
+                    }}
+                >
+                    LOG IN WITH SPOTIFY
                 </Button>
 
                 <TextField
@@ -177,6 +208,7 @@ const LoginPage = () => {
                 />
 
                 <Button
+                    style={{ fontFamily: "Poppins, sans-serif"}}
                     type="submit"
                     variant="contained"
                     fullWidth

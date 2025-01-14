@@ -76,9 +76,13 @@ const HomePage = () =>{
              <div className="flexCenter h-menu">
                  <div className="centerText">
                      {user ? (
-                         <span className="WelcomeText">
+                         <span
+                         className="WelcomeText"
+                         style={{ fontFamily: "Poppins, sans-serif", fontWeight: "bold" }}
+                       >
                          Welcome, {user}
-                        </span>
+                       </span>
+                       
                      ) : 
                      <span>Welcome, Guest</span>}
                  </div>
@@ -86,7 +90,7 @@ const HomePage = () =>{
                  {hasRole('ADMIN') && (<RouterLink to="/manage-concerts">Manage Concerts</RouterLink>)}
                  {hasRole('ADMIN') && (<RouterLink to="/manage-users">Manage Users</RouterLink>)}
                  {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/addNewConcert">Add Concert</RouterLink>)}
-                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/ticketmaster">Search Concerts</RouterLink>)}
+                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/ticketmaster">Search concerts</RouterLink>)}
                  {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/concerts">Concerts</RouterLink>)}
                  {hasRole('SPOTIFY') && (<RouterLink to="/favourites">Favourites</RouterLink>)}
                  
