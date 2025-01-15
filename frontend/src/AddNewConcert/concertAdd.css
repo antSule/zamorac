@@ -1,11 +1,11 @@
-body {
+.bodyANC {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     margin: 0;
     background-color: #f4f4f4;
 }
 
-.concert-add-container {
+.concert-add-containerANC {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -16,13 +16,14 @@ body {
     padding: 5px; 
 }
 
-.naslov {
+.naslovANC {
     color: rgba(9, 51, 26, 0.937);
     margin-bottom: 10px; 
     text-align: center;
     font-size: large; 
     font-family: "Poppins", sans-serif;
     font-weight: 700;
+    font-size: 25px;
 }
 
 .formANC {
@@ -36,7 +37,7 @@ body {
     box-sizing: border-box;
 }
 
-label {
+.labelANC {
     display: block;
     margin-top: 8px; 
     font-weight: bold;
@@ -45,9 +46,9 @@ label {
     font-size: 13px; 
 }
 
-input {
+.inputANC {
     margin: 3px 0;
-    font-size: 10px;
+    font-size: 14px;
     padding: 4px;
     width: 80%; 
     border: 1px solid rgb(10, 180, 44);
@@ -60,7 +61,7 @@ input {
     box-sizing: border-box;
 }
 
-.button-group {
+.button-groupANC {
     display: flex;
     justify-content: center;
     gap: 5px; 
@@ -68,7 +69,7 @@ input {
     flex-wrap: nowrap; 
 }
 
-button {
+.buttonANC {
     background-color: rgba(9, 51, 26, 0.937);
     color: #ffffff;
     border: none;
@@ -80,24 +81,24 @@ button {
     margin-top: 5px;
 }
 
-button:hover {
+.buttonANC:hover {
     background-color: #ffff;
     color: rgb(61, 193, 121);
     border: 1px solid rgb(61, 193, 121);
 }
 
-button#button-clear-location {
+.buttonANC#button-clear-location {
     background-color: #4d1818;
     color: #ffffff;
     margin-left: 3px;
 }
 
-button#button-clear-location:hover {
+.buttonANC#button-clear-location:hover {
     color: #792727;
     border: 1px solid #792727;
     background-color: white;
 }
 
-button#button-addConcert {
+.buttonANC#button-addConcert {
     margin-left: 5px;
 }

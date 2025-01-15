@@ -127,81 +127,91 @@ const AddNewConcert = () => {
 
 
     return (
-        <div className="concert-add-container">
+    <body className="bodyANC">
+        <div className="concert-add-containerANC">
             <form id="concert-add-form" className="formANC" onSubmit={handleFormSubmit}>
-                <div className="naslov">Add Your Concert</div>
+                <div className="naslovANC">Add Your Concert</div>
 
-                <label htmlFor="concert-date">Select Concert Date:</label>
+                <label className="labelANC" htmlFor="concert-date">Select Concert Date:</label>
                 <input
+                    className="inputANC"
                     type="date"
                     id="concert-date"
                     value={concertDate}
                     onChange={(e) => setConcertDate(e.target.value)}
                 />
 
-                <label htmlFor="concert-time">Select Concert Time:</label>
+                <label className = "labelANC" htmlFor="concert-time">Select Concert Time:</label>
                 <input
+                    className="inputANC"
                     type="time"
                     id="concert-time"
                     value={concertTime}
                     onChange={(e) => setConcertTime(e.target.value)}
                 />
 
-                <label htmlFor="performer-name">Enter Performer Name:</label>
+                <label className="labelANC" htmlFor="performer-name">Enter Performer Name:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="performer-name"
                     value={performerName}
                     onChange={(e) => setPerformerName(e.target.value)}
                 />
 
-                <label htmlFor="city">City:</label>
+                <label className = "labelANC" htmlFor="city">City:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                 />
 
-                <label htmlFor="concert-location">Select Location:</label>
+                <label className = "labelANC" htmlFor="concert-location">Select Location:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="concert-location"
                     readOnly
                     value={locationDetails}
                 />
-                <div className="button-group">
-                    <button type="button" onClick={openLocationSelector}>Select Location</button>
-                    <button type="button" id="button-clear-location" onClick={clearLocation}>Clear Location</button>
+                <div className="button-groupANC">
+                    <button  className = "buttonANC" type="button" onClick={openLocationSelector}>Select Location</button>
+                    <button  className = "buttonANC" type="button" id="button-clear-location" onClick={clearLocation}>Clear Location</button>
                 </div>
 
-                <label htmlFor="venue">Venue Name:</label>
+                <label className="labelANC" htmlFor="venue">Venue Name:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="venue"
                     value={venueDetails}
                     onChange={(e) => setVenueDetails(e.target.value)}
                 />
 
-                <label htmlFor="event-name">Event Name:</label>
+                <label className="labelANC" htmlFor="event-name">Event Name:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="event-name"
                     value={eventName}
                     onChange={(e) => setEventName(e.target.value)}
                 />
 
-                <label htmlFor="image-url">Image URL (Optional):</label>
+                <label className = "labelANC" htmlFor="image-url">Image URL (Optional):</label>
                 <input
+                    className="inputANC"
                     type="url"
                     id="image-url"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
                 />
 
-                <button type="submit" id="button-addConcert">Add Concert</button>
+                <button className="buttonANC" type="submit" id="button-addConcert">Add Concert</button>
             </form>
         </div>
+    </body>
     );
 };
 

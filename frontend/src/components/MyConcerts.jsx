@@ -102,7 +102,7 @@ const MyConcerts = () => {
     }
 
   return (
-    <div id="concerts-container">
+    <div id="concerts-containerMC">
       <h1>Manage Concerts</h1>
       {loading ? (
         <p>Loading concerts...</p>
@@ -110,14 +110,14 @@ const MyConcerts = () => {
         <p style={{ color: 'red' }}>{error}</p>
       ) : concerts.length > 0 ? (
         concerts.map((concert, index) => (
-          <div className="concert" key={index}>
-            <div className="concert-image">
+          <div className="concertMC" key={index}>
+            <div className="concert-imageMC">
               <img
                 src={concert.imageUrl || '/fakelogo.png'}
                 alt={concert.name || 'Concert'}
               />
             </div>
-            <div className="concert-details">
+            <div className="concert-detailsMC">
               <h3>{concert.event}</h3>
               <p><strong>Performer:</strong> {concert.performer}</p>
               <p><strong>City:</strong> {concert.city}</p>

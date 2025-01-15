@@ -48,11 +48,12 @@ const SelectRolePage = () => {
     };
 
     return (
-        <div className="selectrole">
-  <form>
+<body className="bodySR">      
+<div className="selectrole">
+  <form className="formSR">
     <img src="/fakelogo.png" alt="logo" width={100} />
-    <h2 className="naslov">Select Role</h2>
-    <p className="text">Please select your roles:</p>
+    <h2 className="naslovSR">Select Role</h2>
+    <p className="textSR">Please select your roles:</p>
     <div className="checkbox-container">
       {roles.map((role) => (
         <label key={role} className="checkbox">
@@ -66,11 +67,12 @@ const SelectRolePage = () => {
       ))}
     </div>
     {error && <p style={{ color: "red" }}>{error}</p>}
-    <button onClick={handleSubmit} disabled={loading} style={{ marginTop: "10px" }}>
+    <button className="buttonSR" onClick={handleSubmit} disabled={loading} style={{ marginTop: "10px" }}>
       {loading ? "Setting roles..." : "Set Roles"}
     </button>
   </form>
 </div>
+</body>
     );
 };
 

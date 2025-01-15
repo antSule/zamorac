@@ -49,13 +49,14 @@ const LoginPage = () => {
     };
 
     return (
+        <body className="bodyLog">
         <div className="login">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="formLog">
                 <img src="/fakelogo.png" alt="logo" width={100} />
 
                 <Typography
                     component="h1"
-                    className="naslov"
+                    className="naslovLog"
                     variant="h5"
                     sx={{
                         textAlign: 'center',
@@ -228,6 +229,7 @@ const LoginPage = () => {
                 </Button>
             </form>
         </div>
+        </body>
     );
 };
 

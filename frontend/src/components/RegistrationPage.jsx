@@ -53,13 +53,14 @@ const RegistrationPage = () => {
     };
 
     return (
+        <body className="bodyReg">
         <div className="registration">
-            <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+            <form onSubmit={handleSubmit} className="formReg" style={{ textAlign: "center" }}>
                 <img src="/fakelogo.png" alt="logo" width={100} style={{ marginBottom: "20px" }} />
 
                 <Typography
                     component="h1"
-                    className="naslov"
+                    className="naslovReg"
                     variant="h5"
                     sx={{
                         textAlign: "center",
@@ -242,6 +243,7 @@ const RegistrationPage = () => {
                 </div>
             </form>
         </div>
+        </body>
     );
 };
 

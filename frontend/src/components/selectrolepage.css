@@ -1,4 +1,4 @@
-.naslov {
+.naslovSR {
     color: rgba(16, 125, 60, 0.937);
     text-align: center;
     font-family: "Poppins", sans-serif;
@@ -6,7 +6,7 @@
     font-size: 30px;
 }
 
-body {
+.bodySR {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -32,10 +32,11 @@ body {
     align-items: center;
     transform: scale(1.2,1.2);
 }
-.text{
+.textSR{
     font-size: 18px;
     color: rgba(16, 80, 60, 0.937);
     font-weight: 700;
+    margin-bottom: 20px;
 }
 .checkbox {
     display: flex;
@@ -67,7 +68,7 @@ body {
 }
 
 
-form {
+.formSR {
     background-color: #ffffffc9;
     border-radius: 60px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -78,21 +79,20 @@ form {
 }
 
 
-button {
-    margin-top: 16px;
+.buttonSR {
     background-color: rgba(9, 51, 26, 0.937);
-    color: #ffffff;
+    color: white;
     border: none;
-    padding: 15px 30px;
-    border-radius: 20px;
     cursor: pointer;
-    font-size: 14px;
-    transform: scale(1);
     transition: background-color 0.3s ease;
-    overflow: hidden;
+    border-radius: 20px;
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+    font-size: 16px;
 }
 
-button:hover {
+.buttonSR:hover {
     background-color: #ffff;
     color: rgb(61, 193, 121);
     border: 1px solid rgb(61, 193, 121);
@@ -100,6 +100,6 @@ button:hover {
 }
 
 
-form img {
+.formSR img {
     margin-bottom: 20px;
 }
