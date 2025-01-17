@@ -28,7 +28,7 @@ const GoogleMapsAdd = () => {
     if (selectedLocation) {
       const lat = selectedLocation.lat();
       const lng = selectedLocation.lng();
-      const url = `https://ticketmestarfrontend-c9vl.onrender.com/addNewConcert?lat=${lat}&lng=${lng}`;
+      const url = `http://localhost:3000/addNewConcert?lat=${lat}&lng=${lng}`;
       window.location.href = url;
     } else {
       alert("Molimo odaberite lokaciju prije potvrde!");

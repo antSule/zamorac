@@ -11,7 +11,7 @@ const MyConcerts = () => {
 
   const fetchMyConcerts = async (headers) => {
       try {
-        const response = await axios.get("https://ticketmestarbackend-yqpn.onrender.com/concerts/me", { withCredentials:true,headers });
+        const response = await axios.get("http://localhost:8080/concerts/me", { withCredentials:true,headers });
         const data = response.data;
         console.log(data);
         if (Array.isArray(data)) {
@@ -32,7 +32,7 @@ const MyConcerts = () => {
 
   const deleteConcert = async (concertId, headers) => {
     try {
-      await axios.post(`https://ticketmestarbackend-yqpn.onrender.com/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
+      await axios.post(`http://localhost:8080/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
       fetchMyConcerts(headers);
       alert('Concert successfully deleted!');
     } catch (err) {
@@ -73,7 +73,7 @@ const MyConcerts = () => {
         : undefined;
 
       axios
-        .get('https://ticketmestarbackend-yqpn.onrender.com/user-info', { withCredentials: true, headers })
+        .get('http://localhost:8080/user-info', { withCredentials: true, headers })
         .then((response) => {
           const userRoles = response.data.roles || [];
           if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {

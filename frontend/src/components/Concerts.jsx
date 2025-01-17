@@ -17,7 +17,7 @@ const Concerts = () => {
       : undefined;
 
     axios
-      .get("https://ticketmestarbackend-yqpn.onrender.com/user-info", { withCredentials: true, headers })
+      .get("http://localhost:8080/user-info", { withCredentials: true, headers })
       .then((response) => {
         const userRoles = response.data.roles || [];
         if (userRoles.includes('USER') || userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
@@ -35,7 +35,7 @@ const Concerts = () => {
 
   const fetchConcerts = async (headers) => {
     try {
-      const response = await axios.get("https://ticketmestarbackend-yqpn.onrender.com/concerts/all", { withCredentials: true, headers });
+      const response = await axios.get("http://localhost:8080/concerts/all", { withCredentials: true, headers });
       if (Array.isArray(response.data)) {
         setConcerts(response.data);
       } else {

@@ -49,7 +49,6 @@ public class ConcertController {
     //return concertService.findConcertsByArtist(artistId);
 //}
 
-
     @Autowired
     private TicketMasterService ticketMasterService;
 
@@ -61,8 +60,9 @@ public class ConcertController {
             @RequestParam(required = false) String latitude,
             @RequestParam(required = false) String longitude,
             @RequestParam(required = false) String radius,
-            Authentication authentication) {
+            Principal principal) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Long userId;
         AuthenticationProvider authProvider = null;
@@ -263,6 +263,13 @@ public class ConcertController {
         concertService.deleteConcert(concertId);
 
         return ResponseEntity.ok(concertService.concertList());
+    }
+
+    @PreAuthorize("hasRole('SPOTIFY')")
+    @GetMapping("/artist")
+    public List<Concert> getConcertsByArtists(
+            @RequestParam(name = "artist", required = true) String artist){
+            return ticketMasterService.searchConcerts(null, artist, null, null, null);
     }
 
 }

@@ -69,11 +69,11 @@ async function init() {
             //console.log('Geografska širina:', selectedLocation.lat());
             //console.log('Geografska dužina:', selectedLocation.lng());
 
-            const url = `https://ticketmestarfrontend-c9vl.onrender.com/ticketmaster?lat=${lat}&lng=${lng}`;
+            const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
 
             window.location.href = url;
 
-            //window.location.href = 'https://ticketmestarfrontend-c9vl.onrender.com/addNewConcert?lat=${locationData.lat}&lng=${locationData.lng}'
+            //window.location.href = 'http://localhost:3000/addNewConcert?lat=${locationData.lat}&lng=${locationData.lng}'
         } else {
             window.alert('Molimo odaberite lokaciju prije potvrde!');
         }

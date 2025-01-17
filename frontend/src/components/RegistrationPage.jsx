@@ -5,7 +5,7 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import './registrationpage.css'
 
-const ROLES = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
+const ROLES = ["USER", "ARTIST"];
 
 const RegistrationPage = () => {
     const [username, setUsername] = useState("");
@@ -34,7 +34,7 @@ const RegistrationPage = () => {
         };
 
         try {
-            const response = await fetch("https://ticketmestarbackend-yqpn.onrender.com/auth/signup", {
+            const response = await fetch("http://localhost:8080/auth/signup", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

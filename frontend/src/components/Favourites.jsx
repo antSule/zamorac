@@ -7,7 +7,7 @@ const Favourites = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://ticketmestarbackend-yqpn.onrender.com/spotify/me/following", {
+    fetch("http://localhost:8080/spotify/me/following", {
       credentials: "include",
     })
       .then((response) => {
@@ -29,8 +29,38 @@ const Favourites = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const handleSeeConcerts = (artistId) => {
-    navigate(`/concerts/artist/${artistId}`);
+  const handleSeeConcerts = (artistName) => {
+    const token = localStorage.getItem("token");
+    const headers = token
+    ? {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        }
+    : undefined;
+
+    fetch(`http://localhost:8080/concerts/artist?artist=${encodeURIComponent(artistName)}`, {
+      method: "GET",
+      headers: headers,
+      credentials: 'include'
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("No concerts found for this artist. Please try again.");
+        }
+        return response.json();
+      })
+      .then((concerts) => {
+        if (concerts.length === 0) {
+          alert("No concerts found for this artist.");
+        } else {
+          localStorage.setItem("concerts", JSON.stringify(concerts));
+          navigate("/ConcertDetails", { state: { concerts } });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching concerts:", error);
+        alert(error.message);
+      });
   };
 
   return (
@@ -128,7 +158,7 @@ const Favourites = () => {
                   />
                 )}
                 <button
-                  onClick={() => handleSeeConcerts(artist.id)}
+                  onClick={() => handleSeeConcerts(artist.name)}
                   style={{
                     marginLeft: "15px",
                     padding: "8px 15px",
