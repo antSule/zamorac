@@ -13,7 +13,7 @@ function VerifyPage() {
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch("https://ticketmestarbackend-yqpn.onrender.com/auth/verify", {
+        const response = await fetch("http://localhost:8080/auth/verify", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, verificationCode: code }),
@@ -35,7 +35,7 @@ function VerifyPage() {
       setError(null);
       setMessage(null);
       try {
-        const response = await fetch(`https://ticketmestarbackend-yqpn.onrender.com/auth/resend?email=${encodeURIComponent(email)}`, {
+        const response = await fetch(`http://localhost:8080/auth/resend?email=${encodeURIComponent(email)}`, {
           method: "POST",
         });
 

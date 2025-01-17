@@ -10,18 +10,18 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
-        window.location.href = 'https://ticketmestarbackend-yqpn.onrender.com/oauth2/authorization/google';
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
 
     const handleSpotifyLogin = () => {
-        window.location.href = 'https://ticketmestarbackend-yqpn.onrender.com/oauth2/authorization/spotify';
+        window.location.href = 'http://localhost:8080/oauth2/authorization/spotify';
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await fetch("https://ticketmestarbackend-yqpn.onrender.com/auth/login", {
+            const response = await fetch("http://localhost:8080/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

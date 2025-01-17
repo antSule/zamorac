@@ -6,7 +6,7 @@ const SelectRolePage = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const roles = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
+    const roles = ["USER", "ARTIST"];
 
     const handleRoleChange = (event) => {
         const { value, checked } = event.target;
@@ -28,7 +28,7 @@ const SelectRolePage = () => {
 
         try {
             const query = new URLSearchParams({ roles: selectedRoles }).toString();
-            const response = await fetch(`https://ticketmestarbackend-yqpn.onrender.com/auth/setrole?${query}`, {
+            const response = await fetch(`http://localhost:8080/auth/setrole?${query}`, {
                 method: "GET",
                 credentials: "include",
             });
