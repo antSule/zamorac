@@ -82,11 +82,12 @@ const Ticketmaster = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           }
-        : { 'Content-Type': 'application/json' };
+        : undefined;
 
     fetch(`http://localhost:8080/concerts/concerts${query}`, {
         method: 'GET',
         headers: headers,
+         credentials: 'include',
     })
       .then(response => {
         if (!response.ok) {

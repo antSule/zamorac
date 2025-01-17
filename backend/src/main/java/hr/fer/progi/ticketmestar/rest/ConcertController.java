@@ -61,8 +61,9 @@ public class ConcertController {
             @RequestParam(required = false) String latitude,
             @RequestParam(required = false) String longitude,
             @RequestParam(required = false) String radius,
-            Authentication authentication) {
+            Principal principal) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Long userId;
         AuthenticationProvider authProvider = null;
