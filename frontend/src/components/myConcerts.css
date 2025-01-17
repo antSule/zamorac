@@ -16,7 +16,7 @@ h1 {
   gap: 20px;
 }
 
-.concert {
+.concertMC {
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
@@ -25,22 +25,22 @@ h1 {
   background-color: #fff;
 }
 
-.concert img {
+.concertMC img {
   width: 100%;
   height: 150px;
   object-fit: cover;
 }
 
-.concert-details {
+.concert-detailsMC {
   padding: 10px;
 }
 
-.concert-details h3 {
+.concert-detailsMC h3 {
   margin: 0 0 10px;
   color: #007BFF;
 }
 
-.concert-details p {
+.concert-detailsMC p {
   margin: 5px 0;
   font-size: 14px;
   color: #555;

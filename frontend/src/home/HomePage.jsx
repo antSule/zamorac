@@ -68,7 +68,7 @@ const HomePage = () =>{
         slide_image_7,
       ];
     return(
-    <>
+    <body className="bodyHome">
        <section className=" h-wrapper">
         <div className="flexCenter paddings innerWidth h-container">
             <img src="fakelogo.png" alt="logo"width = {100} />
@@ -137,23 +137,6 @@ const HomePage = () =>{
       <SwiperSlide key={index}>
       <div>
           <img src={image} alt={`slide_image_${index + 1}`} />
-          <button onClick={() => handleButtonClick(index + 1)}>
-              {/* SVG ikona spremanja */}
-              <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-              >
-                  <path
-                      d="M17 3H7a2 2 0 00-2 2v16l7-3 7 3V5a2 2 0 00-2-2z"
-                      stroke="#000" /* Crna boja obrisa */
-                      strokeWidth="1.5"
-                      fill="none"
-                  />
-              </svg>
-          </button>
       </div>
   </SwiperSlide>
 
@@ -169,7 +152,7 @@ const HomePage = () =>{
           <div className="swiper-pagination"></div>
         </div>
        </Swiper>
-    </>
+    </body>
     );
 };
 export default HomePage;

@@ -108,12 +108,14 @@ const Ticketmaster = () => {
   };
 
   return (
+  <body className="bodyTM">
     <div className="ticketmaster">
-      <form id="parameters-form" onSubmit={handleSubmit}>
+      <form className="formTM" id="parameters-form" onSubmit={handleSubmit}>
         <div className="naslovTM">Search for concerts</div>
-        <label htmlFor="concert-date">Select the date of the concert:</label>
+        <label className="labelTM" htmlFor="concert-date">Select the date of the concert:</label>
         <br />
         <input
+          className="inputTM"
           type="date"
           id="concert-date"
           name="concert-date"
@@ -124,6 +126,7 @@ const Ticketmaster = () => {
         <label htmlFor="artist-name">Artist name:</label>
         <br />
         <input
+          className="inputTM"
           type="text"
           id="artist-name"
           name="artist-name"
@@ -134,18 +137,19 @@ const Ticketmaster = () => {
         <label htmlFor="location">Location:</label>
         <br />
         <input
+          className="inputTM"
           type="text"
           id="location"
           name="location"
           readOnly
           value={location}
         />
-        <div className="button-group">
-          <button type="button" id="button-location" onClick={handleLocationClick}>
+        <div className="button-groupTM">
+          <button className = "buttonTM" type="button" id="button-location" onClick={handleLocationClick}>
             Select location
           </button>
           <br />
-          <button type="button" id="button-clear-location" onClick={handleClearLocation}>
+          <button className = "buttonTM"type="button" id="button-clear-location" onClick={handleClearLocation}>
             Clear location
           </button>
           <br />
@@ -153,6 +157,7 @@ const Ticketmaster = () => {
         <label htmlFor="radius">Radius in km:</label>
         <br />
         <input
+          className="inputTM"
           type="text"
           id="radius"
           name="radius"
@@ -160,9 +165,10 @@ const Ticketmaster = () => {
           onChange={(e) => setRadius(e.target.value)}
         />
         <br />
-        <button type="submit">Send parameters</button>
+        <button className="buttonTM" type="submit">Send parameters</button>
       </form>
     </div>
+  </body>
   );
 };
 

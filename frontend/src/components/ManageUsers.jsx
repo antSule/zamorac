@@ -145,6 +145,7 @@ const ManageUsers = () => {
     }
 
     return (
+        <body className='bodyMU'>
         <div>
             <h1>Manage Users</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -198,6 +199,7 @@ const ManageUsers = () => {
                 </div>
             )}
         </div>
+    </body>    
     );
 };
 

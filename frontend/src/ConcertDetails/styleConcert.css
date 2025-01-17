@@ -1,4 +1,4 @@
-.concert {
+.concertCD {
     display: flex;
     margin: 20px;
     justify-content: space-between;
@@ -11,33 +11,33 @@
     font-size: 16px;
 }
 
-.concert:hover {
+.concertCD:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.concert-image {
+.concert-imageCD {
     margin-right: 20px;
     flex-shrink: 0;
 }
 
-.concert-details {
+.concert-detailsCD {
     flex-grow: 1;
     color: #333;
 }
 
-.concert-details h3 {
+.concert-detailsCD h3 {
     margin: 0;
     font-size: 20px;
     color: #1DB954;
 }
 
-.concert-details p {
+.concert-detailsCD p {
     margin: 8px 0;
     font-size: 16px;
 }
 
-.concert-details a {
+.concert-detailsCD a {
     text-decoration: none;
     color: #FF5733;
     font-weight: bold;
@@ -47,12 +47,12 @@
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.concert-details a:hover {
+.concert-detailsCD a:hover {
     color: #FF3D00;
     transform: translateY(-2px);
 }
 
-.concert img {
+.concertCD img {
     width: 180px;
     height: 180px;
     object-fit: cover;
@@ -60,7 +60,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-#concerts-container {
+#concerts-containerCD {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

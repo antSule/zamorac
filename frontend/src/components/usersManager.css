@@ -22,7 +22,7 @@
     padding: 10px 20px;
     cursor: pointer;
 }
-body {
+.bodyMU {
     overflow-y: auto;
     height: 100%;
 }
