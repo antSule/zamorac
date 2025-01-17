@@ -116,7 +116,6 @@ const AddNewConcert = () => {
             return response.json();
         })
         .then(data => {
-            alert('Concert added successfully!');
             navigate('/home');
         })
         .catch(error => {
