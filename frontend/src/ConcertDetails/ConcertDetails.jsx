@@ -17,6 +17,7 @@ const ConcertsResults = () => {
   }, []);
 
   return (
+  <div className="ConcertDetailsBody">
     <div id="concerts-containerCD">
       {concerts.length > 0 ? (
         concerts.map((concert, index) => (
@@ -53,6 +54,7 @@ const ConcertsResults = () => {
       ) : (
         <p>No concerts found.</p>
       )}
+    </div>
     </div>
   );
 };

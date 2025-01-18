@@ -60,7 +60,11 @@ const Concerts = () => {
   }
 
   return (
+   /* <div className="ConcertsAll"> */
+   /* <p className="naslovConcerts">Concerts</p> */
     <div id="concerts-container">
+      <p className="naslovConcerts">Concerts</p>
+      <div className="grid"> 
       {loading ? (
         <p>Loading concerts...</p>
       ) : concerts.length > 0 ? (
@@ -95,7 +99,9 @@ const Concerts = () => {
       ) : (
         <p>No concerts found.</p>
       )}
+      </div>
     </div>
+   /* </div> */
   );
 };
 

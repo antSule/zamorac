@@ -1,53 +1,64 @@
-#concerts-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 4 kolone u svakom redu */
+  gap: 20px; /* Razmak između kartica */
   padding: 20px;
-  height: 100vh;
-  overflow-y: auto;
-  margin-bottom: 20px;
+  justify-content: center; /* Centriranje sadržaja */
 }
 
-#concerts-container h1 {
-    width: 100%;
-    text-align: center;
+#concerts-container {
+  overflow: hidden;
+  background: url(../slike/koncertslika.jpg) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed; 
+  width: 100%;
+  height: 100%;
+  position: relative; 
 }
-
 .concert {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 16px;
   background-color: #f9f9f9;
-  width: 80%;
-  max-width: 1000px;
+  width: 100%; /* Kartice se prilagođavaju širini kolona */
+  max-width: 100%;
+  display: flex;
+  flex-direction: column; /* Vertikalni raspored unutar kartice */
 }
 
 .concert-image img {
-  width: 200px;
-  height: 200px;
+  width: 100%; /* Puna širina unutar kartice */
+  height: 100%;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .concert-details {
-  margin-left: 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .concert-details h3 {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
 }
 
 .concert-details p {
   margin: 5px 0;
+  font-size: 17px;
+}
+
+.naslovConcerts{
+    color: rgba(255, 255, 255, 0.937);
+    margin-bottom: 10px; 
+    text-align: center;
+    font-size: 60px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
 }
 
 .concert-details a {
@@ -58,4 +69,17 @@
 
 .concert-details a:hover {
   text-decoration: underline;
+}
+
+/* Responsive dizajn za manje ekrane */
+@media (max-width: 768px) {
+  #concerts-container {
+    grid-template-columns: repeat(3, 1fr); /* 2 kolone na manjim ekranima */
+  }
+}
+
+@media (max-width: 480px) {
+  #concerts-container {
+    grid-template-columns: 1fr; /* 1 kolona na veoma malim ekranima */
+  }
 }
