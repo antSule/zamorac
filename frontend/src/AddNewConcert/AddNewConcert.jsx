@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './concertAdd.css';
 
 const AddNewConcert = () => {
@@ -13,6 +14,31 @@ const AddNewConcert = () => {
     const [eventName, setEventName] = useState("");
     const [venueDetails, setVenueDetails] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [hasAccess, setHasAccess] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const headers = token
+            ? {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+            : undefined;
+
+        axios
+            .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+            .then((response) => {
+                const userRoles = response.data.roles || [];
+                if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
+                    setHasAccess(true);
+                } else {
+                    setHasAccess(false);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
@@ -116,7 +142,7 @@ const AddNewConcert = () => {
             return response.json();
         })
         .then(data => {
-            navigate('/home');
+            navigate('/my-concerts');
         })
         .catch(error => {
             console.error("Error details:", error);
@@ -124,6 +150,16 @@ const AddNewConcert = () => {
         });
     };
 
+    if (!hasAccess) {
+        return (
+            <div className="no-access-container">
+                <div className="no-access-message">
+                    <h2>⚠️ Access Denied</h2>
+                    <p>You do not have permission to access this page.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
     <body className="bodyANC">

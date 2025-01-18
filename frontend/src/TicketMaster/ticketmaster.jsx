@@ -1,13 +1,39 @@
 import React, { useState, useEffect } from "react";
 import './ticketmaster.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Ticketmaster = () => {
-    const navigate = useNavigate();  // Koristi useNavigate za navigaciju
+    const navigate = useNavigate();
     const [date, setDate] = useState("");
     const [artist, setArtist] = useState("");
     const [location, setLocation] = useState("");
     const [radius, setRadius] = useState("");
+    const [hasAccess, setHasAccess] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const headers = token
+            ? {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+            : undefined;
+
+        axios
+            .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+            .then((response) => {
+                const userRoles = response.data.roles || [];
+                if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST') || userRoles.includes('USER')) {
+                    setHasAccess(true);
+                } else {
+                    setHasAccess(false);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
@@ -49,7 +75,7 @@ const Ticketmaster = () => {
     const handleLocationClick = () => {
         setLocation("");
         localStorage.removeItem("selectedLocation");
-        navigate('/google-maps-ticket');  // Navigiraj na stranicu sa Google Maps
+        navigate('/google-maps-ticket');
     };
 
     const handleClearLocation = () => {
@@ -100,13 +126,24 @@ const Ticketmaster = () => {
               alert("No concerts match your search criteria. Please try different parameters.");
             } else {
               localStorage.setItem('concerts', JSON.stringify(data));
-              navigate('/ConcertDetails');  // Navigiraj na stranicu sa detaljima koncerata
+              navigate('/ConcertDetails');
             }
           })
           .catch(error => {
             alert(error.message);
           });
     };
+
+    if (!hasAccess) {
+        return (
+            <div className="no-access-container">
+                <div className="no-access-message">
+                    <h2>⚠️ Access Denied</h2>
+                    <p>You do not have permission to access this page.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <body className="bodyTM">

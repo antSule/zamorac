@@ -103,7 +103,7 @@ const MyConcerts = () => {
 
   return (
     <div className='MyConcerts'>
-      <h1 className='naslovMyConc'>Manage Concerts</h1>
+      <h1 className='naslovMyConc'>My Concerts</h1>
     <div id="concerts-containerMC">
       {loading ? (
         <p>Loading concerts...</p>

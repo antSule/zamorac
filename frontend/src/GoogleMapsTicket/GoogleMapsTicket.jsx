@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import React, { useState, useRef } from "react";
+import { GoogleMap, LoadScript, Marker, InfoWindow, Autocomplete } from "@react-google-maps/api";
 import "./GoogleMapsAdd.css";
 
 const mapContainerStyle = {
@@ -15,19 +15,23 @@ const defaultCenter = {
 const GoogleMapsTicket = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [infoWindowContent, setInfoWindowContent] = useState(null);
+  const [isFromSearch, setIsFromSearch] = useState(false);
+  const autocompleteRef = useRef(null);
 
   const handleMapClick = (event) => {
     const clickedLocation = event.latLng;
-    setSelectedLocation(clickedLocation);
+    const newLocation = { lat: clickedLocation.lat(), lng: clickedLocation.lng() };
+    setSelectedLocation(newLocation);
     setInfoWindowContent(
-      `<strong>Odabrano mjesto:</strong><br><span>Lat: ${clickedLocation.lat()}, Lng: ${clickedLocation.lng()}</span>`
+      `<strong>Odabrano mjesto:</strong><br><span>Lat: ${newLocation.lat}, Lng: ${newLocation.lng}</span>`
     );
+    setIsFromSearch(false);
   };
 
   const handleConfirmLocation = () => {
     if (selectedLocation) {
-      const lat = selectedLocation.lat();
-      const lng = selectedLocation.lng();
+      const lat = selectedLocation.lat;
+      const lng = selectedLocation.lng;
       const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
       window.location.href = url;
     } else {
@@ -35,49 +39,69 @@ const GoogleMapsTicket = () => {
     }
   };
 
+  const mapOptions = {
+      mapId: "78e5ee292253a8e3",
+      streetViewControl: false,
+      mapTypeControl: false,
+    };
+    const handlePlaceChanged = () => {
+      const place = autocompleteRef.current.getPlace();
+      if (place.geometry) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        const newLocation = { lat, lng };
+        setSelectedLocation(newLocation);
+        setInfoWindowContent(
+          `<strong>Odabrano mjesto:</strong><br><span>Lat: ${lat}, Lng: ${lng}</span>`
+        );
+        setIsFromSearch(true);
+      }
+    };
+
   return (
-    <LoadScript
-      googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-    >
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={defaultCenter}
-        zoom={13}
-        onClick={handleMapClick}
-      >
-        {}
-        {selectedLocation && (
-          <Marker
-            position={selectedLocation}
-            icon={{
-              url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-              scaledSize: new window.google.maps.Size(40, 40),
-            }}
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} libraries={["places"]}>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={isFromSearch && selectedLocation ? selectedLocation : defaultCenter}
+          zoom={selectedLocation ? 15 : 13}
+          options={mapOptions}
+          onClick={handleMapClick}
+        >
+          {selectedLocation && (
+            <Marker
+              position={selectedLocation}
+              icon={{
+                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                scaledSize: new window.google.maps.Size(40, 40),
+              }}
+            />
+          )}
+
+          {selectedLocation && (
+            <InfoWindow position={selectedLocation} options={{ pixelOffset: new window.google.maps.Size(0, -30) }}>
+              <div dangerouslySetInnerHTML={{ __html: infoWindowContent }} />
+            </InfoWindow>
+          )}
+        </GoogleMap>
+
+        <Autocomplete
+          onLoad={(autocomplete) => {
+            autocompleteRef.current = autocomplete;
+          }}
+          onPlaceChanged={handlePlaceChanged}
+        >
+          <input
+            type="text"
+            placeholder="Pretraži lokaciju"
+            className="search-bar"
           />
-        )}
+        </Autocomplete>
 
-        {selectedLocation && (
-          <InfoWindow
-            position={selectedLocation}
-            options={{
-              pixelOffset: new window.google.maps.Size(0, -30),
-            }}
-          >
-            <div dangerouslySetInnerHTML={{ __html: infoWindowContent }} />
-          </InfoWindow>
-        )}
-      </GoogleMap>
-
-      {}
-      <button
-        id="potvrda-lokacije-btn"
-        className="potvrda-btn"
-        onClick={handleConfirmLocation}
-      >
-        Confirm location
-      </button>
-    </LoadScript>
-  );
-};
+        <button id="potvrda-lokacije-btn" className="potvrda-btn" onClick={handleConfirmLocation}>
+          Confirm location
+        </button>
+      </LoadScript>
+    );
+  };
 
 export default GoogleMapsTicket;

@@ -5,7 +5,6 @@ import './concertsManager.css';
 const ManageConcerts = () => {
   const [concerts, setConcerts] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
   const [hasAccess, setHasAccess] = useState(false);
@@ -17,8 +16,6 @@ const ManageConcerts = () => {
     } catch (err) {
       setError('Error fetching concerts.');
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -94,9 +91,7 @@ const ManageConcerts = () => {
   return (
     <div id="concerts-container">
       <h1>Manage Concerts</h1>
-      {loading ? (
-        <p>Loading concerts...</p>
-      ) : error ? (
+      {error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : concerts.length > 0 ? (
         concerts.map((concert, index) => (

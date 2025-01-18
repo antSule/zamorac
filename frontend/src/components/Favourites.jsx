@@ -1,10 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Favourites = () => {
   const [followingArtists, setFollowingArtists] = useState([]);
   const [genresArray, setGenresArray] = useState([]);
+  const [hasAccess, setHasAccess] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+      const token = localStorage.getItem('token');
+      const headers = token
+          ? {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+          }
+          : undefined;
+
+      axios
+          .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+          .then((response) => {
+              const userRoles = response.data.roles || [];
+              if (userRoles.includes('SPOTIFY')) {
+                  setHasAccess(true);
+              } else {
+                  setHasAccess(false);
+              }
+          })
+          .catch((err) => {
+              console.error(err);
+          })
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:8080/spotify/me/following", {
@@ -62,6 +88,17 @@ const Favourites = () => {
         alert(error.message);
       });
   };
+
+  if (!hasAccess) {
+      return (
+          <div className="no-access-container">
+              <div className="no-access-message">
+                  <h2>⚠️ Access Denied</h2>
+                  <p>You do not have permission to access this page.</p>
+              </div>
+          </div>
+      );
+  }
 
   return (
     <div>
