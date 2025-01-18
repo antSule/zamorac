@@ -111,95 +111,121 @@ const HomePage = () =>{
         slide_image_6,
         slide_image_7,
       ];
-    return(
-    <body className="bodyHome">
-       <section className=" h-wrapper">
-        <div className="flexCenter paddings innerWidth h-container">
-            <img src="fakelogo.png" alt="logo"width = {100} />
+    return (
+            <body className="bodyHome">
+              <section className="h-wrapper">
+                <div className="flexCenter paddings innerWidth h-container">
+                  <img src="fakelogo.png" alt="logo" width={100} />
 
-             <div className="flexCenter h-menu">
-                 <div className="centerText">
-                     {user ? (
-                         <span
-                         className="WelcomeText"
-                         style={{ fontFamily: "Poppins, sans-serif", fontWeight: "bold" }}
-                       >
-                         Welcome, {user}
-                       </span>
-                       
-                     ) : 
-                     <span>Welcome, Guest</span>}
-                 </div>
-                 {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/my-concerts">My Concerts</RouterLink>)}
-                 {hasRole('ADMIN') && (<RouterLink to="/manage-concerts">Manage Concerts</RouterLink>)}
-                 {hasRole('ADMIN') && (<RouterLink to="/manage-users">Manage Users</RouterLink>)}
-                 {hasRole('ADMIN', 'ARTIST') && (<RouterLink to="/addNewConcert">Add Concert</RouterLink>)}
-                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/ticketmaster">Search concerts</RouterLink>)}
-                 {hasRole('USER', 'ADMIN', 'ARTIST') && (<RouterLink to="/concerts">Concerts</RouterLink>)}
-                 {hasRole('SPOTIFY') && (<RouterLink to="/favourites">Favourites</RouterLink>)}
-                 
-                 
-                    {user ? (
-                        <button className="button" onClick={handleLogout}>
-                            Log Out
-                        </button>
-                    ) : (
-                        <RouterLink to="/login" className="button">
-                            Login
-                        </RouterLink>
+                  <div className="flexCenter h-menu">
+                    <div className="centerText">
+                      {user ? (
+                        <span
+                          className="WelcomeText"
+                          style={{ fontFamily: "Poppins, sans-serif", fontWeight: "bold" }}
+                        >
+                          Welcome, {user}
+                        </span>
+                      ) : (
+                        <span>Welcome, Guest</span>
+                      )}
+                    </div>
+
+                    {hasRole('ADMIN', 'ARTIST') && (
+                      <RouterLink to="/my-concerts" className="buttonLink">
+                        <button className="buttonHP">My Concerts</button>
+                      </RouterLink>
                     )}
-             </div>
-        </div>
-       </section>
+                    {hasRole('ADMIN') && (
+                      <RouterLink to="/manage-concerts" className="buttonLink">
+                        <button className="buttonHP">Manage Concerts</button>
+                      </RouterLink>
+                    )}
+                    {hasRole('ADMIN') && (
+                      <RouterLink to="/manage-users" className="buttonLink">
+                        <button className="buttonHP">Manage Users</button>
+                      </RouterLink>
+                    )}
+                    {hasRole('ADMIN', 'ARTIST') && (
+                      <RouterLink to="/addNewConcert" className="buttonLink">
+                        <button className="buttonHP">Add Concert</button>
+                      </RouterLink>
+                    )}
+                    {hasRole('USER', 'ADMIN', 'ARTIST') && (
+                      <RouterLink to="/ticketmaster" className="buttonLink">
+                        <button className="buttonHP">Search concerts</button>
+                      </RouterLink>
+                    )}
+                    {hasRole('USER', 'ADMIN', 'ARTIST') && (
+                      <RouterLink to="/concerts" className="buttonLink">
+                        <button className="buttonHP">Concerts</button>
+                      </RouterLink>
+                    )}
+                    {hasRole('SPOTIFY') && (
+                      <RouterLink to="/favourites" className="buttonLink">
+                        <button className="buttonHP">Favourites</button>
+                      </RouterLink>
+                    )}
+
+                    {user ? (
+                      <button className="buttonHP" onClick={handleLogout}>
+                        Log Out
+                      </button>
+                    ) : (
+                      <RouterLink to="/login" className="buttonLink">
+                        <button className="buttonHP">Login</button>
+                      </RouterLink>
+                    )}
+                  </div>
+                </div>
+              </section>
 
        <form method="post" onSubmit={handleFormSubmit}>
             <div className="searchBarWrapper">
                 <input className="searchBar" type="text" placeholder="Search..." value={artistName} onChange={handleInputChange}/>
-
             </div>
        </form>
 
        <Swiper
-        effect={'coverflow'}
-        grabCursor={true}
-        centeredSlides={true}
-        loop={true}
-        slidesPerView={'auto'}
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 0,
-          depth: 100,
-          modifier: 2.5,
-        }}
-        pagination={{ el: '.swiper-pagination', clickable: true }}
-        navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-          clickable: true,
-        }}
-        modules={[EffectCoverflow, Pagination, Navigation]}
-        className="swiper_container"
-      >
-       {slideImages.map((image, index) => (
-      <SwiperSlide key={index}>
-      <div>
-          <img src={image} alt={`slide_image_${index + 1}`} />
-      </div>
-  </SwiperSlide>
+                   effect={"coverflow"}
+                   grabCursor={true}
+                   centeredSlides={true}
+                   loop={true}
+                   slidesPerView={"auto"}
+                   coverflowEffect={{
+                     rotate: 0,
+                     stretch: 0,
+                     depth: 100,
+                     modifier: 2.5,
+                   }}
+                   pagination={{ el: ".swiper-pagination", clickable: true }}
+                   navigation={{
+                     nextEl: ".swiper-button-next",
+                     prevEl: ".swiper-button-prev",
+                     clickable: true,
+                   }}
+                   modules={[EffectCoverflow, Pagination, Navigation]}
+                   className="swiper_container"
+                 >
+                   {slideImages.map((image, index) => (
+                     <SwiperSlide key={index}>
+                       <div>
+                         <img src={image} alt={`slide_image_${index + 1}`} />
+                       </div>
+                     </SwiperSlide>
+                   ))}
 
-))}
-
-        <div className="slider-controler">
-          <div className="swiper-button-prev slider-arrow">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </div>
-          <div className="swiper-button-next slider-arrow">
-            <ion-icon name="arrow-forward-outline"></ion-icon>
-          </div>
-          <div className="swiper-pagination"></div>
-        </div>
-       </Swiper>
-    </body>
-    );
-};
-export default HomePage;
+                   <div className="slider-controler">
+                     <div className="swiper-button-prev slider-arrow">
+                       <ion-icon name="arrow-back-outline"></ion-icon>
+                     </div>
+                     <div className="swiper-button-next slider-arrow">
+                       <ion-icon name="arrow-forward-outline"></ion-icon>
+                     </div>
+                     <div className="swiper-pagination"></div>
+                   </div>
+                 </Swiper>
+               </body>
+             );
+           };
+           export default HomePage;
