@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./myConcerts.css"
 
 const MyConcerts = () => {
   const [concerts, setConcerts] = useState([]);
@@ -34,7 +35,6 @@ const MyConcerts = () => {
     try {
       await axios.post(`http://localhost:8080/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
       fetchMyConcerts(headers);
-      alert('Concert successfully deleted!');
     } catch (err) {
       setError('Error deleting concert.');
       console.error(err);
@@ -102,8 +102,9 @@ const MyConcerts = () => {
     }
 
   return (
+    <div className='MyConcerts'>
+      <h1 className='naslovMyConc'>Manage Concerts</h1>
     <div id="concerts-containerMC">
-      <h1>Manage Concerts</h1>
       {loading ? (
         <p>Loading concerts...</p>
       ) : error ? (
@@ -124,12 +125,12 @@ const MyConcerts = () => {
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
-              <button onClick={() => handleDeleteClick(concert.id)}>Delete</button>
+              <button className='deleteMC' onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>
         ))
       ) : (
-        <p>No concerts found.</p>
+        <p className='NCF'>No concerts found.</p>
       )}
 
       {showDeleteModal && (
@@ -141,6 +142,7 @@ const MyConcerts = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

@@ -66,3 +66,12 @@
     justify-content: center;
     padding: 20px;
 }
+
+.ConcertDetailsBody{
+    background: url(../slike/koncertslika.jpg) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed; 
+  width: 100%;
+  min-height: 100vh; 
+  position: relative; 
+}
