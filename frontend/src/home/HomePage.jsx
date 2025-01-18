@@ -22,7 +22,17 @@ const HomePage = () =>{
 
     const [user, setUser] = useState('');
     const [roles, setRoles] = useState([]);
+    const [artistName, setArtistName] = useState('');
     const navigate = useNavigate();
+
+    const handleInputChange = (event) => {
+            setArtistName(event.target.value);
+        };
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        handleSearch(artistName);
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -51,6 +61,40 @@ const HomePage = () =>{
         localStorage.removeItem("token");
         localStorage.clear();
         window.location.href='http://localhost:8080/logout';
+    }
+
+    const handleSearch = (artistName) => {
+        const token = localStorage.getItem("token");
+            const headers = token
+            ? {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                }
+            : undefined;
+
+            fetch(`http://localhost:8080/concerts/artist?artist=${encodeURIComponent(artistName)}`, {
+              method: "GET",
+              headers: headers,
+              credentials: 'include'
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("No concerts found for this artist. Please try again.");
+                }
+                return response.json();
+              })
+              .then((concerts) => {
+                if (concerts.length === 0) {
+                  alert("No concerts found for this artist.");
+                } else {
+                  localStorage.setItem("concerts", JSON.stringify(concerts));
+                  navigate("/ConcertDetails", { state: { concerts } });
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching concerts:", error);
+                alert(error.message);
+              });
     }
 
     const hasRole = (...requiredRoles) => {
@@ -108,9 +152,12 @@ const HomePage = () =>{
         </div>
        </section>
 
-       <div className="searchBarWrapper">
-         <input className="searchBar" type="text" placeholder="Search..." />
-       </div>
+       <form method="post" onSubmit={handleFormSubmit}>
+            <div className="searchBarWrapper">
+                <input className="searchBar" type="text" placeholder="Search..." value={artistName} onChange={handleInputChange}/>
+
+            </div>
+       </form>
 
        <Swiper
         effect={'coverflow'}
