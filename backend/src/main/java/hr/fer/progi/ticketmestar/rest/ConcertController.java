@@ -110,7 +110,28 @@ public class ConcertController {
             }
         }
 
-        List<Concert> databaseConcerts = concertRepository.findConcert(dateLocal, artist);
+        Double latitudeDouble = null;
+        Double longitudeDouble = null;
+        Double radiusDouble = null;
+
+        if (latitude != null && !latitude.isBlank()) {
+            latitudeDouble = Double.parseDouble(latitude);
+        }
+        if (longitude != null && !longitude.isBlank()) {
+            longitudeDouble = Double.parseDouble(longitude);
+        }
+        if (radius != null && !radius.isBlank()) {
+            try {
+                radiusDouble = Double.parseDouble(radius);
+            } catch (NumberFormatException e) {
+                return ResponseEntity.badRequest().body(Collections.emptyList());
+            }
+        } else {
+            radiusDouble = 20.0;
+        }
+
+
+        List<Concert> databaseConcerts = concertRepository.findConcert(dateLocal, artist, latitudeDouble, longitudeDouble, radiusDouble);
 
         List<Concert> concerts = new ArrayList<>();
         concerts.addAll(ticketmasterConcerts);

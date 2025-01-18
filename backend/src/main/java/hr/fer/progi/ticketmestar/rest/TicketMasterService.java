@@ -30,13 +30,15 @@ public class TicketMasterService {
 
         if (latitude != null && !latitude.isEmpty() && longitude != null && !longitude.isEmpty()) {
             apiUrl.append("&latlong=").append(latitude).append(",").append(longitude);
+
+            if (radius == null || radius.isEmpty()) {
+                radius = "20";
+            }
         }
 
         if (radius != null && !radius.isEmpty()) {
             apiUrl.append("&radius=").append(radius).append("&unit=km");
         }
-
-        //System.out.println("TicketMaster API URL: " + apiUrl.toString());
 
         RestTemplate restTemplate = new RestTemplate();
         String jsonResponse = restTemplate.getForObject(apiUrl.toString(), String.class);
@@ -49,7 +51,6 @@ public class TicketMasterService {
             JsonNode eventsNode = rootNode.path("_embedded").path("events");
             if (eventsNode.isArray()) {
                 for (JsonNode eventNode : eventsNode) {
-                    //System.out.println("Concert details:");
 
                     String eventName = eventNode.path("name").asText();
                     String eventUrl = eventNode.path("url").asText();
@@ -65,28 +66,18 @@ public class TicketMasterService {
                     if (attractionsNode.isArray() && !attractionsNode.isEmpty()) {
                         performerName = attractionsNode.get(0).path("name").asText();
                     }
-                    //System.out.println("Performer: " + performerName);
 
                     JsonNode imagesNode = eventNode.path("images");
                     String imageUrl = "";
                     if (imagesNode.isArray() && imagesNode.size() > 0) {
                         imageUrl = imagesNode.get(0).path("url").asText();
                     }
-                    //System.out.println("Image URL: " + imageUrl);
-
-                    //System.out.println("Concert: " + eventName);
-                    //System.out.println("Venue: " + venueName);
-                    //System.out.println("City: " + cityName);
-                    //System.out.println("TicketMaster URL: " + eventUrl);
-                    //System.out.println("StartDateTime: " + startDateTime);
 
                     LocalDate dateParsed = LocalDate.parse(startDateTime.substring(0, 10));
                     LocalTime timeParsed = LocalTime.parse(startDateTime.substring(11, 16));
 
                     Concert concert = new Concert(dateParsed, timeParsed, performerName, venueName, latitudeLoc, longitudeLoc, eventUrl, cityName, eventName, imageUrl);
                     concerts.add(concert);
-
-                    //System.out.println("------------------------------------------------");
                 }
             } else {
                 System.out.println("Nema koncerata za taj datum.");
