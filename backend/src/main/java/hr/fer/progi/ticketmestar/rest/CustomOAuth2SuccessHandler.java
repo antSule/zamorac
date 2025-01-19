@@ -132,7 +132,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
 
-        response.sendRedirect("http://localhost:3000/home");
+        if (appUser.getRole().contains(Role.NULL_USER)) {
+            response.sendRedirect("http://localhost:3000/select-role");
+        } else {
+            response.sendRedirect("http://localhost:3000/home");
+        }
     }
 
     private void updateSecurityContext(AppUser appUser, OAuth2User oAuth2User) {

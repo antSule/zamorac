@@ -15,12 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.dao.ConcertRepository;
@@ -286,11 +281,29 @@ public class ConcertController {
         return ResponseEntity.ok(concertService.concertList());
     }
 
-    @PreAuthorize("hasRole('SPOTIFY')")
+
+    @PreAuthorize("hasRole('SPOTIFY') or hasRole('USER') or hasRole('ARTIST') or hasRole('ADMIN')")
     @GetMapping("/artist")
     public List<Concert> getConcertsByArtists(
             @RequestParam(name = "artist", required = true) String artist){
             return ticketMasterService.searchConcerts(null, artist, null, null, null);
+    }
+
+
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
+    @GetMapping("/concert-info")
+    public ResponseEntity<AddConcertDto> getConcertById(@RequestParam Long id){
+        System.out.println("Concert id: " + id);
+        AddConcertDto concertDto = concertService.getConcertById(id);
+        System.out.println(concertDto);
+        return ResponseEntity.ok(concertDto);
+    }
+
+    @PreAuthorize("hasRole('ARTIST') or hasRole('ADMIN')")
+    @PutMapping("/edit-concert")
+    public ResponseEntity<AddConcertDto> updateConcert(@RequestParam Long id, @RequestBody AddConcertDto concertDto){
+        AddConcertDto updatedConcert = concertService.updateConcert(id, concertDto);
+        return ResponseEntity.ok(updatedConcert);
     }
 
 }

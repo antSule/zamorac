@@ -161,7 +161,7 @@ const HomePage = () =>{
                         <button className="buttonHP">Concerts</button>
                       </RouterLink>
                     )}
-                    {hasRole('SPOTIFY') && (
+                    {hasRole('SPOTIFY', 'ADMIN', 'USER' ,'ARTIST') && (
                       <RouterLink to="/favourites" className="buttonLink">
                         <button className="buttonHP">Favourites</button>
                       </RouterLink>

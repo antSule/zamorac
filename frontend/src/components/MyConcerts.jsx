@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import "./myConcerts.css"
 
 const MyConcerts = () => {
@@ -10,6 +11,7 @@ const MyConcerts = () => {
   const [concertToDelete, setConcertToDelete] = useState(null);
   const [hasAccess, setHasAccess] = useState(false);
 
+  const navigate = useNavigate();
   const fetchMyConcerts = async (headers) => {
       try {
         const response = await axios.get("http://localhost:8080/concerts/me", { withCredentials:true,headers });
@@ -125,6 +127,7 @@ const MyConcerts = () => {
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
+              <button onClick={() => navigate(`/edit-concert/${concert.id}`)}>Edit</button>
               <button className='deleteMC' onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>

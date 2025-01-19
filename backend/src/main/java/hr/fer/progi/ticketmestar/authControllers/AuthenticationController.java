@@ -101,6 +101,9 @@ public class AuthenticationController {
         AppUser currentUser = userRepository.findByEmailAndAuthenticationProvider(email, authProvider)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        if(AuthenticationProvider.SPOTIFY.equals(authProvider)){
+            roles.add(Role.SPOTIFY);
+        }
         currentUser.setRole(roles);
         userRepository.save(currentUser);
 

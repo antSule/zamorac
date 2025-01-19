@@ -4,12 +4,14 @@ package hr.fer.progi.ticketmestar.service.impl;
 import hr.fer.progi.ticketmestar.dao.AppUserRepository;
 import hr.fer.progi.ticketmestar.dao.ConcertRepository;
 import hr.fer.progi.ticketmestar.domain.AppUser;
+import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
 import hr.fer.progi.ticketmestar.domain.Role;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -54,5 +56,31 @@ public class AdminService {
     public Set<Role> getUserRoles(Long id){
         AppUser user = appUserRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " does not exist."));
         return user.getRole();
+    }
+
+    @Transactional
+    public List<AppUser> searchUsers(String username, List<String> roles, String provider) {
+        List<AppUser> users = appUserRepository.findAll();
+
+        if (username != null && !username.isEmpty()) {
+            users = users.stream()
+                    .filter(user -> user.getUsername().toLowerCase().contains(username.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (roles != null && !roles.isEmpty()) {
+            users = users.stream()
+                    .filter(user -> user.getRole().stream().anyMatch(role -> roles.contains(role.name())))
+                    .collect(Collectors.toList());
+        }
+
+        if (provider != null && !provider.isEmpty()) {
+            AuthenticationProvider authProvider = AuthenticationProvider.valueOf(provider.toUpperCase());
+            users = users.stream()
+                    .filter(user -> user.getAuthenticationProvider() == authProvider)
+                    .collect(Collectors.toList());
+        }
+
+        return users;
     }
 }

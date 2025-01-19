@@ -20,6 +20,8 @@ import AddNewConcert from './AddNewConcert/AddNewConcert';
 import ManageUsers from './components/ManageUsers';
 import ManageConcerts from './components/ManageConcerts';
 import ArtistConcerts from './components/ArtistConcerts';
+import EditConcert from './ConcertDetails/EditConcert';
+import EditConcertADMIN from './ConcertDetails/EditConcertADMIN';
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
                 <Route path="/manage-concerts" element ={<ProtectedRoute><ManageConcerts/></ProtectedRoute>}/>
                 <Route path="/favourites" element={<ProtectedRoute><Favourites /></ProtectedRoute>} />
                 <Route path="/concerts/artist/:artistId" element={<ProtectedRoute><ArtistConcerts /></ProtectedRoute>} />
+                <Route path="/edit-concert/:id" element={<ProtectedRoute><EditConcert /></ProtectedRoute>}/>
+                <Route path="/edit-concert-admin/:id" element={<ProtectedRoute><EditConcertADMIN /></ProtectedRoute>} />
             </Routes>
         </Router>
     </div>

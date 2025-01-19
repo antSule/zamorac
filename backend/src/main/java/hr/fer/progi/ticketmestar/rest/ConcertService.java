@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +61,60 @@ public class ConcertService{
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
     }
+
+    public AddConcertDto getConcertById(Long id) {
+        Concert concert = concertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Concert not found."));
+
+
+        System.out.println("Concert entity: " + concert);
+
+        AddConcertDto concertDto = new AddConcertDto(
+                concert.getDate(),
+                concert.getTime(),
+                concert.getPerformer(),
+                concert.getPerformerId(),
+                concert.getVenue(),
+                concert.getLatitude(),
+                concert.getLongitude(),
+                concert.getUrl(),
+                concert.getCity(),
+                concert.getEvent(),
+                concert.getImageUrl()
+        );
+
+        System.out.println("Returning DTO: " + concertDto);
+
+        return concertDto;
+    }
+
+
+
+    public AddConcertDto updateConcert(Long id, AddConcertDto concertDto) {
+        Concert concert = concertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Concert not found"));
+
+        concert.setDate(concertDto.getDate());
+        concert.setTime(concertDto.getTime());
+        concert.setPerformer(concertDto.getPerformer());
+        concert.setVenue(concertDto.getVenue());
+        concert.setLatitude(concertDto.getLatitude());
+        concert.setLongitude(concertDto.getLongitude());
+        concert.setUrl(concertDto.getUrl());
+        concert.setCity(concertDto.getCity());
+        concert.setEvent(concertDto.getEvent());
+        concert.setImageUrl(concertDto.getImageUrl());
+
+        concert = concertRepository.save(concert);
+
+        return new AddConcertDto(
+                concert.getDate(), concert.getTime(), concert.getPerformer(),
+                concert.getPerformerId(), concert.getVenue(), concert.getLatitude(),
+                concert.getLongitude(), concert.getUrl(), concert.getCity(),
+                concert.getEvent(), concert.getImageUrl()
+        );
+    }
+
 
     /*
     public ResponseEntity<?> addNewConcert(AddConcertDto concertDto) {

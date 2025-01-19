@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './concertsManager.css';
 
 const ManageConcerts = () => {
@@ -50,6 +51,11 @@ const ManageConcerts = () => {
   const handleCancelDelete = () => {
     setShowDeleteModal(false);
   };
+
+  const navigate = useNavigate();
+  const handleEditClick = (concertId) => {
+    navigate(`/edit-concert-admin/${concertId}`);
+  }
 
   useEffect(() => {
       const token = localStorage.getItem('token');
@@ -109,6 +115,7 @@ const ManageConcerts = () => {
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
+              <button onClick= {() => handleEditClick(concert.id)}>Edit</button>
               <button onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>
