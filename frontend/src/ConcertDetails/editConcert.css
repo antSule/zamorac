@@ -1,0 +1,72 @@
+.edit-concert{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url(../slike/koncertslika.jpg) no-repeat center center;
+    background-size: cover;
+    padding: 5px; 
+}
+
+.formECA{
+    background-color: #ffffffc9;
+    border-radius: 20px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px; 
+    width: 90%;
+    max-width: 450px; 
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.inputECA{
+    margin: 3px 0;
+    font-size: 14px;
+    padding: 3px;
+    width: 80%; 
+    border: 1px solid rgb(10, 180, 44);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: rgba(9, 9, 9, 0.059);
+    color: rgb(21, 82, 48);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updateconcert{
+    background-color: rgba(9, 51, 26, 0.937);
+    color: #ffffff;
+    border: none;
+    padding: 7px 12px; 
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.4s ease;
+    margin-top: 5px;
+}
+
+.updateconcert:hover{
+    background-color: #ffff;
+    color: rgb(61, 193, 121);
+    border: 1px solid rgb(61, 193, 121);
+}
+
+.naslovENC{
+    color: rgba(9, 51, 26, 0.937);
+    margin-bottom: 10px; 
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.labelECA{
+    display: block;
+    margin-top: 8px; 
+    font-weight: bold;
+    color: rgb(21, 82, 48);
+    font-family: "Poppins", sans-serif;
+    font-size: 13px; 
+}

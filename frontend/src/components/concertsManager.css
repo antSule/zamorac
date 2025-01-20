@@ -1,52 +1,130 @@
+.ManageConcerts {
+  background: url(../slike/koncertslika.jpg) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed; 
+  width: 100%;
+  min-height: 100vh; 
+  position: relative; 
+}
+
+.naslovManc{
+  font-size: 35px;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+}
+#ManageConcerts-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.concertManc{
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 800px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin-bottom: 20px;
+  flex-direction: row-reverse;
+}
+.concertManc-image {
+  flex: none;
+  width: 400px;
+  height: 335px;
+}
+
+.concertManc img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.concertManc-details {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.concertManc-details h3 {
+  margin: 0 0 10px;
+  color: rgba(9, 51, 26, 0.937);
+  font-size: 22px;
+}
+
+.concertManc-details p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.buttonManc {
+  background-color: rgba(9, 51, 26, 0.937);
+  color: #ffffff;
+  border: none;
+  padding: 2px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.4s ease;
+  margin-top: 25px;
+  width: 130px;
+  height: 30px;
+}
+
+.deleteManc{
+  background-color: #4d1818;
+  color: #ffffff;
+  border: none;
+  padding: 2px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.4s ease;
+  margin-top: 25px;
+  width: 130px;
+  height: 30px;
+}
+
+.deleteManc:hover{
+  color: #792727;
+  border: 1px solid #792727;
+  background-color: white;
+}
+
+.buttonManc:hover {
+  color:  rgba(9, 51, 26, 0.937);
+  border: 1px solid  rgba(9, 51, 26, 0.937);
+  background-color: white;
+}
+
 .delete-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.modal-content button {
-  margin: 10px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.no-access-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9;
-}
-
-.no-access-message {
-  text-align: center;
-  border: 1px solid #f5c2c7;
-  background-color: #f8d7da;
-  color: #842029;
+  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  text-align: center;
 }
 
-.no-access-message h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.no-access-message p {
-  font-size: 16px;
+.modal-content h4 {
+  margin-bottom: 20px;
 }

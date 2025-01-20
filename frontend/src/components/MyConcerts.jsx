@@ -127,7 +127,7 @@ const MyConcerts = () => {
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
-              <button onClick={() => navigate(`/edit-concert/${concert.id}`)}>Edit</button>
+              <button className = "buttonEdit" onClick={() => navigate(`/edit-concert/${concert.id}`)}>Edit</button>
               <button className='deleteMC' onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>
