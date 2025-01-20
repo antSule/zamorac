@@ -68,6 +68,7 @@ public class SystemTests {
 			wait.until(ExpectedConditions.urlContains("/home"));
 			String redirectURL = driver.getCurrentUrl();
 			assertTrue(redirectURL.contains("/home"), "Expected URL to contain /home, URL was: " + redirectURL);
+			assertTrue(driver.findElement(By.cssSelector("span[class='WelcomeText']")).getText().equals("Welcome, admin"), "Expected to have a 'Welcome, admin' message");
 		} catch (TimeoutException e) {
 			fail("Page did not redirect to /home in time.");
 		} finally {
