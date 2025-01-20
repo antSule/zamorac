@@ -45,6 +45,8 @@ const HomePage = () =>{
 
 
     useEffect(() => {
+            if (!tomorrowDate) return;
+
             const token = localStorage.getItem('token');
             const headers = token
                 ? {
@@ -67,6 +69,7 @@ const HomePage = () =>{
                 if (!response.ok) {
                     throw new Error("No concerts found for this search.");
                 }
+                console.log(response)
                 return response.json();
             })
             .then((concerts) => {
@@ -159,8 +162,9 @@ const HomePage = () =>{
             <body className="bodyHome">
               <section className="h-wrapper">
                 <div className="flexCenter paddings innerWidth h-container">
+                <RouterLink to="/home" className="buttonLink">
                   <img src="fakelogo.png" alt="logo" width={100} />
-
+                </RouterLink>
                   <div className="flexCenter h-menu">
                     <div className="centerText">
                       {user ? (

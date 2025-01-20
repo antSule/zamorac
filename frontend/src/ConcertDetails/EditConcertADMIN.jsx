@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { Link as RouterLink } from "react-router-dom";
 
 const EditConcertADMIN = () => {
   const { id } = useParams();
@@ -98,7 +99,40 @@ const EditConcertADMIN = () => {
 
   return (
     <div className="edit-concert">
-      <h2>Edit Concert</h2>
+    <section className="h-wrapper">
+                    <div
+                      className="flexCenter paddings innerWidth h-container"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative",
+                        height: "120px",
+                      }}
+                    >
+                    <RouterLink to="/home" className="buttonLink">
+                      <img
+                        src="fakelogo.png"
+                        alt="logo"
+                        width={100}
+                        style={{
+                          position: "absolute",
+                          left: "20px",
+                          top: "10px"
+                        }}
+                      />
+                      </RouterLink>
+                      <div
+                        style={{
+                          fontSize: "6rem",
+                          fontWeight: "bold",
+                          color: "white",
+                        }}
+                      >
+                        Edit Concert
+                      </div>
+                    </div>
+                  </section>
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
