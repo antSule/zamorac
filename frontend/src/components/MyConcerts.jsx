@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "./myConcerts.css"
+import { Link as RouterLink } from "react-router-dom";
 
 const MyConcerts = () => {
   const [concerts, setConcerts] = useState([]);
@@ -105,7 +106,40 @@ const MyConcerts = () => {
 
   return (
     <div className='MyConcerts'>
-      <h1 className='naslovMyConc'>My Concerts</h1>
+        <section className="h-wrapper">
+                <div
+                  className="flexCenter paddings innerWidth h-container"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "relative",
+                    height: "120px",
+                  }}
+                >
+                <RouterLink to="/home" className="buttonLink">
+                  <img
+                    src="fakelogo.png"
+                    alt="logo"
+                    width={100}
+                    style={{
+                      position: "absolute",
+                      left: "20px",
+                      top: "10px"
+                    }}
+                  />
+                  </RouterLink>
+                  <div
+                    style={{
+                      fontSize: "6rem",
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    My Concerts
+                  </div>
+                </div>
+              </section>
     <div id="concerts-containerMC">
       {loading ? (
         <p>Loading concerts...</p>

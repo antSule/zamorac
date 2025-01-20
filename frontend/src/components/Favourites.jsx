@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { Link as RouterLink } from "react-router-dom";
 
 const Favourites = () => {
   const [followingArtists, setFollowingArtists] = useState([]);
@@ -145,6 +146,7 @@ const handleSeeConcerts = async (artistName, performerId) => {
             height: "120px",
           }}
         >
+        <RouterLink to="/home" className="buttonLink">
           <img
             src="fakelogo.png"
             alt="logo"
@@ -152,8 +154,10 @@ const handleSeeConcerts = async (artistName, performerId) => {
             style={{
               position: "absolute",
               left: "20px",
+              top: "10px"
             }}
           />
+          </RouterLink>
           <div
             style={{
               fontSize: "6rem",

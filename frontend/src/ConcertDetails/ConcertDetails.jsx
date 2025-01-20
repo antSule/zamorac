@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./styleConcert.css";
+import { Link as RouterLink } from "react-router-dom";
 
 const ConcertsResults = () => {
   const [concerts, setConcerts] = useState([]);
@@ -18,6 +19,40 @@ const ConcertsResults = () => {
 
   return (
   <div className="ConcertDetailsBody">
+  <section className="h-wrapper">
+                  <div
+                    className="flexCenter paddings innerWidth h-container"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "relative",
+                      height: "120px",
+                    }}
+                  >
+                  <RouterLink to="/home" className="buttonLink">
+                    <img
+                      src="fakelogo.png"
+                      alt="logo"
+                      width={100}
+                      style={{
+                        position: "absolute",
+                        left: "20px",
+                        top: "10px"
+                      }}
+                    />
+                    </RouterLink>
+                    <div
+                      style={{
+                        fontSize: "6rem",
+                        fontWeight: "bold",
+                        color: "white",
+                      }}
+                    >
+                      Concert Details
+                    </div>
+                  </div>
+                </section>
     <div id="concerts-containerCD">
       {concerts.length > 0 ? (
         concerts.map((concert, index) => (

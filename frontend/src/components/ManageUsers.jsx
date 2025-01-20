@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./usersManager.css";
+import { Link as RouterLink } from "react-router-dom";
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([]);
@@ -191,8 +192,41 @@ const ManageUsers = () => {
 
     return (
         <body className='bodyMU'>
+        <section className="h-wrapper">
+                <div
+                  className="flexCenter paddings innerWidth h-container"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "relative",
+                    height: "120px",
+                  }}
+                >
+                <RouterLink to="/home" className="buttonLink">
+                  <img
+                    src="fakelogo.png"
+                    alt="logo"
+                    width={100}
+                    style={{
+                      position: "absolute",
+                      left: "20px",
+                      top: "10px"
+                    }}
+                  />
+                  </RouterLink>
+                  <div
+                    style={{
+                      fontSize: "6rem",
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    Manage Users
+                  </div>
+                </div>
+              </section>
         <div>
-            <h1>Manage Users</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
             <h2>Search Users</h2>

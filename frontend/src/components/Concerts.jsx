@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./concerts.css";
+import { Link as RouterLink } from "react-router-dom";
 
 const Concerts = () => {
   const [concerts, setConcerts] = useState([]);
@@ -116,7 +117,40 @@ const Concerts = () => {
    /* <div className="ConcertsAll"> */
    /* <p className="naslovConcerts">Concerts</p> */
     <div id="concerts-container">
-      <p className="naslovConcerts">Concerts</p>
+    <section className="h-wrapper">
+            <div
+              className="flexCenter paddings innerWidth h-container"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                height: "120px",
+              }}
+            >
+            <RouterLink to="/home" className="buttonLink">
+              <img
+                src="fakelogo.png"
+                alt="logo"
+                width={100}
+                style={{
+                  position: "absolute",
+                  left: "20px",
+                  top: "10px"
+                }}
+              />
+              </RouterLink>
+              <div
+                style={{
+                  fontSize: "6rem",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                Concerts
+              </div>
+            </div>
+          </section>
       <div className="grid"> 
       {loading ? (
         <p>Loading concerts...</p>
