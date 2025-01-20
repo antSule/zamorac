@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const ArtistConcerts = () => {
   const { artistId } = useParams(); // Dobivamo artistId iz URL parametra
@@ -25,7 +26,40 @@ const ArtistConcerts = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Concerts of Artist {artistId}</h2>
+    <section className="h-wrapper">
+            <div
+              className="flexCenter paddings innerWidth h-container"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                height: "120px",
+              }}
+            >
+            <RouterLink to="/home" className="buttonLink">
+              <img
+                src="fakelogo.png"
+                alt="logo"
+                width={100}
+                style={{
+                  position: "absolute",
+                  left: "20px",
+                  top: "10px"
+                }}
+              />
+              </RouterLink>
+              <div
+                style={{
+                  fontSize: "6rem",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                Concerts of Artists
+              </div>
+            </div>
+          </section>
       <div>
         {concerts.length > 0 ? (
           concerts.map((concert, index) => (

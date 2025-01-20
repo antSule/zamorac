@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { Link as RouterLink } from "react-router-dom";
 
 const Favourites = () => {
   const [followingArtists, setFollowingArtists] = useState([]);
@@ -79,45 +80,44 @@ const handleSeeConcerts = async (artistName, performerId) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
-    : {}; 
+    : {};
+    try {
+        const ticketMasterConcertsPromise = axios.get(
+          `http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`,
+          { headers, withCredentials: true }
+        );
 
-  try {
-    const ticketMasterConcertsPromise = axios.get(
-      `http://localhost:8080/concerts/artist?artist=${encodeURIComponent(artistName)}`,
-      { headers, withCredentials: true }
-    );
+        const inAppConcertsPromise = performerId
+          ? axios.get(`http://localhost:8080/concerts/all`, {
+              headers,
+              withCredentials: true,
+            })
+          : Promise.resolve({ data: [] });
 
-    const inAppConcertsPromise = performerId
-      ? axios.get(`http://localhost:8080/concerts/all`, {
-          headers,
-          withCredentials: true,
-        })
-      : Promise.resolve({ data: [] }); 
-  
-    const [ticketMasterConcertsResponse, inAppConcertsResponse] = await Promise.all([
-      ticketMasterConcertsPromise,
-      inAppConcertsPromise
-    ]);
+        const [ticketMasterConcertsResponse, inAppConcertsResponse] = await Promise.all([
+          ticketMasterConcertsPromise,
+          inAppConcertsPromise
+        ]);
 
-    const ticketMasterConcerts = ticketMasterConcertsResponse.data;
-    const inAppConcerts = inAppConcertsResponse.data;
+        const ticketMasterConcerts = ticketMasterConcertsResponse.data;
+        const inAppConcerts = inAppConcertsResponse.data;
 
-    let filteredInAppConcerts = performerId
-      ? inAppConcerts.filter(concert => concert.performerId === performerId)
-      : [];
+        let filteredInAppConcerts = performerId
+          ? inAppConcerts.filter(concert => concert.performerId === performerId)
+          : [];
 
-    let allConcerts = [...filteredInAppConcerts, ...ticketMasterConcerts];
+        let allConcerts = [...filteredInAppConcerts, ...ticketMasterConcerts];
 
-    if (allConcerts.length === 0) {
-      alert("No concerts found for this artist or user.");
-    } else {
-      localStorage.setItem("concerts", JSON.stringify(allConcerts));
-      navigate("/ConcertDetails", { state: { concerts: allConcerts } });
-    }
-  } catch (error) {
-    console.error("Error fetching concerts:", error);
-    alert(error.message);
-  }
+        if (allConcerts.length === 0) {
+          alert("No concerts found for this artist or user.");
+        } else {
+          localStorage.setItem("concerts", JSON.stringify(allConcerts));
+          navigate("/ConcertDetails", { state: { concerts: allConcerts } });
+        }
+      } catch (error) {
+        console.error("Error fetching concerts:", error);
+        alert(error.message);
+      }
 };
 
 
@@ -145,6 +145,7 @@ const handleSeeConcerts = async (artistName, performerId) => {
             height: "120px",
           }}
         >
+        <RouterLink to="/home" className="buttonLink">
           <img
             src="fakelogo.png"
             alt="logo"
@@ -152,8 +153,10 @@ const handleSeeConcerts = async (artistName, performerId) => {
             style={{
               position: "absolute",
               left: "20px",
+              top: "10px"
             }}
           />
+          </RouterLink>
           <div
             style={{
               fontSize: "6rem",

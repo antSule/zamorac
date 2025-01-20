@@ -9,13 +9,6 @@ import {Swiper,SwiperSlide} from 'swiper/react'
 import './slajder.css'
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import slide_image_1 from '../slike/img_1.jpg';
-import slide_image_2 from '../slike/img_2.jpg';
-import slide_image_3 from '../slike/img_3.jpg';
-import slide_image_4 from '../slike/img_4.jpg';
-import slide_image_5 from '../slike/img_5.jpg';
-import slide_image_6 from '../slike/img_6.jpg';
-import slide_image_7 from '../slike/img_7.jpg';
 import React, {useEffect} from 'react';
 
 const HomePage = () =>{
@@ -23,6 +16,9 @@ const HomePage = () =>{
     const [user, setUser] = useState('');
     const [roles, setRoles] = useState([]);
     const [artistName, setArtistName] = useState('');
+    const [tomorrowDate, setTomorrowDate] = useState('');
+    const [concertImages, setConcertImages] = useState([]);
+    const [concertUrls, setConcertUrls] = useState([]);
     const navigate = useNavigate();
 
     const handleInputChange = (event) => {
@@ -34,22 +30,82 @@ const HomePage = () =>{
         handleSearch(artistName);
     };
 
+
+    useEffect(() => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const year = tomorrow.getFullYear();
+        const month = (tomorrow.getMonth() + 1).toString().padStart(2, '0');
+        const day = tomorrow.getDate().toString().padStart(2, '0');
+
+        const formattedTomorrow = `${year}-${month}-${day}`;
+        setTomorrowDate(formattedTomorrow);
+    }, []);
+
+
+    useEffect(() => {
+            if (!tomorrowDate) return;
+
+            const token = localStorage.getItem('token');
+            const headers = token
+                ? {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+                : undefined;
+
+            const savedDate = localStorage.getItem("concert-date");
+
+            let query = "";
+            if (tomorrowDate) query += `?date=${tomorrowDate}`;
+
+            fetch(`http://localhost:8080/concerts/concerts${query}`, {
+                method: 'GET',
+                headers: headers,
+                credentials: 'include',
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("No concerts found for this search.");
+                }
+                console.log(response)
+                return response.json();
+            })
+            .then((concerts) => {
+                if (concerts.length > 0) {
+                    localStorage.setItem("concerts", JSON.stringify(concerts));
+
+                    const images = concerts.map((concert) => concert.imageUrl || "/fakelogo.png").slice(0, 8);
+                    const urls = concerts.map(concert => concert.url || "#").slice(0, 8);
+                    setConcertImages(images);
+                    setConcertUrls(urls);
+                } else {
+                    console.log("No concerts found based on your search.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching concerts:", error);
+            });
+
+        }, [tomorrowDate]);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         const headers = token
             ? {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, 
+                'Authorization': `Bearer ${token}`,
               }
             : undefined;
 
         axios
             .get('http://localhost:8080/user-info', {
-                withCredentials: true, 
-                headers, 
+                withCredentials: true,
+                headers,
             })
             .then((response) => {
-                setUser(response.data.name); 
+                setUser(response.data.name);
                 setRoles(response.data.roles || []);
             })
             .catch((error) => {
@@ -72,7 +128,7 @@ const HomePage = () =>{
                 }
             : undefined;
 
-            fetch(`http://localhost:8080/concerts/artist?artist=${encodeURIComponent(artistName)}`, {
+            fetch(`http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`, {
               method: "GET",
               headers: headers,
               credentials: 'include'
@@ -102,21 +158,13 @@ const HomePage = () =>{
     }
 
     const handleButtonClick = () =>console.log("Klik");
-    const slideImages = [
-        slide_image_1,
-        slide_image_2,
-        slide_image_3,
-        slide_image_4,
-        slide_image_5,
-        slide_image_6,
-        slide_image_7,
-      ];
     return (
             <body className="bodyHome">
               <section className="h-wrapper">
                 <div className="flexCenter paddings innerWidth h-container">
+                <RouterLink to="/home" className="buttonLink">
                   <img src="fakelogo.png" alt="logo" width={100} />
-
+                </RouterLink>
                   <div className="flexCenter h-menu">
                     <div className="centerText">
                       {user ? (
@@ -187,44 +235,45 @@ const HomePage = () =>{
        </form>
 
        <Swiper
-                   effect={"coverflow"}
-                   grabCursor={true}
-                   centeredSlides={true}
-                   loop={true}
-                   slidesPerView={"auto"}
-                   coverflowEffect={{
-                     rotate: 0,
-                     stretch: 0,
-                     depth: 100,
-                     modifier: 2.5,
-                   }}
-                   pagination={{ el: ".swiper-pagination", clickable: true }}
-                   navigation={{
-                     nextEl: ".swiper-button-next",
-                     prevEl: ".swiper-button-prev",
-                     clickable: true,
-                   }}
-                   modules={[EffectCoverflow, Pagination, Navigation]}
-                   className="swiper_container"
-                 >
-                   {slideImages.map((image, index) => (
-                     <SwiperSlide key={index}>
-                       <div>
-                         <img src={image} alt={`slide_image_${index + 1}`} />
-                       </div>
-                     </SwiperSlide>
-                   ))}
-
-                   <div className="slider-controler">
-                     <div className="swiper-button-prev slider-arrow">
-                       <ion-icon name="arrow-back-outline"></ion-icon>
-                     </div>
-                     <div className="swiper-button-next slider-arrow">
-                       <ion-icon name="arrow-forward-outline"></ion-icon>
-                     </div>
-                     <div className="swiper-pagination"></div>
+               effect={"coverflow"}
+               grabCursor={true}
+               centeredSlides={true}
+               loop={true}
+               slidesPerView={"auto"}
+               coverflowEffect={{
+                 rotate: 0,
+                 stretch: 0,
+                 depth: 100,
+                 modifier: 2.5,
+               }}
+               pagination={{ el: ".swiper-pagination", clickable: true }}
+               navigation={{
+                 nextEl: ".swiper-button-next",
+                 prevEl: ".swiper-button-prev",
+                 clickable: true,
+               }}
+               modules={[EffectCoverflow, Pagination, Navigation]}
+               className="swiper_container"
+             >
+               {concertImages.map((image, index) => (
+                 <SwiperSlide key={index}>
+                 <a href={concertUrls[index]} target="_blank" rel="noopener noreferrer">
+                   <div>
+                        <img src={image} alt={`Concert ${index + 1}`} />
                    </div>
-                 </Swiper>
+                   </a>
+                 </SwiperSlide>
+               ))}
+               <div className="slider-controler">
+                 <div className="swiper-button-prev slider-arrow">
+                   <ion-icon name="arrow-back-outline"></ion-icon>
+                 </div>
+                 <div className="swiper-button-next slider-arrow">
+                   <ion-icon name="arrow-forward-outline"></ion-icon>
+                 </div>
+                 <div className="swiper-pagination"></div>
+               </div>
+             </Swiper>
                </body>
              );
            };
