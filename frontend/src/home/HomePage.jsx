@@ -128,7 +128,7 @@ const HomePage = () =>{
                 }
             : undefined;
 
-            fetch(`http://localhost:8080/concerts/artist?artist=${encodeURIComponent(artistName)}`, {
+            fetch(`http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`, {
               method: "GET",
               headers: headers,
               credentials: 'include'
