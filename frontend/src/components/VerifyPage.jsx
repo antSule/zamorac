@@ -57,15 +57,16 @@ function VerifyPage() {
         <h1 className="verifynaslov">Verify Email</h1>
         <form onSubmit={handleVerify}>
           <input
+            className="inputV"
             type="text"
             placeholder="Enter verification code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required
           />
-          <button type="submit">Verify</button>
+          <button className="buttonV" type="submit">Verify</button>
         </form>
-        <button onClick={handleResend} style={{ marginTop: "10px" }}>
+        <button className="buttonV" onClick={handleResend} style={{ marginTop: "10px" }}>
           Resend Verification Code
         </button>
         {error && <p style={{ color: "red" }}>{error}</p>}

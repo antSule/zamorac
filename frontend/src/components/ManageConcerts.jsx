@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './concertsManager.css';
 
 const ManageConcerts = () => {
   const [concerts, setConcerts] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
+  const [hasAccess, setHasAccess] = useState(false);
 
   const fetchConcerts = async (headers) => {
     try {
@@ -16,8 +17,6 @@ const ManageConcerts = () => {
     } catch (err) {
       setError('Error fetching concerts.');
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -53,23 +52,52 @@ const ManageConcerts = () => {
     setShowDeleteModal(false);
   };
 
+  const navigate = useNavigate();
+  const handleEditClick = (concertId) => {
+    navigate(`/edit-concert-admin/${concertId}`);
+  }
+
   useEffect(() => {
-      const token = localStorage.getItem("token");
-       const headers = token
-         ? {
-             'Content-Type': 'application/json',
-             'Authorization': `Bearer ${token}`,
-           }
-         : undefined;
-    fetchConcerts(headers);
-  }, []);
+      const token = localStorage.getItem('token');
+      const headers = token
+        ? {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined;
+
+      axios
+        .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+        .then((response) => {
+          const userRoles = response.data.roles || [];
+          if (userRoles.includes('ADMIN')) {
+            setHasAccess(true);
+            fetchConcerts(headers);
+          } else {
+            setHasAccess(false);
+          }
+        })
+        .catch((err) => {
+          setError('Error verifying user roles.');
+          console.error(err);
+        });
+    }, []);
+
+    if (!hasAccess) {
+      return (
+        <div className="no-access-container">
+          <div className="no-access-message">
+            <h2>⚠️ Access Denied</h2>
+            <p>You do not have permission to access this page.</p>
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div id="concerts-container">
       <h1>Manage Concerts</h1>
-      {loading ? (
-        <p>Loading concerts...</p>
-      ) : error ? (
+      {error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : concerts.length > 0 ? (
         concerts.map((concert, index) => (
@@ -87,6 +115,7 @@ const ManageConcerts = () => {
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
+              <button onClick= {() => handleEditClick(concert.id)}>Edit</button>
               <button onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>

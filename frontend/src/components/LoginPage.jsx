@@ -13,6 +13,10 @@ const LoginPage = () => {
         window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
 
+    const handleSpotifyLogin = () => {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/spotify';
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -45,13 +49,14 @@ const LoginPage = () => {
     };
 
     return (
+        <body className="bodyLog">
         <div className="login">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="formLog">
                 <img src="/fakelogo.png" alt="logo" width={100} />
 
                 <Typography
                     component="h1"
-                    className="naslov"
+                    className="naslovLog"
                     variant="h5"
                     sx={{
                         textAlign: 'center',
@@ -111,6 +116,30 @@ const LoginPage = () => {
                     }}
                 >
                     Log In With Google
+                </Button>
+
+                <Button
+                    onClick={handleSpotifyLogin}
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                        mt: 1,
+                        backgroundColor: 'rgba(9, 51, 26, 0.937)',
+                        color: '#ffffff',
+                        border: 'none',
+                        padding: '10px 20px',
+                        borderRadius: '20px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        transition: 'background-color 0.3s ease',
+                        '&:hover': {
+                            backgroundColor: '#ffff',
+                            color: 'rgb(61, 193, 121)',
+                            border: '1px solid rgb(61, 193, 121)',
+                        },
+                    }}
+                >
+                    LOG IN WITH SPOTIFY
                 </Button>
 
                 <TextField
@@ -200,6 +229,7 @@ const LoginPage = () => {
                 </Button>
             </form>
         </div>
+        </body>
     );
 };
 

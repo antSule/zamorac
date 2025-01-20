@@ -8,23 +8,14 @@
     margin-bottom: 40px;
     font-weight: 700;
 }
-body {
+.bodyTM {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
 }
 
-  input:focus {
-    border-bottom: 2px solid rgb(61, 193, 121);
-  }
 
-  body {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #f4f4f4; 
-}
 
 .ticketmaster {
     height: 100vh; 
@@ -36,7 +27,7 @@ body {
     background-size: cover;
 }
 
-form {
+.formTM {
     background-color: #ffffffc9;
     border-radius: 60px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -48,7 +39,7 @@ form {
 
 
 
-label {
+.labelTM {
     display: block;
     margin-top: 15px;
     font-weight: bold;
@@ -58,7 +49,7 @@ label {
 
 
 
-button {
+.buttonTM {
     background-color:  rgba(9, 51, 26, 0.937);
     color: #ffffff;
     border: none;
@@ -69,34 +60,34 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.buttonTM:hover {
     background-color: #ffff;
     color: rgb(61, 193, 121);
     border: 1px solid rgb(61, 193, 121);
 }
 
-button#button-clear-location {
+.buttonTM#button-clear-location {
     background-color: #4d1818;
     color: #ffffff;
 
     margin-left: 5px;
 }
 
-button#button-clear-location:hover {
+.buttonTM #button-clear-location:hover {
     color: #792727;
     border: 1px solid #792727;
     background-color:white;
     
 }
 
-.button-group {
+.button-groupTM {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-bottom: 25px;
 }
 
-input{
+.inputTM{
     margin: 15px 0;
     font-size: 16px;
     padding: 5px;

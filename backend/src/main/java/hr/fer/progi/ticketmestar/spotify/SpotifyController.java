@@ -1,16 +1,18 @@
 package hr.fer.progi.ticketmestar.spotify;
 
 
-import hr.fer.progi.ticketmestar.spotify.SpotifyService;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/spotify")
@@ -86,4 +88,16 @@ public class SpotifyController {
             return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
         }
     }
+
+    //@GetMapping("/me/top/artists")
+    //public ResponseEntity<Map<String, Object>> getUserTopArtists() {
+    //try {
+    //    String accessToken = getAccessToken();
+    //    Map<String, Object> topArtists = spotifyService.getUserTopArtists(accessToken);
+    //    return ResponseEntity.ok(topArtists);
+    //} catch (Exception e) {
+    //    return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
+   // }
+//}
+
 }

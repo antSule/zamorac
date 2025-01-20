@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './concertAdd.css';
 
 const AddNewConcert = () => {
@@ -13,6 +14,31 @@ const AddNewConcert = () => {
     const [eventName, setEventName] = useState("");
     const [venueDetails, setVenueDetails] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [hasAccess, setHasAccess] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const headers = token
+            ? {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+            : undefined;
+
+        axios
+            .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+            .then((response) => {
+                const userRoles = response.data.roles || [];
+                if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
+                    setHasAccess(true);
+                } else {
+                    setHasAccess(false);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
@@ -63,7 +89,7 @@ const AddNewConcert = () => {
         setLocationDetails("");
         localStorage.removeItem("concert-location");
 
-        window.location.href = 'http://localhost:63342/zamorac/frontend/src/GoogleMapsAdd/GoogleMaps.html?_ijt=ml0hnlo0ra6317f2o6s3o373bo&_ij_reload=RELOAD_ON_SAVE';
+        window.location.href = 'http://localhost:3000/google-maps';
     };
 
     const clearLocation = () => {
@@ -116,8 +142,7 @@ const AddNewConcert = () => {
             return response.json();
         })
         .then(data => {
-            alert('Concert added successfully!');
-            navigate('/home');
+            navigate('/my-concerts');
         })
         .catch(error => {
             console.error("Error details:", error);
@@ -125,83 +150,103 @@ const AddNewConcert = () => {
         });
     };
 
+    if (!hasAccess) {
+        return (
+            <div className="no-access-container">
+                <div className="no-access-message">
+                    <h2>⚠️ Access Denied</h2>
+                    <p>You do not have permission to access this page.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="concert-add-container">
+    <body className="bodyANC">
+        <div className="concert-add-containerANC">
             <form id="concert-add-form" className="formANC" onSubmit={handleFormSubmit}>
-                <div className="naslov">Add Your Concert</div>
+                <div className="naslovANC">Add Your Concert</div>
 
-                <label htmlFor="concert-date">Select Concert Date:</label>
+                <label className="labelANC" htmlFor="concert-date">Select Concert Date:</label>
                 <input
+                    className="inputANC"
                     type="date"
                     id="concert-date"
                     value={concertDate}
                     onChange={(e) => setConcertDate(e.target.value)}
                 />
 
-                <label htmlFor="concert-time">Select Concert Time:</label>
+                <label className = "labelANC" htmlFor="concert-time">Select Concert Time:</label>
                 <input
+                    className="inputANC"
                     type="time"
                     id="concert-time"
                     value={concertTime}
                     onChange={(e) => setConcertTime(e.target.value)}
                 />
 
-                <label htmlFor="performer-name">Enter Performer Name:</label>
+                <label className="labelANC" htmlFor="performer-name">Enter Performer Name:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="performer-name"
                     value={performerName}
                     onChange={(e) => setPerformerName(e.target.value)}
                 />
 
-                <label htmlFor="city">City:</label>
+                <label className = "labelANC" htmlFor="city">City:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                 />
 
-                <label htmlFor="concert-location">Select Location:</label>
+                <label className = "labelANC" htmlFor="concert-location">Select Location:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="concert-location"
                     readOnly
                     value={locationDetails}
                 />
-                <div className="button-group">
-                    <button type="button" onClick={openLocationSelector}>Select Location</button>
-                    <button type="button" id="button-clear-location" onClick={clearLocation}>Clear Location</button>
+                <div className="button-groupANC">
+                    <button  className = "buttonANC" type="button" onClick={openLocationSelector}>Select Location</button>
+                    <button  className = "buttonANC" type="button" id="button-clear-location" onClick={clearLocation}>Clear Location</button>
                 </div>
 
-                <label htmlFor="venue">Venue Name:</label>
+                <label className="labelANC" htmlFor="venue">Venue Name:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="venue"
                     value={venueDetails}
                     onChange={(e) => setVenueDetails(e.target.value)}
                 />
 
-                <label htmlFor="event-name">Event Name:</label>
+                <label className="labelANC" htmlFor="event-name">Event Name:</label>
                 <input
+                    className="inputANC"
                     type="text"
                     id="event-name"
                     value={eventName}
                     onChange={(e) => setEventName(e.target.value)}
                 />
 
-                <label htmlFor="image-url">Image URL (Optional):</label>
+                <label className = "labelANC" htmlFor="image-url">Image URL (Optional):</label>
                 <input
+                    className="inputANC"
                     type="url"
                     id="image-url"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
                 />
 
-                <button type="submit" id = "button-addConcert">Add Concert</button>
+                <button className="buttonANC" type="submit" id="button-addConcert">Add Concert</button>
             </form>
         </div>
+    </body>
     );
 };
 

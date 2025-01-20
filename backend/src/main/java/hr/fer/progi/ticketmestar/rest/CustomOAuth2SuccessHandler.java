@@ -109,7 +109,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             appUser = new AppUser();
             appUser.setEmail(email);
             appUser.setUsername(name);
-            appUser.setRole(Set.of(Role.NULL_USER, Role.USER));
+            appUser.setRole(Set.of(Role.NULL_USER, Role.USER, Role.SPOTIFY));
             appUser.setEnabled(true);
             appUser.setPassword("dummy_password");
             appUser.setSpotifyUserId(spotifyUserId);
@@ -132,7 +132,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
 
-        response.sendRedirect("http://localhost:3000/home");
+        if (appUser.getRole().contains(Role.NULL_USER)) {
+            response.sendRedirect("http://localhost:3000/select-role");
+        } else {
+            response.sendRedirect("http://localhost:3000/home");
+        }
     }
 
     private void updateSecurityContext(AppUser appUser, OAuth2User oAuth2User) {

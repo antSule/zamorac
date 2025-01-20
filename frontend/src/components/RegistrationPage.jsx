@@ -5,7 +5,7 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import './registrationpage.css'
 
-const ROLES = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
+const ROLES = ["USER", "ARTIST"];
 
 const RegistrationPage = () => {
     const [username, setUsername] = useState("");
@@ -53,13 +53,14 @@ const RegistrationPage = () => {
     };
 
     return (
+        <body className="bodyReg">
         <div className="registration">
-            <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+            <form onSubmit={handleSubmit} className="formReg" style={{ textAlign: "center" }}>
                 <img src="/fakelogo.png" alt="logo" width={100} style={{ marginBottom: "20px" }} />
 
                 <Typography
                     component="h1"
-                    className="naslov"
+                    className="naslovReg"
                     variant="h5"
                     sx={{
                         textAlign: "center",
@@ -187,9 +188,9 @@ const RegistrationPage = () => {
                             onChange={() => handleRoleChange(role)}
                             sx={{
                                 color: "rgba(9, 51, 26, 0.937)",
-                                transform: "scale(1.5)", // Increase the overall size
+                                transform: "scale(1.5)",
                                 '& .MuiSvgIcon-root': {
-                                    fontSize: 28, // Adjust the size of the icon
+                                    fontSize: 28,
                                 },
                                 '&.Mui-checked': {
                                     color: "rgb(61, 193, 121)",
@@ -242,6 +243,7 @@ const RegistrationPage = () => {
                 </div>
             </form>
         </div>
+        </body>
     );
 };
 

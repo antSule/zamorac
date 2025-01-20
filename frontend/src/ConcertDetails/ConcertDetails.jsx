@@ -17,17 +17,18 @@ const ConcertsResults = () => {
   }, []);
 
   return (
-    <div id="concerts-container">
+  <div className="ConcertDetailsBody">
+    <div id="concerts-containerCD">
       {concerts.length > 0 ? (
         concerts.map((concert, index) => (
-          <div className="concert" key={index}>
-            <div className="concert-image">
+          <div className="concertCD" key={index}>
+            <div className="concert-imageCD">
               <img
                 src={concert.imageUrl || "/fakelogo.png"}
                 alt={concert.name || "Concert"}
               />
             </div>
-            <div className="concert-details">
+            <div className="concert-detailsCD">
               <h3>{concert.event}</h3>
               <p>
                 <strong>Performer:</strong> {concert.performer}
@@ -53,6 +54,7 @@ const ConcertsResults = () => {
       ) : (
         <p>No concerts found.</p>
       )}
+    </div>
     </div>
   );
 };

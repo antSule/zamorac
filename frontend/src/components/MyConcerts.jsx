@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import "./myConcerts.css"
 
 const MyConcerts = () => {
   const [concerts, setConcerts] = useState([]);
@@ -7,7 +9,9 @@ const MyConcerts = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
+  const [hasAccess, setHasAccess] = useState(false);
 
+  const navigate = useNavigate();
   const fetchMyConcerts = async (headers) => {
       try {
         const response = await axios.get("http://localhost:8080/concerts/me", { withCredentials:true,headers });
@@ -33,7 +37,6 @@ const MyConcerts = () => {
     try {
       await axios.post(`http://localhost:8080/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
       fetchMyConcerts(headers);
-      alert('Concert successfully deleted!');
     } catch (err) {
       setError('Error deleting concert.');
       console.error(err);
@@ -63,45 +66,74 @@ const MyConcerts = () => {
   };
 
   useEffect(() => {
-      const token = localStorage.getItem("token");
-       const headers = token
-         ? {
-             'Content-Type': 'application/json',
-             'Authorization': `Bearer ${token}`,
-           }
-         : undefined;
-    fetchMyConcerts(headers);
-  }, []);
+      const token = localStorage.getItem('token');
+      const headers = token
+        ? {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined;
+
+      axios
+        .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+        .then((response) => {
+          const userRoles = response.data.roles || [];
+          if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
+            setHasAccess(true);
+            fetchMyConcerts(headers);
+          } else {
+            setHasAccess(false);
+          }
+        })
+        .catch((err) => {
+          setError('Error checking user roles.');
+          console.error(err);
+          setHasAccess(false);
+        });
+    }, []);
+
+    if (!hasAccess) {
+      return (
+        <div className="no-access-container">
+          <div className="no-access-message">
+            <h2>⚠️ Access Denied</h2>
+            <p>You do not have permission to access this page.</p>
+          </div>
+        </div>
+      );
+    }
 
   return (
-    <div id="concerts-container">
-      <h1>Manage Concerts</h1>
+    <div className='MyConcerts'>
+      <h1 className='naslovMyConc'>My Concerts</h1>
+    <div id="concerts-containerMC">
       {loading ? (
         <p>Loading concerts...</p>
       ) : error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : concerts.length > 0 ? (
         concerts.map((concert, index) => (
-          <div className="concert" key={index}>
-            <div className="concert-image">
+          <div className="concertMC" key={index}>
+            <div className="concert-imageMC">
               <img
                 src={concert.imageUrl || '/fakelogo.png'}
                 alt={concert.name || 'Concert'}
               />
             </div>
-            <div className="concert-details">
+            <div className="concert-detailsMC">
               <h3>{concert.event}</h3>
               <p><strong>Performer:</strong> {concert.performer}</p>
               <p><strong>City:</strong> {concert.city}</p>
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
-              <button onClick={() => handleDeleteClick(concert.id)}>Delete</button>
+              <button onClick={() => navigate(`/edit-concert/${concert.id}`)}>Edit</button>
+              <button className='deleteMC' onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>
         ))
       ) : (
-        <p>No concerts found.</p>
+        <p className='NCF'>No concerts found.</p>
       )}
 
       {showDeleteModal && (
@@ -113,6 +145,7 @@ const MyConcerts = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

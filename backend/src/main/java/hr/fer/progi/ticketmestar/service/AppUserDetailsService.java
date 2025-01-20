@@ -4,7 +4,9 @@ import hr.fer.progi.ticketmestar.domain.AppUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 public interface AppUserDetailsService {
     List<AppUser> listAll();
@@ -22,4 +24,8 @@ public interface AppUserDetailsService {
 
     UserDetails loadUserByEmailAndAuthProvider(String email);
     UserDetails loadUserByUsernameAndAuthProvider(String username);
+
+    void addFavoriteArtist(AppUser currentUser, Long artistId);
+    void removeFavoriteArtist(AppUser currentUser, Long artistId);
+    Set<AppUser> getFavoriteArtists(AppUser currentUser);
 }

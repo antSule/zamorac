@@ -1,6 +1,7 @@
 package hr.fer.progi.ticketmestar.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -46,6 +47,13 @@ public class AppUser implements UserDetails {
     private LocalDateTime verificationCodeExpiresAt;
 
     private String spotifyUserId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="user_favourite_artists",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="artist_id"))
+    @JsonIgnore
+    private Set<AppUser> favoriteArtists = new HashSet<>();
 
     public AppUser(String username, String email, String password, AuthenticationProvider authenticationProvider, Role ... roles ) {
         this.username = username;
@@ -162,4 +170,14 @@ public class AppUser implements UserDetails {
     public void setAuthenticationProvider(AuthenticationProvider authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
     }
+
+    public Set<AppUser> getFavoriteArtists(){
+        return favoriteArtists;
+    }
+
+    public void setFavoriteArtists(Set<AppUser> favoriteArtists){
+        this.favoriteArtists = favoriteArtists;
+    }
+
+
 }

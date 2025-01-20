@@ -1,47 +1,106 @@
-#my-concerts-container {
-  max-width: 800px;
-  margin: 0 auto;
+.MyConcerts {
+  background: url(../slike/koncertslika.jpg) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed; 
+  width: 100%;
+  min-height: 100vh; 
+  position: relative; 
+}
+
+.content-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
-}
-
-.concert-list {
+#concerts-containerMC {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.concert {
+.concertMC {
+  display: flex;
+  align-items: stretch;
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  width: calc(50% - 10px);
+  width: 800px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  margin-bottom: 20px;
+  flex-direction: row-reverse;
 }
 
-.concert img {
+.concert-imageMC {
+  flex: none;
+  width: 400px;
+  height: 335px;
+}
+
+.concertMC img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 }
 
-.concert-details {
-  padding: 10px;
+.concert-detailsMC {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.concert-details h3 {
+.concert-detailsMC h3 {
   margin: 0 0 10px;
-  color: #007BFF;
+  color: rgba(9, 51, 26, 0.937);
+  font-size: 22px;
 }
 
-.concert-details p {
+.concert-detailsMC p {
   margin: 5px 0;
-  font-size: 14px;
+  font-size: 16px;
   color: #555;
+}
+
+.NCF {
+  font-size: 35px;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.naslovMyConc {
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.deleteMC {
+  background-color: #4d1818;
+  color: #ffffff;
+  border: none;
+  padding: 2px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.4s ease;
+  margin-top: 25px;
+  width: 130px;
+  height: 30px;
+}
+
+.deleteMC:hover {
+  color: #792727;
+  border: 1px solid #792727;
+  background-color: white;
 }

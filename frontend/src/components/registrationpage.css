@@ -1,10 +1,10 @@
-.naslov {
+.naslovReg {
     color: rgba(16, 125, 60, 0.937);
     text-align: center;
     font-family: "Poppins", sans-serif;
 }
 
-body {
+.bodyReg {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -20,9 +20,10 @@ body {
     align-items: center;
     background-size: cover;
     padding: 10px; 
+    
 }
 
-form {
+.formReg {
     background-color: #ffffffc9;
     border-radius: 60px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -33,10 +34,8 @@ form {
     margin-top: -20px; 
 }
 
-input, button, .MuiTextField-root {
-    border-radius: 20px;
-}
 
-form img {
+
+.formReg img {
     margin-bottom: 20px;
 }

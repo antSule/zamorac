@@ -50,6 +50,21 @@ public class AddConcertDto {
         this.imageUrl = imageUrl;
     }
 
+    public AddConcertDto(LocalDate date, LocalTime time, String performer, Long performerId, String venue, Double latitude, Double longitude, String url, String city, String event, String imageUrl) {
+        this.date = date;
+        this.time = time;
+        this.performer = performer;
+        this.performerId = performerId;
+        this.venue = venue;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.url = url;
+        this.city = city;
+        this.event = event;
+        this.imageUrl = imageUrl;
+    }
+
+
     public LocalDate getDate() {
         return date;
     }
@@ -109,4 +124,21 @@ public class AddConcertDto {
     public String getImageUrl() { return imageUrl; }
 
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    @Override
+    public String toString() {
+        return "AddConcertDto{" +
+                "date=" + date +
+                ", time='" + time + '\'' +
+                ", performer='" + performer + '\'' +
+                ", venue='" + venue + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", url='" + url + '\'' +
+                ", city='" + city + '\'' +
+                ", event='" + event + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
+
 }

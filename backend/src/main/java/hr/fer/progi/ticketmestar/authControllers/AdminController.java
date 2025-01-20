@@ -1,15 +1,14 @@
 package hr.fer.progi.ticketmestar.authControllers;
 
 import hr.fer.progi.ticketmestar.domain.AppUser;
+import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
 import hr.fer.progi.ticketmestar.domain.Role;
+import hr.fer.progi.ticketmestar.dto.UserSearchDto;
 import hr.fer.progi.ticketmestar.rest.ConcertService;
 import hr.fer.progi.ticketmestar.service.impl.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -62,4 +61,15 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/userroles")
+    public ResponseEntity<Set<Role>> getUserRoles(@RequestParam Long userId){
+        Set<Role> roles = adminService.getUserRoles(userId);
+        return ResponseEntity.ok(roles);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<AppUser>> searchUsers(@RequestBody UserSearchDto userSearchDto){
+        List<AppUser> users = adminService.searchUsers(userSearchDto.getUsername(), userSearchDto.getRoles(), userSearchDto.getProvider());
+        return ResponseEntity.ok(users);
+    }
 }
