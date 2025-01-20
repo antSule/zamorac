@@ -73,52 +73,38 @@ const Favourites = () => {
     }
   };
 
-const handleSeeConcerts = async (artistName, performerId) => {
+const handleSeeConcerts = async (artistName) => {
   const token = localStorage.getItem("token");
   const headers = token
     ? {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
-    : {}; 
-
-  try {
-    const ticketMasterConcertsPromise = axios.get(
-      `http://localhost:8080/concerts/artist?artist=${encodeURIComponent(artistName)}`,
-      { headers, withCredentials: true }
-    );
-
-    const inAppConcertsPromise = performerId
-      ? axios.get(`http://localhost:8080/concerts/all`, {
-          headers,
-          withCredentials: true,
-        })
-      : Promise.resolve({ data: [] }); 
-  
-    const [ticketMasterConcertsResponse, inAppConcertsResponse] = await Promise.all([
-      ticketMasterConcertsPromise,
-      inAppConcertsPromise
-    ]);
-
-    const ticketMasterConcerts = ticketMasterConcertsResponse.data;
-    const inAppConcerts = inAppConcertsResponse.data;
-
-    let filteredInAppConcerts = performerId
-      ? inAppConcerts.filter(concert => concert.performerId === performerId)
-      : [];
-
-    let allConcerts = [...filteredInAppConcerts, ...ticketMasterConcerts];
-
-    if (allConcerts.length === 0) {
-      alert("No concerts found for this artist or user.");
-    } else {
-      localStorage.setItem("concerts", JSON.stringify(allConcerts));
-      navigate("/ConcertDetails", { state: { concerts: allConcerts } });
-    }
-  } catch (error) {
-    console.error("Error fetching concerts:", error);
-    alert(error.message);
-  }
+    : {};
+    console.log("ArtistName: ", artistName);
+    console.log(encodeURIComponent(artistName));
+    fetch(`http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`, {
+        method: 'GET',
+        headers: headers,
+        credentials: 'include',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('No concerts match your search criteria. Please try different parameters.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.length === 0) {
+          alert("No concerts match your search criteria. Please try different parameters.");
+        } else {
+          localStorage.setItem('concerts', JSON.stringify(data));
+          navigate('/ConcertDetails');
+        }
+      })
+      .catch(error => {
+        alert(error.message);
+      });
 };
 
 
@@ -309,7 +295,7 @@ const handleSeeConcerts = async (artistName, performerId) => {
                     />
                   )}
                   <button
-                    onClick={() => handleSeeConcerts(artist.name, artist.id)}
+                    onClick={() => handleSeeConcerts(artist.name)}
                     style={{
                       marginLeft: "15px",
                       padding: "8px 15px",

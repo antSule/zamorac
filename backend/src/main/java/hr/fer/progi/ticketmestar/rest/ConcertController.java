@@ -93,6 +93,10 @@ public class ConcertController {
             throw new IllegalStateException("Unexpected principal type: " + authentication.getPrincipal().getClass());
         }
 
+        if (latitude != null && longitude != null) {
+            radius = String.valueOf(20);
+        }
+
         List<Concert> ticketmasterConcerts = ticketMasterService.searchConcerts(date, artist, latitude, longitude, radius);
 
         LocalDate dateLocal = null;
@@ -121,7 +125,7 @@ public class ConcertController {
             } catch (NumberFormatException e) {
                 return ResponseEntity.badRequest().body(Collections.emptyList());
             }
-        } else {
+        } else if (latitudeDouble != null && longitudeDouble != null) {
             radiusDouble = 20.0;
         }
 
