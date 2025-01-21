@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./usersManager.css";
-import { Link as RouterLink } from "react-router-dom";
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([]);
@@ -192,56 +191,28 @@ const ManageUsers = () => {
 
     return (
         <body className='bodyMU'>
-        <section className="h-wrapper">
-                <div
-                  className="flexCenter paddings innerWidth h-container"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "relative",
-                    height: "120px",
-                  }}
-                >
-                <RouterLink to="/home" className="buttonLink">
-                  <img
-                    src="fakelogo.png"
-                    alt="logo"
-                    width={100}
-                    style={{
-                      position: "absolute",
-                      left: "20px",
-                      top: "10px"
-                    }}
-                  />
-                  </RouterLink>
-                  <div
-                    style={{
-                      fontSize: "6rem",
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    Manage Users
-                  </div>
-                </div>
-              </section>
-        <div>
+        <div className='ManageUsers'>
+            <form className='formMU'>
+            <img src="/fakelogo.png" alt="logo" width={100} />
+            <h1 className='naslovMU'>Manage Users</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-            <h2>Search Users</h2>
+            <h2 className='searchusers'>Search Users</h2>
             <div>
                 <input
+                    className='searchBarMU'
                     type="text"
                     placeholder="Search by Username"
                     value={searchParams.username}
                     onChange={handleSearchChange}
                 />
-                <div>
-                    <p>Select Role:</p>
+                <p className='selectroleMU'>Select Role:</p>
+                <div className='checkboxMU-container'>
+                    
                     {roles.map((role) => (
-                        <label key={role}>
+                        <label key={role} className='checkboxMU'>
                             <input
+                                className='inputMU'
                                 type="radio"
                                 name="role"
                                 value={role}
@@ -252,10 +223,10 @@ const ManageUsers = () => {
                         </label>
                     ))}
                 </div>
-                <div>
-                    <p>Select Provider:</p>
+                <p className='selectroleMU'>Select Provider:</p>
+                <div className='checkboxMU-container'>
                     {providers.map((provider) => (
-                        <label key={provider}>
+                        <label className = 'checkboxMU' key={provider}>
                             <input
                                 type="radio"
                                 name="provider"
@@ -267,17 +238,17 @@ const ManageUsers = () => {
                         </label>
                     ))}
                 </div>
-                <button onClick={handleSearchSubmit}>Search</button>
+                <button className='buttonMU' onClick={handleSearchSubmit}>Search</button>
             </div>
 
-            <h2>Users List</h2>
+            <h2 className='selectroleMU'>Users List</h2>
             <ul>
                 {filteredUsers.length > 0 ?(
                     filteredUsers.map((user) => (
-                    <li key={user.id}>
+                    <li className='userMU' key={user.id}>
                         <span>{user.username} ({user.email})</span>
-                        <button onClick={() => handleDeleteClick(user.id)}>Delete</button>
-                        <button onClick={() => setSelectedUserId(user.id)}>Change Role</button>
+                        <button className = 'deleteMU'onClick={() => handleDeleteClick(user.id)}>Delete</button>
+                        <button className = 'changeMU' onClick={() => setSelectedUserId(user.id)}>Change Role</button>
                     </li>
                 ))
             ):(<p>No users found.</p>)}
@@ -297,6 +268,7 @@ const ManageUsers = () => {
                         <div key={role}>
                             <label>
                                 <input
+                                    className='inputMU'
                                     type="checkbox"
                                     value={role}
                                     onChange={handleRoleChange}
@@ -319,6 +291,7 @@ const ManageUsers = () => {
                     </div>
                 </div>
             )}
+            </form>
         </div>
     </body>    
     );
