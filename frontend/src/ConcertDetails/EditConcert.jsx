@@ -3,9 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import './editConcert.css'
 
-const EditConcertADMIN = () => {
+const EditConcert = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [locationDetails, setLocationDetails] = useState("");
   const [formData, setFormData] = useState({
     date: "",
     time: "",
@@ -14,7 +15,6 @@ const EditConcertADMIN = () => {
     venue: "",
     latitude: "",
     longitude: "",
-    url: "",
     city: "",
     event: "",
     imageUrl: "",
@@ -43,13 +43,63 @@ const EditConcertADMIN = () => {
           performer: response.data.performer || "",
           performerId: response.data.performerId ||"",
           venue: response.data.venue || "",
-          latitude: response.data.latitude || "",
-          longitude: response.data.longitude || "",
-          url: response.data.url || "",
+          latitude: (() => {
+              const queryParams = new URLSearchParams(window.location.search);
+              const lat = queryParams.get("lat");
+              if (lat) return lat;
+
+              const locationFromLocalStorage = localStorage.getItem("concert-location");
+              if (locationFromLocalStorage) {
+                const parsedLocation = JSON.parse(locationFromLocalStorage);
+                if (parsedLocation.lat) return parsedLocation.lat;
+              }
+
+              return response.data.latitude || "";
+            })(),
+            longitude: (() => {
+              const queryParams = new URLSearchParams(window.location.search);
+              const lng = queryParams.get("lng");
+              if (lng) return lng;
+
+              const locationFromLocalStorage = localStorage.getItem("concert-location");
+              if (locationFromLocalStorage) {
+                const parsedLocation = JSON.parse(locationFromLocalStorage);
+                if (parsedLocation.lng) return parsedLocation.lng;
+              }
+
+              return response.data.longitude || "";
+            })(),
           city: response.data.city || "",
           event: response.data.event || "",
           imageUrl: response.data.imageUrl || "",
         });
+
+        if (response.data.latitude && response.data.longitude) {
+            const locationText = `Lat: ${response.data.latitude}, Lng: ${response.data.longitude}`;
+            setLocationDetails(locationText);
+        }
+
+        const queryParams = new URLSearchParams(window.location.search);
+          const lat = queryParams.get('lat');
+          const lng = queryParams.get('lng');
+
+          if (lat && lng) {
+              const locationText = `Lat: ${lat}, Lng: ${lng}`;
+              setLocationDetails(locationText);
+              response.data.latitude = lat;
+              response.data.longitude = lng;
+          }
+
+        const locationFromLocalStorage = localStorage.getItem("concert-location");
+        if (locationFromLocalStorage) {
+            const parsedLocation = JSON.parse(locationFromLocalStorage);
+            setFormData((prev) => ({
+            ...prev,
+            latitude: parsedLocation.lat || prev.latitude,
+            longitude: parsedLocation.lng || prev.longitude,
+            }));
+        setLocationDetails(`Lat: ${parsedLocation.lat}, Lng: ${parsedLocation.lng}`);
+        }
       } catch (err) {
         console.error("Error fetching concert data:", err.response?.data || err.message);
         setError("Error fetching concert data.");
@@ -64,6 +114,13 @@ const EditConcertADMIN = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const openLocationSelector = () => {
+  setLocationDetails("");
+  localStorage.removeItem("concert-location");
+
+  window.location.href = `http://localhost:3000/google-maps-edit/${id}`;
   };
 
   const handleFormSubmit = async (e) => {
@@ -87,7 +144,7 @@ const EditConcertADMIN = () => {
         { withCredentials: true, headers }
       );
 
-      navigate("/manage-concerts");
+      navigate("/my-concerts");
     } catch (err) {
       console.error("Error updating concert:", err.response?.data || err.message);
       setError("Error updating concert.");
@@ -168,35 +225,17 @@ const EditConcertADMIN = () => {
           required
         />
   
-        <label className="labelECA" htmlFor="latitude">Latitude</label>
+        <label className="labelECA" htmlFor="concert-location">Select Location:</label>
         <input
-          className="inputECA"
-          type="text"
-          name="latitude"
-          id="latitude"
-          value={formData.latitude || ""}
-          onChange={handleInputChange}
+            className="inputECA"
+            type="text"
+            id="concert-location"
+            readOnly
+            value={locationDetails}
         />
-  
-        <label className="labelECA" htmlFor="longitude">Longitude</label>
-        <input
-          className="inputECA"
-          type="text"
-          name="longitude"
-          id="longitude"
-          value={formData.longitude || ""}
-          onChange={handleInputChange}
-        />
-  
-        <label className="labelECA" htmlFor="url">URL</label>
-        <input
-          className="inputECA"
-          type="text"
-          name="url"
-          id="url"
-          value={formData.url || ""}
-          onChange={handleInputChange}
-        />
+        <div className="button-groupECA">
+            <button className = "buttonECA" type="button" onClick={openLocationSelector}>Change Location</button>
+        </div>
   
         <label className="labelECA" htmlFor="imageUrl">Image URL</label>
         <input
@@ -214,4 +253,4 @@ const EditConcertADMIN = () => {
   );
 };
 
-export default EditConcertADMIN;
+export default EditConcert;

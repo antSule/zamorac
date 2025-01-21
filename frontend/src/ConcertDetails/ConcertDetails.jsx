@@ -84,7 +84,7 @@ const ConcertsResults = () => {
             </div>
             <a className="buyticketsbutton" href={concert.url} target="_blank" rel="noopener noreferrer">
                 Buy tickets
-              </a>
+            </a>
           </div>
         ))
       ) : (

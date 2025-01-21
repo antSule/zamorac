@@ -22,6 +22,8 @@ import ManageConcerts from './components/ManageConcerts';
 import ArtistConcerts from './components/ArtistConcerts';
 import EditConcert from './ConcertDetails/EditConcert';
 import EditConcertADMIN from './ConcertDetails/EditConcertADMIN';
+import GoogleMapsEdit from './ConcertDetails/GoogleMapsEdit';
+import GoogleMapsEditAdmin from './ConcertDetails/GoogleMapsEditAdmin';
 
 function App() {
   return (
@@ -47,6 +49,8 @@ function App() {
                 <Route path="/concerts/artist/:artistId" element={<ProtectedRoute><ArtistConcerts /></ProtectedRoute>} />
                 <Route path="/edit-concert/:id" element={<ProtectedRoute><EditConcert /></ProtectedRoute>}/>
                 <Route path="/edit-concert-admin/:id" element={<ProtectedRoute><EditConcertADMIN /></ProtectedRoute>} />
+                <Route path="/google-maps-edit/:id" element={<ProtectedRoute><GoogleMapsEdit /></ProtectedRoute>}/>
+                <Route path="/google-maps-edit-admin/:id" element={<ProtectedRoute><GoogleMapsEditAdmin /></ProtectedRoute>}/>
             </Routes>
         </Router>
     </div>
