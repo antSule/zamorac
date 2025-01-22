@@ -11,6 +11,10 @@
     background: var(--bg);
     overflow-y: hidden;
   }
+
+  .WelcomeText{
+    font-size: 21px;
+  }
   
   
   * {
@@ -96,13 +100,11 @@
     }
   }
 
-  .WelcomeText{
-    font-size: 40px;
-  }
+  
   
   .buttonHP {
     font-weight: 500;
-    padding: 0.6rem 1.4rem;
+    padding: 0.6rem 0.4rem;
     color: rgb(255, 255, 255);
     background: var(--blue-gradient);
     border: none;

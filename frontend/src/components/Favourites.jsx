@@ -82,6 +82,7 @@ const handleSeeConcerts = async (artistName, performerId) => {
       }
     : {};
     try {
+        console.log("artistName " + artistName);
         const ticketMasterConcertsPromise = axios.get(
           `http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`,
           { headers, withCredentials: true }
@@ -308,7 +309,7 @@ const handleSeeConcerts = async (artistName, performerId) => {
                     />
                   )}
                   <button
-                    onClick={() => handleSeeConcerts(artist.name, artist.id)}
+                    onClick={() => handleSeeConcerts(artist.username, artist.id)}
                     style={{
                       marginLeft: "15px",
                       padding: "8px 15px",

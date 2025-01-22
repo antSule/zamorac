@@ -220,7 +220,7 @@ const HomePage = () =>{
                         Log Out
                       </button>
                     ) : (
-                      <RouterLink to="/login" className="buttonLink">
+                      <RouterLink to="/" className="buttonLink">
                         <button className="buttonHP">Login</button>
                       </RouterLink>
                     )}
@@ -230,7 +230,7 @@ const HomePage = () =>{
 
        <form method="post" onSubmit={handleFormSubmit}>
             <div className="searchBarWrapper">
-                <input className="searchBar" type="text" placeholder="Search..." value={artistName} onChange={handleInputChange}/>
+                <input className="searchBar" type="text" placeholder="Search artist concerts..." value={artistName} onChange={handleInputChange}/>
             </div>
        </form>
 

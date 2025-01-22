@@ -181,12 +181,13 @@ const Concerts = () => {
                 <strong>Venue:</strong> {concert.venue}
               </p>
               
-                <button onClick={() => removeFromFavorites(concert.performerId)}>Remove from Favorites</button>
-              
-                <button onClick={() => addToFavorites(concert.performerId)}>Add to Favorites</button>
-              
             </div>
-          </div>
+          <div className="buttongroupMU"> 
+                <button className="addtofav" onClick={() => addToFavorites(concert.performerId)}>Add to Favorites</button>
+
+                <button className="removefromfav" onClick={() => removeFromFavorites(concert.performerId)}>Remove from Favorites</button>
+          </div>  
+  </div>
         ))
       ) : (
         <p>No concerts found.</p>
