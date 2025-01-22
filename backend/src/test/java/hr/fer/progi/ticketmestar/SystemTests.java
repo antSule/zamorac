@@ -18,13 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SystemTests {
 	WebDriver driver = new ChromeDriver();
 	private static final Logger logger = LoggerFactory.getLogger(SystemTests.class);
-
-	@BeforeAll
-	public static void setup() {
-		System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Chrome Driver\\chromedriver.exe");
-		logger.info("Chrome driver loaded");
-	}
-
+	
 	@Test
 	public void testGoogleLogin() {
 		logger.info("Testing Google login with good credentials");
