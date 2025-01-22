@@ -112,7 +112,7 @@ const EditConcert = () => {
                     >
                     <RouterLink to="/home" className="buttonLink">
                       <img
-                        src="fakelogo.png"
+                        src="/fakelogo.png"
                         alt="logo"
                         width={100}
                         style={{

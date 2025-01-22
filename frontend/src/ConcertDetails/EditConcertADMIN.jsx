@@ -112,7 +112,7 @@ const EditConcertADMIN = () => {
                     >
                     <RouterLink to="/home" className="buttonLink">
                       <img
-                        src="fakelogo.png"
+                        src="/fakelogo.png"
                         alt="logo"
                         width={100}
                         style={{
@@ -129,7 +129,7 @@ const EditConcertADMIN = () => {
                           color: "white",
                         }}
                       >
-                        Edit Concert
+                        Edit Concert Admin
                       </div>
                     </div>
                   </section>
