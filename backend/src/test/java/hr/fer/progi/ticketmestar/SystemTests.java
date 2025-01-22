@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SystemTests {
 	WebDriver driver = new ChromeDriver();
 	private static final Logger logger = LoggerFactory.getLogger(SystemTests.class);
-	
+
 	@Test
 	public void testGoogleLogin() {
 		logger.info("Testing Google login with good credentials");
