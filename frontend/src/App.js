@@ -22,6 +22,7 @@ import ManageConcerts from './components/ManageConcerts';
 import ArtistConcerts from './components/ArtistConcerts';
 import EditConcert from './ConcertDetails/EditConcert';
 import EditConcertADMIN from './ConcertDetails/EditConcertADMIN';
+import ConcertsNoArtist from './components/ConcertsNoArtists';
 
 function App() {
   return (
@@ -34,7 +35,6 @@ function App() {
                 <Route path="/select-role" element={<SelectRolePage />} />
                 <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
                 <Route path="/concerts" element={<ProtectedRoute><Concerts /></ProtectedRoute>} />
-                <Route path="/favourites" element={<ProtectedRoute><Favourites /></ProtectedRoute>} />
                 <Route path="/my-concerts" element={<ProtectedRoute><MyConcerts /></ProtectedRoute>} />
                 <Route path="/ticketmaster" element ={<ProtectedRoute><Ticketmaster/></ProtectedRoute>}/>
                 <Route path="/google-maps" element ={<ProtectedRoute><GoogleMapsAdd/></ProtectedRoute>}/>
@@ -46,6 +46,8 @@ function App() {
                 <Route path="/favourites" element={<ProtectedRoute><Favourites /></ProtectedRoute>} />
                 <Route path="/concerts/artist/:artistId" element={<ProtectedRoute><ArtistConcerts /></ProtectedRoute>} />
                 <Route path="/edit-concert/:id" element={<ProtectedRoute><EditConcert /></ProtectedRoute>}/>
+                <Route path="/concert-details" element={<ProtectedRoute><ConcertDetails /> </ProtectedRoute>} />
+                <Route path="/no-artists" element={<ProtectedRoute><ConcertsNoArtist/></ProtectedRoute>} />
                 <Route path="/edit-concert-admin/:id" element={<ProtectedRoute><EditConcertADMIN /></ProtectedRoute>} />
             </Routes>
         </Router>
