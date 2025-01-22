@@ -80,7 +80,7 @@ const ManageUsers = () => {
         setSearchParams((prevParams) => ({ ...prevParams, provider: e.target.value }));
     };
 
-
+    
     const handleSearchChange = (e) => {
         setSearchParams((prevParams) => ({ ...prevParams, username: e.target.value }));
     };
@@ -191,8 +191,9 @@ const ManageUsers = () => {
     }
 
     return (
+        <div className='ManageUsersPage'>
         <body className='bodyMU'>
-        <section className="h-wrapper">
+            <section className="h-wrapper">
                 <div
                   className="flexCenter paddings innerWidth h-container"
                   style={{
@@ -226,22 +227,25 @@ const ManageUsers = () => {
                   </div>
                 </div>
               </section>
-        <div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-            <h2>Search Users</h2>
+        <div className='ManageUsers'>
+            <div className='formMU'>
+            <h1 className='naslovMU'>Manage Users</h1>
+            <h2 className='searchusers'>Search Users</h2>
             <div>
                 <input
+                    className='searchBarMU'
                     type="text"
                     placeholder="Search by Username"
                     value={searchParams.username}
                     onChange={handleSearchChange}
                 />
-                <div>
-                    <p>Select Role:</p>
+                <p className='selectroleMU'>Select Role:</p>
+                <div className='checkboxMU-container'>
+                    
                     {roles.map((role) => (
-                        <label key={role}>
+                        <label key={role} className='checkboxMU'>
                             <input
+                                className='inputMU'
                                 type="radio"
                                 name="role"
                                 value={role}
@@ -252,10 +256,10 @@ const ManageUsers = () => {
                         </label>
                     ))}
                 </div>
-                <div>
-                    <p>Select Provider:</p>
+                <p className='selectroleMU'>Select Provider:</p>
+                <div className='checkboxMU-container'>
                     {providers.map((provider) => (
-                        <label key={provider}>
+                        <label className = 'checkboxMU' key={provider}>
                             <input
                                 type="radio"
                                 name="provider"
@@ -267,49 +271,58 @@ const ManageUsers = () => {
                         </label>
                     ))}
                 </div>
-                <button onClick={handleSearchSubmit}>Search</button>
+                <button className='buttonMU' onClick={handleSearchSubmit}>Search</button>
             </div>
 
-            <h2>Users List</h2>
-            <ul>
+            <h2 className='selectroleMU'>Users List</h2>
+            <ul className='listausera'>
                 {filteredUsers.length > 0 ?(
                     filteredUsers.map((user) => (
-                    <li key={user.id}>
-                        <span>{user.username} ({user.email})</span>
-                        <button onClick={() => handleDeleteClick(user.id)}>Delete</button>
-                        <button onClick={() => setSelectedUserId(user.id)}>Change Role</button>
+                    <li className='userMU' key={user.id}>
+                        <div className='usercontainer'>
+                        <span>{user.username}</span>
+                        <span> ({user.email})</span>
+                        </div>
+                        <button className = 'deleteMU'onClick={() => handleDeleteClick(user.id)}>Delete</button>
+                        <button className = 'changeMU' onClick={() => setSelectedUserId(user.id)}>Change Role</button>
                     </li>
                 ))
-            ):(<p>No users found.</p>)}
+            ):(<p className='NoUsersFound'>No users found.</p>)}
             </ul>
 
-            {selectedUserId && (
-                <div>
-                    <h3>Change Role for User ID: {selectedUserId}</h3>
-                    <p>Current Roles:</p>
-                    <ul>
-                        {currentRoles.map((role) => (
-                            <li key={role}>{role}</li>
-                        ))}
-                    </ul>
-                    <p>Select roles for the user:</p>
-                    {roles.map((role) => (
-                        <div key={role}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value={role}
-                                    onChange={handleRoleChange}
-                                    checked={newRoles.includes(role)}
-                                />
-                                {role}
-                            </label>
-                        </div>
-                    ))}
-                    <button onClick={changeUserRole}>Update Role</button>
+{selectedUserId && (
+    <div className="change-role-modal">
+        <div className="modal-content">
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+            <h3 className='ModalNaslov'>Change Role for User ID: {selectedUserId}</h3>
+            <p className='podnaslovMUmod'>Current Roles:</p>
+            <ul className='listarolova'>
+                {currentRoles.map((role) => (
+                    <li key={role}>{role}</li>
+                ))}
+            </ul>
+            <p className='podnaslovMUmod'>Select roles for the user:</p>
+            <div className='checkboxMU-container'> 
+            {roles.map((role) => (
+                <div key={role}>
+                    <label className='checkboxMU'>
+                        <input
+                            type="checkbox"
+                            value={role}
+                            onChange={handleRoleChange}
+                            checked={newRoles.includes(role)}
+                        />
+                        {role}
+                    </label>
                 </div>
-            )}
-
+            ))}
+            </div>
+            <button onClick={changeUserRole}>Update Role</button>
+            <button id='close' onClick={() => setSelectedUserId('')}>Close</button> {/* Gumb za zatvaranje modala */}
+        </div>
+    </div>
+)}
             {showDeleteModal && (
                 <div className="delete-modal">
                     <div className="modal-content">
@@ -319,8 +332,10 @@ const ManageUsers = () => {
                     </div>
                 </div>
             )}
+            </div>
         </div>
     </body>
+    </div>    
     );
 };
 

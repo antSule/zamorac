@@ -1,3 +1,11 @@
+.ManageUsersPage html,
+.ManageUsersPage body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .delete-modal {
     position: fixed;
     top: 0;
@@ -10,7 +18,33 @@
     align-items: center;
 }
 
-.formMU{
+/* Globalni stilovi */
+.bodyMU {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* Visina zauzima ceo prozor */
+  overflow-y:scroll; /* Samo jedan scrollbar za ceo sadržaj */
+  overflow-x: hidden; /* Uklanja horizontalni scrollbar */
+}
+
+/* Glavni sadržaj */
+.ManageUsers {
+  min-height: 100%; /* Podesite visinu sadržaja */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Poravnanje prema vrhu */
+  align-items: center;
+  padding: 40px 20px;
+  background-size: cover;
+  overflow: visible;
+}
+
+/* Forma */
+.formMU {
+  margin-top: 30px; /* Pomerite formu na željenu poziciju */
   background-color: #ffffffc9;
   border-radius: 60px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -18,19 +52,10 @@
   width: 100%;
   max-width: 500px;
   text-align: center;
+  overflow: visible;
 }
 
-.ManageUsers{
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        /*background: url(../slike/koncertslika.jpg) no-repeat center center; */
-        background-size: cover;
-        padding: 5px; 
-        
-}
+
 
 .modal-content {
     background: white;
@@ -43,13 +68,6 @@
     margin: 10px;
     padding: 10px 20px;
     cursor: pointer;
-}
-.bodyMU {
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    overflow: hidden;
 }
 
 
@@ -187,7 +205,140 @@
     background-color: white;
 }
 
-.userMU{
-    font-size: 12px;
-    font-weight: 700;
+
+
+.listausera {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listarolova{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+}
+
+.podnaslovMUmod{
+font-size: 17px;
+color:rgba(9, 51, 26, 0.937);
+font-weight: 700;
+}
+
+.userMU {
+  display: flex;
+  justify-content: space-between; /* Razdvaja elemente između leve i desne strane */
+  align-items: flex-start; /* Poravnava elemente sa početkom */
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.usercontainer {
+  display: flex;
+  flex-direction: column; /* Postavlja username iznad emaila */
+}
+
+.usercontainer span {
+  display: block; /* Svaki span ide u novi red */
+  font-size: 1rem;
+}
+
+.usercontainer span:first-child {
+  font-weight: bold; /* Username je podebljan */
+}
+
+.userMU button {
+  margin-left: 10px; /* Razmak između dugmadi */
+}
+
+.userMU .usercontainer {
+  flex-grow: 1; /* Omogućava da se prostor između korisničkog teksta i dugmadi širi */
+}
+
+
+
+
+
+
+
+/* Modal Container */
+.change-role-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Tamni overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Da bude iznad ostalog sadržaja */
+}
+
+/* Modal Content */
+.change-role-modal .modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Close Button */
+.change-role-modal button {
+  background-color: rgba(9, 51, 26, 0.937);
+  color: #ffffff;
+  border: none;
+  padding: 2px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.4s ease;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 130px;
+  height: 30px;
+}
+
+.change-role-modal button:hover{
+  color:  rgba(9, 51, 26, 0.937);
+  border: 1px solid  rgba(9, 51, 26, 0.937);
+  background-color: white;
+}
+
+.change-role-modal button#close{
+  background-color: #4d1818;
+  color: #ffffff;
+  border: none;
+  padding: 2px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.4s ease;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 130px;
+  height: 30px;
+}
+
+.change-role-modal button#close:hover{
+  color: #792727;
+  border: 1px solid #792727;
+  background-color: white;
+}
+
+.ModalNaslov{
+  font-size: 20px;
+  color:rgba(9, 51, 26, 0.937);
+}
+
+.NoUsersFound{
+  font-size: 17px;
+  color: #4d1818;
+  font-weight: 700;
 }
