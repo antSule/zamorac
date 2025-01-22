@@ -62,10 +62,13 @@ public class ConcertService{
         return ResponseEntity.status(HttpStatus.CREATED).body(savedConcert);
     }
 
-    public AddConcertDto getConcertById(Long id) {
+    public AddConcertDto getConcertById(Long id, Long userId, boolean isAdmin) {
         Concert concert = concertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Concert not found."));
 
+        if(!isAdmin && !concert.getPerformerId().equals(userId)){
+            throw new IllegalStateException("You are not allowed to see this concert information.");
+        }
 
         System.out.println("Concert entity: " + concert);
 
@@ -90,10 +93,14 @@ public class ConcertService{
 
 
 
-    public AddConcertDto updateConcert(Long id, AddConcertDto concertDto) {
+    public AddConcertDto updateConcert(Long id, AddConcertDto concertDto, Long userId, boolean isAdmin) {
         Concert concert = concertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Concert not found"));
 
+
+        if(!isAdmin && !concert.getPerformerId().equals(userId)){
+            throw new IllegalStateException("You are not allowed to edit this concert");
+        }
         concert.setDate(concertDto.getDate());
         concert.setTime(concertDto.getTime());
         concert.setPerformer(concertDto.getPerformer());

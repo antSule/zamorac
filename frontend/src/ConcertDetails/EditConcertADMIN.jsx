@@ -22,8 +22,35 @@ const EditConcertADMIN = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [concertFetchError, setConcertFetchError] = useState(false);
 
   useEffect(() => {
+    const checkUserRole = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+        const response = await axios.get('http://localhost:8080/user-info', { withCredentials: true, headers });
+
+        const userRoles = response.data.roles || [];
+        if (userRoles.includes('ADMIN')) {
+          setHasAccess(true); 
+        } else {
+          setHasAccess(false);
+          setLoading(false);
+        }
+      } catch (err) {
+        setError('Error verifying user roles.');
+        console.error(err);
+      }
+    };
+
+    checkUserRole();
+  }, []);
+
+  useEffect(() => {
+    if(hasAccess){
     const fetchConcert = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -37,6 +64,9 @@ const EditConcertADMIN = () => {
         );
 
         console.log("Fetched concert data:", response.data);
+        if(response.data === ""){
+          setConcertFetchError(true);
+        }
 
         setFormData({
           date: response.data.date || "",
@@ -110,7 +140,8 @@ const EditConcertADMIN = () => {
     };
 
     fetchConcert();
-  }, [id]);
+  }
+  }, [hasAccess, id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -153,6 +184,17 @@ const EditConcertADMIN = () => {
   };
 
   if (loading) return <p>Loading concert details...</p>;
+  if (!hasAccess) {
+    return (
+      <div className="no-access-container">
+        <div className="no-access-message">
+          <h2>⚠️ Access Denied</h2>
+          <p>You do not have permission to access this page.</p>
+        </div>
+      </div>
+    );
+  }
+  if(concertFetchError) return <p>Concert not found.</p>
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (

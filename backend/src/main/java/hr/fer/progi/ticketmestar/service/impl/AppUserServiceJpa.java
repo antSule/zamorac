@@ -81,6 +81,8 @@ public class AppUserServiceJpa implements AppUserDetailsService {
     @Transactional
     @Override
     public void removeFavoriteArtist(AppUser currentUser, Long artistId) {
+        System.out.println(artistId);
+        System.out.println(currentUser.toString());
         AppUser artist = appUserRepo.findById(artistId)
                 .orElseThrow(() -> new UsernameNotFoundException("Artist not found."));
 

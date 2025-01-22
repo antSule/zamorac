@@ -22,7 +22,7 @@ const EditConcert = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [concertFetchError, setConcertFetchError] = useState(false);
   useEffect(() => {
     const fetchConcert = async () => {
       try {
@@ -38,6 +38,9 @@ const EditConcert = () => {
 
         console.log("Fetched concert data:", response.data);
 
+        if(response.data === "Error"){
+          setConcertFetchError(true)
+        }
         setFormData({
           date: response.data.date || "",
           time: response.data.time || "",
@@ -153,6 +156,16 @@ const EditConcert = () => {
   };
 
   if (loading) return <p>Loading concert details...</p>;
+  if (concertFetchError) {
+    return (
+      <div className="no-access-container">
+        <div className="no-access-message">
+          <h2>⚠️ Access Denied</h2>
+          <p>You do not have permission to access this page.</p>
+        </div>
+      </div>
+    );
+  }
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
