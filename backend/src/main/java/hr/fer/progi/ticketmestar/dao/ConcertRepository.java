@@ -22,12 +22,12 @@ public interface ConcertRepository extends JpaRepository<Concert, Long> {
     );
 
     @Query("SELECT c FROM Concert c WHERE " +
-            "(:date IS NULL OR c.date = :date) AND " +
-            "(:performer IS NULL OR c.performer = :performer) AND " +
+            "(COALESCE(:date, c.date) = c.date) AND " +
+            "(COALESCE(:performer, c.performer) = c.performer) AND " +
             "(:latitude IS NULL OR :longitude IS NULL OR " +
-            "(6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(c.latitude)) * " +
-            "COS(RADIANS(c.longitude) - RADIANS(:longitude)) + " +
-            "SIN(RADIANS(:latitude)) * SIN(RADIANS(c.latitude)))) <= :radius) ")
+            "(6371 * ACOS(COS((PI() / 180) * (:latitude)) * COS((PI() / 180) * (c.latitude)) * " +
+            "COS((PI() / 180) * (c.longitude - (PI() / 180) * (:longitude))) + " +
+            "SIN((PI() / 180) * (:latitude)) * SIN((PI() / 180) * (c.latitude)))) <= :radius)")
     List<Concert> findConcert(
             @Param("date") LocalDate date,
             @Param("performer") String performer,
