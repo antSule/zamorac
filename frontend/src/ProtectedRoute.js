@@ -6,10 +6,12 @@ import { useState, useEffect } from 'react';
 const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     useEffect(() => {
         axios
-            .get('http://localhost:8080/user-info', { withCredentials: true })
+            .get(`${BACKEND_URL}/user-info`, { withCredentials: true })
             .then((response) => {
                 if (response.data) {
                     setIsAuthenticated(true);

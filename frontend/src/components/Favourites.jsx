@@ -9,6 +9,8 @@ const Favourites = () => {
   const [genresArray, setGenresArray] = useState([]);
   const [hasAccess, setHasAccess] = useState(false);
   const navigate = useNavigate();
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   useEffect(() => {
       const token = localStorage.getItem('token');
@@ -20,7 +22,7 @@ const Favourites = () => {
           : undefined;
 
       axios
-          .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+          .get(`${BACKEND_URL}/user-info`, { withCredentials: true, headers })
           .then((response) => {
               const userRoles = response.data.roles || [];
               if (userRoles.includes("USER") || userRoles.includes("ADMIN") || userRoles.includes("ARTIST") || userRoles.includes("SPOTIFY")) {
@@ -41,7 +43,7 @@ const Favourites = () => {
 
   const fetchFavorites = async (headers) => {
     try {
-      const response = await axios.get("http://localhost:8080/favorites", { withCredentials: true, headers });
+      const response = await axios.get(`${BACKEND_URL}/favorites`, { withCredentials: true, headers });
       setFavoriteArtists(response.data);
       console.log(response.data); 
     } catch (error) {
@@ -51,7 +53,7 @@ const Favourites = () => {
 
   const fetchSpotifyFollowing = async (headers) => {
     try {
-      const response = await fetch("http://localhost:8080/spotify/me/following", {
+      const response = await fetch(`${BACKEND_URL}/spotify/me/following`, {
         method: "GET",
         headers: headers,
         credentials: "include",
@@ -84,12 +86,12 @@ const handleSeeConcerts = async (artistName, performerId) => {
     try {
         console.log("artistName " + artistName);
         const ticketMasterConcertsPromise = axios.get(
-          `http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`,
+          `${BACKEND_URL}/concerts/concerts?artist=${encodeURIComponent(artistName)}`,
           { headers, withCredentials: true }
         );
 
         const inAppConcertsPromise = performerId
-          ? axios.get(`http://localhost:8080/concerts/all`, {
+          ? axios.get(`${BACKEND_URL}/concerts/all`, {
               headers,
               withCredentials: true,
             })

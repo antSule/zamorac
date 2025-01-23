@@ -17,6 +17,8 @@ const GoogleMapsTicket = () => {
   const [infoWindowContent, setInfoWindowContent] = useState(null);
   const [isFromSearch, setIsFromSearch] = useState(false);
   const autocompleteRef = useRef(null);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   const handleMapClick = (event) => {
     const clickedLocation = event.latLng;
@@ -32,7 +34,7 @@ const GoogleMapsTicket = () => {
     if (selectedLocation) {
       const lat = selectedLocation.lat;
       const lng = selectedLocation.lng;
-      const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
+      const url = `${FRONTEND_URL}/ticketmaster?lat=${lat}&lng=${lng}`;
       window.location.href = url;
     } else {
       alert("Molimo odaberite lokaciju prije potvrde!");

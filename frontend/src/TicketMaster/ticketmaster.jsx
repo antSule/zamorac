@@ -11,6 +11,8 @@ const Ticketmaster = () => {
     const [location, setLocation] = useState("");
     const [radius, setRadius] = useState("");
     const [hasAccess, setHasAccess] = useState(false);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -22,7 +24,7 @@ const Ticketmaster = () => {
             : undefined;
 
         axios
-            .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+            .get(`${BACKEND_URL}/user-info`, { withCredentials: true, headers })
             .then((response) => {
                 const userRoles = response.data.roles || [];
                 if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST') || userRoles.includes('USER')) {
@@ -111,7 +113,7 @@ const Ticketmaster = () => {
               }
             : undefined;
 
-        fetch(`http://localhost:8080/concerts/concerts${query}`, {
+        fetch(`${BACKEND_URL}/concerts/concerts${query}`, {
             method: 'GET',
             headers: headers,
             credentials: 'include',

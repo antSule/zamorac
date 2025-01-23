@@ -10,6 +10,7 @@ import hr.fer.progi.ticketmestar.spotify.SpotifyService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+
 import java.io.IOException;
 import java.util.*;
 
@@ -30,6 +32,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     private final AppUserRepository userRepository;
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final SpotifyService spotifyService;
+    @Value("${progi.frontend.url}")
+    private String frontendUrl;
 
     public CustomOAuth2SuccessHandler(AppUserRepository userRepository,
                                       OAuth2AuthorizedClientService authorizedClientService,
@@ -52,7 +56,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             System.out.println("Spotify login");
             handleSpotifyLogin(oauth2AuthenticationToken, response);
         } else {
-            response.sendRedirect("http://localhost:3000/home");
+            response.sendRedirect(frontendUrl + "/home");
         }
     }
 
@@ -78,9 +82,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         updateSecurityContext(appUser, oAuth2User);
 
         if (appUser.getRole().contains(Role.NULL_USER)) {
-            response.sendRedirect("http://localhost:3000/select-role");
+            response.sendRedirect(frontendUrl + "/select-role");
         } else {
-            response.sendRedirect("http://localhost:3000/home");
+            response.sendRedirect(frontendUrl + "/home");
         }
     }
 
@@ -133,9 +137,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         SecurityContextHolder.getContext().setAuthentication(updatedAuth);
 
         if (appUser.getRole().contains(Role.NULL_USER)) {
-            response.sendRedirect("http://localhost:3000/select-role");
+            response.sendRedirect(frontendUrl + "/select-role");
         } else {
-            response.sendRedirect("http://localhost:3000/home");
+            response.sendRedirect(frontendUrl + "/home");
         }
     }
 

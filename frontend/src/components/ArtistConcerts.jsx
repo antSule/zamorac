@@ -6,10 +6,12 @@ import { Link as RouterLink } from "react-router-dom";
 const ArtistConcerts = () => {
   const { artistId } = useParams(); // Dobivamo artistId iz URL parametra
   const [concerts, setConcerts] = useState([]);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   useEffect(() => {
     // Fetch koncerata za odabranog izvođača
-    fetch(`http://localhost:8080/concerts/artist/${artistId}`, {
+    fetch(`${BACKEND_URL}/concerts/artist/${artistId}`, {
       credentials: "include",
     })
       .then((response) => {

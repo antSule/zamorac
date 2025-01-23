@@ -23,6 +23,8 @@ const EditConcert = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [concertFetchError, setConcertFetchError] = useState(false);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
   useEffect(() => {
     const fetchConcert = async () => {
       try {
@@ -124,7 +126,7 @@ const EditConcert = () => {
   setLocationDetails("");
   localStorage.removeItem("concert-location");
 
-  window.location.href = `http://localhost:3000/google-maps-edit/${id}`;
+  window.location.href = `${FRONTEND_URL}/google-maps-edit/${id}`;
   };
 
   const handleFormSubmit = async (e) => {
@@ -143,7 +145,7 @@ const EditConcert = () => {
       console.log("Submitting updated concert data:", payload);
 
       await axios.put(
-        `http://localhost:8080/concerts/edit-concert?id=${id}`,
+        `${BACKEND_URL}/concerts/edit-concert?id=${id}`,
         payload,
         { withCredentials: true, headers }
       );

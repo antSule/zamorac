@@ -8,24 +8,26 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     const handleGoogleLogin = () => {
         localStorage.removeItem("token");
         localStorage.clear();
-        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+        window.location.href = `${BACKEND_URL}/oauth2/authorization/google`;
     };
 
     const handleSpotifyLogin = () => {
         localStorage.removeItem("token");
         localStorage.clear();
-        window.location.href = 'http://localhost:8080/oauth2/authorization/spotify';
+        window.location.href = `${BACKEND_URL}/oauth2/authorization/spotify`;
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8080/auth/login", {
+            const response = await fetch(`${BACKEND_URL}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

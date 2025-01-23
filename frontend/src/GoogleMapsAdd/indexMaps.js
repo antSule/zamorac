@@ -69,7 +69,7 @@ async function init() {
             //console.log('Geografska širina:', selectedLocation.lat());
             //console.log('Geografska dužina:', selectedLocation.lng());
 
-            const url = `http://localhost:3000/addNewConcert?lat=${lat}&lng=${lng}`;
+            const url = `${FRONTEND_URL}/addNewConcert?lat=${lat}&lng=${lng}`;
 
             window.location.href = url;
 
