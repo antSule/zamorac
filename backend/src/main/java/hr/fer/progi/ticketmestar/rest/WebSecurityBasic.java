@@ -34,7 +34,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityBasic {
 
-    @Value("${progi.fronted.url}")
+    @Value("${progi.frontend.url}")
     private String frontendUrl;
 
     private final AuthenticationProvider authenticationProvider;
@@ -88,7 +88,7 @@ public class WebSecurityBasic {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "SESSION", "XSRF-TOKEN", "access_token")
-                .logoutSuccessUrl("http://localhost:3000/")
+                .logoutSuccessUrl(frontendUrl + "/")
         );
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
@@ -105,7 +105,7 @@ public class WebSecurityBasic {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:63342"));
+        configuration.setAllowedOrigins(List.of(frontendUrl, "http://localhost:63342"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "*"));
         configuration.setAllowCredentials(true);

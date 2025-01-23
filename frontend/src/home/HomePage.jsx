@@ -20,6 +20,8 @@ const HomePage = () =>{
     const [concertImages, setConcertImages] = useState([]);
     const [concertUrls, setConcertUrls] = useState([]);
     const navigate = useNavigate();
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     const handleInputChange = (event) => {
             setArtistName(event.target.value);
@@ -60,7 +62,7 @@ const HomePage = () =>{
             let query = "";
             if (tomorrowDate) query += `?date=${tomorrowDate}`;
 
-            fetch(`http://localhost:8080/concerts/concerts${query}`, {
+            fetch(`${BACKEND_URL}/concerts/concerts${query}`, {
                 method: 'GET',
                 headers: headers,
                 credentials: 'include',
@@ -100,7 +102,7 @@ const HomePage = () =>{
             : undefined;
 
         axios
-            .get('http://localhost:8080/user-info', {
+            .get(`${BACKEND_URL}/user-info`, {
                 withCredentials: true,
                 headers,
             })
@@ -116,7 +118,7 @@ const HomePage = () =>{
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.clear();
-        window.location.href='http://localhost:8080/logout';
+        window.location.href=`${BACKEND_URL}/logout`;
     }
 
     const handleSearch = (artistName) => {
@@ -128,7 +130,7 @@ const HomePage = () =>{
                 }
             : undefined;
 
-            fetch(`http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`, {
+            fetch(`${BACKEND_URL}/concerts/concerts?artist=${encodeURIComponent(artistName)}`, {
               method: "GET",
               headers: headers,
               credentials: 'include'

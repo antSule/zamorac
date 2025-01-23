@@ -24,6 +24,8 @@ const EditConcertADMIN = () => {
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
   const [concertFetchError, setConcertFetchError] = useState(false);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -31,7 +33,7 @@ const EditConcertADMIN = () => {
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
-        const response = await axios.get('http://localhost:8080/user-info', { withCredentials: true, headers });
+        const response = await axios.get(`${BACKEND_URL}/user-info`, { withCredentials: true, headers });
 
         const userRoles = response.data.roles || [];
         if (userRoles.includes('ADMIN')) {
@@ -59,7 +61,7 @@ const EditConcertADMIN = () => {
           : undefined;
 
         const response = await axios.get(
-          `http://localhost:8080/concerts/concert-info?id=${id}`,
+          `${BACKEND_URL}/concerts/concert-info?id=${id}`,
           { withCredentials: true, headers }
         );
 
@@ -152,7 +154,7 @@ const EditConcertADMIN = () => {
   setLocationDetails("");
   localStorage.removeItem("concert-location");
 
-  window.location.href = `http://localhost:3000/google-maps-edit-admin/${id}`;
+  window.location.href = `${FRONTEND_URL}/google-maps-edit-admin/${id}`;
   };
 
   const handleFormSubmit = async (e) => {
@@ -171,7 +173,7 @@ const EditConcertADMIN = () => {
       console.log("Submitting updated concert data:", payload);
 
       await axios.put(
-        `http://localhost:8080/concerts/edit-concert?id=${id}`,
+        `${BACKEND_URL}/concerts/edit-concert?id=${id}`,
         payload,
         { withCredentials: true, headers }
       );

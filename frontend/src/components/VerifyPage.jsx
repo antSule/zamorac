@@ -9,11 +9,13 @@ function VerifyPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch("http://localhost:8080/auth/verify", {
+        const response = await fetch(`${BACKEND_URL}/auth/verify`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, verificationCode: code }),
@@ -35,7 +37,7 @@ function VerifyPage() {
       setError(null);
       setMessage(null);
       try {
-        const response = await fetch(`http://localhost:8080/auth/resend?email=${encodeURIComponent(email)}`, {
+        const response = await fetch(`${BACKEND_URL}/auth/resend?email=${encodeURIComponent(email)}`, {
           method: "POST",
         });
 

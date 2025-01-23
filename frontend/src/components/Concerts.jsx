@@ -7,6 +7,8 @@ const Concerts = () => {
   const [concerts, setConcerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   // Local storage state for favorites
   const [favorites, setFavorites] = useState(() => {
@@ -24,7 +26,7 @@ const Concerts = () => {
       : undefined;
 
     axios
-      .get("http://localhost:8080/user-info", { withCredentials: true, headers })
+      .get(`${BACKEND_URL}/user-info`, { withCredentials: true, headers })
       .then((response) => {
         const userRoles = response.data.roles || [];
         if (userRoles.includes('USER') || userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
@@ -42,7 +44,7 @@ const Concerts = () => {
 
   const fetchConcerts = async (headers) => {
     try {
-      const response = await axios.get("http://localhost:8080/concerts/all", { withCredentials: true, headers });
+      const response = await axios.get(`{BACKEND_URL}/concerts/all`, { withCredentials: true, headers });
       if (Array.isArray(response.data)) {
         setConcerts(response.data);
       } else {
@@ -66,7 +68,7 @@ const Concerts = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/add-favorite?artistId=${performerId}`,
+        `${BACKEND_URL}/add-favorite?artistId=${performerId}`,
         null,
         { withCredentials: true, headers }
       );
@@ -93,7 +95,7 @@ const Concerts = () => {
 
     try {
       await axios.post(
-        `http://localhost:8080/remove-favorite?artistId=${performerId}`,
+        `${BACKEND_URL}/remove-favorite?artistId=${performerId}`,
         null,
         { withCredentials: true, headers }
       );

@@ -11,11 +11,13 @@ const MyConcerts = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [concertToDelete, setConcertToDelete] = useState(null);
   const [hasAccess, setHasAccess] = useState(false);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
   const navigate = useNavigate();
   const fetchMyConcerts = async (headers) => {
       try {
-        const response = await axios.get("http://localhost:8080/concerts/me", { withCredentials:true,headers });
+        const response = await axios.get(`${BACKEND_URL}/concerts/me`, { withCredentials:true,headers });
         const data = response.data;
         console.log(data);
         if (Array.isArray(data)) {
@@ -36,7 +38,7 @@ const MyConcerts = () => {
 
   const deleteConcert = async (concertId, headers) => {
     try {
-      await axios.post(`http://localhost:8080/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
+      await axios.post(`${BACKEND_URL}/concerts/delete?concertId=${concertId}`, {}, { withCredentials: true, headers });
       fetchMyConcerts(headers);
     } catch (err) {
       setError('Error deleting concert.');
@@ -76,7 +78,7 @@ const MyConcerts = () => {
         : undefined;
 
       axios
-        .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+        .get(`${BACKEND_URL}/user-info`, { withCredentials: true, headers })
         .then((response) => {
           const userRoles = response.data.roles || [];
           if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {

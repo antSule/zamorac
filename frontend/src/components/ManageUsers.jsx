@@ -19,6 +19,8 @@ const ManageUsers = () => {
         provider: null
     });
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     const roles = ["USER", "ARTIST", "SPOTIFY", "ADMIN"];
     const providers = ["GOOGLE", "SPOTIFY", "JWT"];
@@ -90,7 +92,7 @@ const ManageUsers = () => {
 
         try {
             const rolesParam = newRoles.join(',');
-            const url = `http://localhost:8080/admin/roles?userId=${selectedUserId}&roles=${encodeURIComponent(rolesParam)}`;
+            const url = `${BACKEND_URL}/admin/roles?userId=${selectedUserId}&roles=${encodeURIComponent(rolesParam)}`;
             console.log(url);
 
             await axios.get(url, { withCredentials:true,headers });
@@ -150,7 +152,7 @@ const ManageUsers = () => {
            }
          : undefined;
 
-        axios.get('http://localhost:8080/user-info', {withCredentials: true, headers})
+        axios.get(`${BACKEND_URL}/user-info`, {withCredentials: true, headers})
         .then((response) => {
             const userRoles = response.data.roles || [];
             if(userRoles.includes('ADMIN')){

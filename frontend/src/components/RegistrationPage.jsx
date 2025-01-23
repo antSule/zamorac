@@ -14,6 +14,8 @@ const RegistrationPage = () => {
     const [selectedRoles, setSelectedRoles] = useState([]);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     const handleRoleChange = (role) => {
             setSelectedRoles((prevRoles) =>
@@ -37,7 +39,7 @@ const RegistrationPage = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch("http://localhost:8080/auth/signup", {
+            const response = await fetch(`${BACKEND_URL}/auth/signup`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

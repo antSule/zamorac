@@ -1,3 +1,4 @@
+
 package hr.fer.progi.ticketmestar;
 
 import org.springframework.boot.SpringApplication;

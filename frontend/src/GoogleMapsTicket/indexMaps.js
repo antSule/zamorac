@@ -5,6 +5,8 @@ async function init() {
     const marker = document.querySelector('gmp-advanced-marker');
     const placePicker = document.querySelector('gmpx-place-picker');
     const infowindow = new google.maps.InfoWindow();
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     let selectedLocation = null;
 
@@ -69,7 +71,7 @@ async function init() {
             //console.log('Geografska širina:', selectedLocation.lat());
             //console.log('Geografska dužina:', selectedLocation.lng());
 
-            const url = `http://localhost:3000/ticketmaster?lat=${lat}&lng=${lng}`;
+            const url = `${FRONTEND_URL}/ticketmaster?lat=${lat}&lng=${lng}`;
 
             window.location.href = url;
 

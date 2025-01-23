@@ -5,6 +5,8 @@ const SelectRolePage = () => {
     const [selectedRoles, setSelectedRoles] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     const roles = ["USER", "ARTIST"];
 
@@ -28,7 +30,7 @@ const SelectRolePage = () => {
 
         try {
             const query = new URLSearchParams({ roles: selectedRoles }).toString();
-            const response = await fetch(`http://localhost:8080/auth/setrole?${query}`, {
+            const response = await fetch(`${BACKEND_URL}/auth/setrole?${query}`, {
                 method: "GET",
                 credentials: "include",
             });

@@ -16,6 +16,8 @@ const AddNewConcert = () => {
     const [venueDetails, setVenueDetails] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [hasAccess, setHasAccess] = useState(false);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -27,7 +29,7 @@ const AddNewConcert = () => {
             : undefined;
 
         axios
-            .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+            .get(`${BACKEND_URL}/user-info`, { withCredentials: true, headers })
             .then((response) => {
                 const userRoles = response.data.roles || [];
                 if (userRoles.includes('ADMIN') || userRoles.includes('ARTIST')) {
@@ -90,7 +92,7 @@ const AddNewConcert = () => {
         setLocationDetails("");
         localStorage.removeItem("concert-location");
 
-        window.location.href = 'http://localhost:3000/google-maps';
+        window.location.href = `${FRONTEND_URL}/google-maps`;
     };
 
     const clearLocation = () => {
@@ -127,7 +129,7 @@ const AddNewConcert = () => {
             }
         }
 
-        fetch("http://localhost:8080/concerts/add", {
+        fetch(`${BACKEND_URL}/concerts/add`, {
             method: 'POST',
             headers,
             body: JSON.stringify(concertData),
