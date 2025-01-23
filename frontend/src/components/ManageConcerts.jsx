@@ -96,8 +96,8 @@ const ManageConcerts = () => {
     }
 
   return (
-    <div id="concerts-container">
-    <section className="h-wrapper">
+    <div className='ManageConcerts'>
+        <section className="h-wrapper">
             <div
               className="flexCenter paddings innerWidth h-container"
               style={{
@@ -131,27 +131,27 @@ const ManageConcerts = () => {
               </div>
             </div>
           </section>
-
+    <div id="ManageConcerts-container">
       {error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : concerts.length > 0 ? (
         concerts.map((concert, index) => (
-          <div className="concert" key={index}>
-            <div className="concert-image">
+          <div className="concertManc" key={index}>
+            <div className="concertManc-image">
               <img
                 src={concert.imageUrl || '/fakelogo.png'}
                 alt={concert.name || 'Concert'}
               />
             </div>
-            <div className="concert-details">
+            <div className="concertManc-details">
               <h3>{concert.event}</h3>
               <p><strong>Performer:</strong> {concert.performer}</p>
               <p><strong>City:</strong> {concert.city}</p>
               <p><strong>Date:</strong> {concert.date}</p>
               <p><strong>Time:</strong> {concert.time}</p>
               <p><strong>Venue:</strong> {concert.venue}</p>
-              <button onClick= {() => handleEditClick(concert.id)}>Edit</button>
-              <button onClick={() => handleDeleteClick(concert.id)}>Delete</button>
+              <button className = 'buttonManc' onClick= {() => handleEditClick(concert.id)}>Edit</button>
+              <button className = 'deleteManc' onClick={() => handleDeleteClick(concert.id)}>Delete</button>
             </div>
           </div>
         ))
@@ -168,6 +168,7 @@ const ManageConcerts = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

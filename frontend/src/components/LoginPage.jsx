@@ -10,10 +10,14 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleGoogleLogin = () => {
+        localStorage.removeItem("token");
+        localStorage.clear();
         window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
 
     const handleSpotifyLogin = () => {
+        localStorage.removeItem("token");
+        localStorage.clear();
         window.location.href = 'http://localhost:8080/oauth2/authorization/spotify';
     };
 

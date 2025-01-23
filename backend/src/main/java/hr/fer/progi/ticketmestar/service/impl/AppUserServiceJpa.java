@@ -59,10 +59,13 @@ public class AppUserServiceJpa implements AppUserDetailsService {
     }
 
 
+
     @Transactional
     @Override
     public void addFavoriteArtist(AppUser currentUser, Long artistId) {
-        System.out.println(artistId);
+        AppUser managedUser = appUserRepo.findById(currentUser.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
         AppUser artist = appUserRepo.findById(artistId)
                 .orElseThrow(() -> new UsernameNotFoundException("Artist not found."));
 
@@ -70,43 +73,52 @@ public class AppUserServiceJpa implements AppUserDetailsService {
             throw new IllegalArgumentException("The user is not an artist and cannot be added to favorites.");
         }
 
-        if (currentUser.getFavoriteArtists().contains(artist)) {
+        if (managedUser.getFavoriteArtists().stream().anyMatch(favArtist -> favArtist.getId().equals(artistId))) {
             throw new IllegalArgumentException("Artist is already in your favorites.");
         }
 
-        currentUser.getFavoriteArtists().add(artist);
-        appUserRepo.save(currentUser);
+        managedUser.getFavoriteArtists().add(artist);
+        appUserRepo.save(managedUser);
     }
+
+
 
     @Transactional
     @Override
     public void removeFavoriteArtist(AppUser currentUser, Long artistId) {
+        AppUser managedUser = appUserRepo.findById(currentUser.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
         AppUser artist = appUserRepo.findById(artistId)
                 .orElseThrow(() -> new UsernameNotFoundException("Artist not found."));
 
-        if (!currentUser.getFavoriteArtists().contains(artist)) {
+        if (managedUser.getFavoriteArtists().stream().noneMatch(favArtist -> favArtist.getId().equals(artistId))) {
             throw new IllegalArgumentException("Artist is not in your favorites.");
         }
 
-        currentUser.getFavoriteArtists().remove(artist);
-        appUserRepo.save(currentUser);
+        managedUser.getFavoriteArtists().removeIf(favArtist -> favArtist.getId().equals(artistId));
+        appUserRepo.save(managedUser);
     }
 
-    @Transactional
+
     @Override
     public Set<AppUser> getFavoriteArtists(AppUser currentUser) {
         try {
             if (currentUser == null) {
                 throw new IllegalStateException("User not authenticated");
             }
-            Set<AppUser> favoriteArtists = currentUser.getFavoriteArtists();
-            if (favoriteArtists == null) {
+            AppUser managedUser = appUserRepo.findById(currentUser.getId())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+            Set<AppUser> favoriteArtists = managedUser.getFavoriteArtists();
+
+            if (favoriteArtists == null || favoriteArtists.isEmpty()) {
                 throw new IllegalStateException("No favorite artists found");
             }
-
             return favoriteArtists;
         } catch (Exception e) {
             throw new RuntimeException("Error fetching favorite artists: " + e.getMessage());
         }
+
     }
 }

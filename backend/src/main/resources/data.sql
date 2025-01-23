@@ -57,3 +57,8 @@ VALUES ('admin', 'admin@admin.com', '$2b$12$UVbYTEkHs6LI/ElOE/3Oqej54doY6rC6d0al
 INSERT INTO user_roles (user_id, role) VALUES
 ((SELECT id FROM app_users WHERE username = 'admin'), 'ADMIN');
 
+INSERT INTO user_roles (user_id, role) VALUES
+((SELECT id FROM app_users WHERE username = 'admin'), 'ARTIST');
+
+INSERT INTO user_roles (user_id, role) VALUES
+((SELECT id FROM app_users WHERE username = 'admin'), 'USER');

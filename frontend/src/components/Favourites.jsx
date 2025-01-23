@@ -5,53 +5,47 @@ import { Link as RouterLink } from "react-router-dom";
 
 const Favourites = () => {
   const [followingArtists, setFollowingArtists] = useState([]);
-  const [favoriteArtists, setFavoriteArtists] = useState([]);
+  const [favoriteArtists, setFavoriteArtists] = useState([])
   const [genresArray, setGenresArray] = useState([]);
   const [hasAccess, setHasAccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const headers = token
-      ? {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        }
-      : undefined;
-
-    axios
-      .get('http://localhost:8080/user-info', { withCredentials: true, headers })
-      .then((response) => {
-        const userRoles = response.data.roles || [];
-        if (userRoles.includes("USER") || userRoles.includes("ADMIN") || userRoles.includes("ARTIST") || userRoles.includes("SPOTIFY")) {
-          setHasAccess(true);
-          fetchFavorites(headers);
-          if(userRoles.includes("SPOTIFY")) {
-            fetchSpotifyFollowing(headers);
+      const token = localStorage.getItem('token');
+      const headers = token
+          ? {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
           }
-        } else {
-          setHasAccess(false);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+          : undefined;
+
+      axios
+          .get('http://localhost:8080/user-info', { withCredentials: true, headers })
+          .then((response) => {
+              const userRoles = response.data.roles || [];
+              if (userRoles.includes("USER") || userRoles.includes("ADMIN") || userRoles.includes("ARTIST") || userRoles.includes("SPOTIFY")) {
+                  setHasAccess(true);
+                  fetchFavorites(headers);
+                  if(userRoles.includes("SPOTIFY")){
+                    fetchSpotifyFollowing(headers);
+                  }
+              } else {
+                  setHasAccess(false);
+              }
+          })
+          .catch((err) => {
+              console.error(err);
+          })
   }, []);
+
 
   const fetchFavorites = async (headers) => {
     try {
-      const response = await axios.get("http://localhost:8080/favourites", {
-        withCredentials: true,
-        headers,
-      });
-
-      // Provjerite je li odgovor niz. Ako nije, koristite prazan niz.
-      const data = Array.isArray(response.data) ? response.data : [];
-      setFavoriteArtists(data); // Postavite favoriteArtists kao niz
-      console.log("Fetched favorite artists:", data);
+      const response = await axios.get("http://localhost:8080/favorites", { withCredentials: true, headers });
+      setFavoriteArtists(response.data);
+      console.log(response.data); 
     } catch (error) {
       console.error("Error fetching favorite artists: ", error);
-      setFavoriteArtists([]); // U slučaju greške, postavite prazni niz
     }
   };
 
@@ -79,69 +73,64 @@ const Favourites = () => {
     }
   };
 
-  const handleSeeConcerts = async (artistName, performerId) => {
-    const token = localStorage.getItem("token");
-    const headers = token
-      ? {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }
-      : {};
-
-    try {
-      const ticketMasterConcertsPromise = axios.get(
-        `http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`,
-        { headers, withCredentials: true }
-      );
-
-      const inAppConcertsPromise = performerId
-        ? axios.get(`http://localhost:8080/concerts`, {
-            headers,
-            withCredentials: true,
-          })
-        : Promise.resolve({ data: [] });
-
-      const [ticketMasterConcertsResponse, inAppConcertsResponse] = await Promise.all([
-        ticketMasterConcertsPromise,
-        inAppConcertsPromise,
-      ]);
-
-      const ticketMasterConcerts = ticketMasterConcertsResponse.data || [];
-      const inAppConcerts = inAppConcertsResponse.data || [];
-
-      const filteredInAppConcerts = performerId
-        ? inAppConcerts.filter((concert) => concert.performerId === performerId)
-        : [];
-
-      let allConcerts = [...filteredInAppConcerts, ...ticketMasterConcerts];
-
-      if (allConcerts.length === 0) {
-        // Ako nema koncerata izvođača, preusmjerava na /no-artists
-        navigate("/no-artists");
-        return;
+const handleSeeConcerts = async (artistName, performerId) => {
+  const token = localStorage.getItem("token");
+  const headers = token
+    ? {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       }
+    : {};
+    try {
+        console.log("artistName " + artistName);
+        const ticketMasterConcertsPromise = axios.get(
+          `http://localhost:8080/concerts/concerts?artist=${encodeURIComponent(artistName)}`,
+          { headers, withCredentials: true }
+        );
 
-      localStorage.setItem("concerts", JSON.stringify(allConcerts));
-      navigate("/ConcertDetails", { state: { concerts: allConcerts } });
-    } catch (error) {
-      console.error("Error fetching concerts:", error);
-      alert("An error occurred while fetching concerts. Please try again later.");
-    }
-  };
-    
-  
-  
-  
+        const inAppConcertsPromise = performerId
+          ? axios.get(`http://localhost:8080/concerts/all`, {
+              headers,
+              withCredentials: true,
+            })
+          : Promise.resolve({ data: [] });
+
+        const [ticketMasterConcertsResponse, inAppConcertsResponse] = await Promise.all([
+          ticketMasterConcertsPromise,
+          inAppConcertsPromise
+        ]);
+
+        const ticketMasterConcerts = ticketMasterConcertsResponse.data;
+        const inAppConcerts = inAppConcertsResponse.data;
+
+        let filteredInAppConcerts = performerId
+          ? inAppConcerts.filter(concert => concert.performerId === performerId)
+          : [];
+
+        let allConcerts = [...filteredInAppConcerts, ...ticketMasterConcerts];
+
+        if (allConcerts.length === 0) {
+          alert("No concerts found for this artist or user.");
+        } else {
+          localStorage.setItem("concerts", JSON.stringify(allConcerts));
+          navigate("/ConcertDetails", { state: { concerts: allConcerts } });
+        }
+      } catch (error) {
+        console.error("Error fetching concerts:", error);
+        alert(error.message);
+      }
+};
+
 
   if (!hasAccess) {
-    return (
-      <div className="no-access-container">
-        <div className="no-access-message">
-          <h2>⚠️ Access Denied</h2>
-          <p>You do not have permission to access this page.</p>
-        </div>
-      </div>
-    );
+      return (
+          <div className="no-access-container">
+              <div className="no-access-message">
+                  <h2>⚠️ Access Denied</h2>
+                  <p>You do not have permission to access this page.</p>
+              </div>
+          </div>
+      );
   }
 
   return (
@@ -157,17 +146,17 @@ const Favourites = () => {
             height: "120px",
           }}
         >
-          <RouterLink to="/home" className="buttonLink">
-            <img
-              src="fakelogo.png"
-              alt="logo"
-              width={100}
-              style={{
-                position: "absolute",
-                left: "20px",
-                top: "10px"
-              }}
-            />
+        <RouterLink to="/home" className="buttonLink">
+          <img
+            src="fakelogo.png"
+            alt="logo"
+            width={100}
+            style={{
+              position: "absolute",
+              left: "20px",
+              top: "10px"
+            }}
+          />
           </RouterLink>
           <div
             style={{
@@ -279,7 +268,6 @@ const Favourites = () => {
               boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
               padding: "20px",
               textAlign: "center",
-              marginTop: "20px",
             }}
           >
             <h2
@@ -291,101 +279,105 @@ const Favourites = () => {
             >
               In-App Favorite Artists
             </h2>
-            {favoriteArtists.map((artist, index) => (
-              <div
-                key={artist.id}
+            <div>
+              {favoriteArtists.map((artist, index) => (
+                <div
+                  key={artist.id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "15px 0",
+                    fontSize: "2rem",
+                    color: "#054210",
+                  }}
+                >
+                  <span style={{ marginRight: "8px" }}>
+                    {index + 1}. {artist.username}
+                  </span>
+                  {artist.images && artist.images.length > 0 && (
+                    <img
+                      src={artist.images[1]?.url || artist.images[0].url}
+                      alt={`${artist.name} profile`}
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        objectFit: "cover",
+                        marginLeft: "8px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  )}
+                  <button
+                    onClick={() => handleSeeConcerts(artist.username, artist.id)}
+                    style={{
+                      marginLeft: "15px",
+                      padding: "8px 15px",
+                      backgroundColor: "#2d6a4f",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      fontSize: "1.5rem",
+                      transition: "background-color 0.3s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#218838")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#2d6a4f")
+                    }
+                  >
+                    See concerts
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Kartica: Favourite Genres */}
+        <div
+          style={{
+            width: "80%",
+            maxWidth: "600px",
+            backgroundColor: "white",
+            borderRadius: "20px",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            padding: "15px",
+            textAlign: "center",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "4.5rem",
+              marginBottom: "20px",
+              color: "#02310B",
+            }}
+          >
+            Favourite Genres
+          </h3>
+          <div>
+            {genresArray.map((genre, index) => (
+              <span
+                key={index}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "15px 0",
-                  fontSize: "2rem",
+                  display: "inline-block",
+                  margin: "13px",
+                  padding: "10px 20px",
+                  backgroundColor: "#eee",
+                  borderRadius: "5px",
+                  fontSize: "1.8rem",
                   color: "#054210",
                 }}
               >
-                <span style={{ marginRight: "8px" }}>
-                  {index + 1}. {artist.name}
-                </span>
-                <button
-                  onClick={() => handleSeeConcerts(artist.name, artist.id)}
-                  style={{
-                    marginLeft: "15px",
-                    padding: "8px 15px",
-                    backgroundColor: "#2d6a4f",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "1.5rem",
-                    transition: "background-color 0.3s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#218838")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "#2d6a4f")
-                  }
-                >
-                  See concerts
-                </button>
-              </div>
+                {genre}
+              </span>
             ))}
           </div>
-        )}
+        </div>
       </div>
-
-{/* Kartica: Favourite Genres */}
-<div
-  style={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",  // Koristite punu širinu
-    padding: "40px 0", // Možete dodati padding za dodatni razmak
-  }}
->
-  <div
-    style={{
-      width: "80%",
-      maxWidth: "600px",
-      backgroundColor: "white",
-      borderRadius: "20px",
-      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-      padding: "15px",
-      textAlign: "center",
-    }}
-  >
-    <h3
-      style={{
-        fontSize: "4.5rem",
-        marginBottom: "20px",
-        color: "#02310B",
-      }}
-    >
-      Favourite Genres
-    </h3>
-    <div>
-      {genresArray.map((genre, index) => (
-        <span
-          key={index}
-          style={{
-            display: "inline-block",
-            margin: "13px",
-            padding: "10px 20px",
-            backgroundColor: "#eee",
-            borderRadius: "5px",
-            fontSize: "1.8rem",
-            color: "#054210",
-          }}
-        >
-          {genre}
-        </span>
-      ))}
     </div>
-  </div>
-</div>
-
-      </div>
   );
 };
 
