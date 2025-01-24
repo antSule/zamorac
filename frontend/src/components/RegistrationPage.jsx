@@ -13,6 +13,7 @@ const RegistrationPage = () => {
     const [password, setPassword] = useState("")
     const [selectedRoles, setSelectedRoles] = useState([]);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleRoleChange = (role) => {
             setSelectedRoles((prevRoles) =>
@@ -24,7 +25,7 @@ const RegistrationPage = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        alert("If the data is valid, we will send you a verification code to your email.");
+        //alert("If the data is valid, we will send you a verification code to your email.");
 
         const userPayload = {
             username: username,
@@ -32,6 +33,8 @@ const RegistrationPage = () => {
             password: password,
             role: selectedRoles,
         };
+
+        setIsLoading(true);
 
         try {
             const response = await fetch("http://localhost:8080/auth/signup", {
@@ -42,13 +45,16 @@ const RegistrationPage = () => {
                 body: JSON.stringify(userPayload),
             });
 
-            if (response.ok) {
-                navigate("/verify", { state: { email } });
-            } else{
-                console.error('Registration failed');
+        const data = await response.json(); 
+        if (data.success) {
+            navigate("/verify", { state: { email } });
+        } else {
+            alert(data.message); 
             }
         } catch(error) {
             console.log('Error during registration', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -209,6 +215,7 @@ const RegistrationPage = () => {
                     type="submit"
                     variant="contained"
                     fullWidth
+                    disabled={isLoading}
                     sx={{
                         mt: 2,
                         backgroundColor: "rgba(9, 51, 26, 0.937)",
@@ -216,7 +223,7 @@ const RegistrationPage = () => {
                         border: "none",
                         padding: "10px 20px",
                         borderRadius: "20px",
-                        cursor: "pointer",
+                        cursor: isLoading? "not-allowed" : "pointer",
                         fontSize: "14px",
                         transition: "background-color 0.3s ease",
                         '&:hover': {
