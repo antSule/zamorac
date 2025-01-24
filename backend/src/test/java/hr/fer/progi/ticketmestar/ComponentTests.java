@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
+@TestPropertySource(locations = "classpath:test.properties")
 @TestPropertySource(properties = "spring.sql.init.mode=NEVER")
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
