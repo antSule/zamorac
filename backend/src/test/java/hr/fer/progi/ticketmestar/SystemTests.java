@@ -7,6 +7,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 
 import java.time.Duration;
@@ -14,9 +17,14 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@TestPropertySource("classpath:application.properties")
 public class SystemTests {
-	String backendUrl = System.getProperty("progi.backend.url");
-	String frontendUrl = System.getProperty("progi.frontend.url");
+
+	@Value("${progi.backend.url}")
+	private String backendUrl;
+	@Value("${progi.frontend.url}")
+	private String frontendUrl;
 	WebDriver driver = new ChromeDriver();
 	private static final Logger logger = LoggerFactory.getLogger(SystemTests.class);
 
@@ -26,6 +34,7 @@ public class SystemTests {
 		logger.info("Testing classic log in with good credentials");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
+		logger.info("FRONTENDURL: " + frontendUrl);
 		logger.info("Navigating to homepage");
 		driver.get(frontendUrl + "/");
 		logger.info("Page loaded successfully.");
