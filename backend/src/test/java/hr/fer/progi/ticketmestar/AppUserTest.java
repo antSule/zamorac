@@ -1,16 +1,20 @@
 package hr.fer.progi.ticketmestar;
 
 import hr.fer.progi.ticketmestar.service.impl.AppUserServiceJpa;
+
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@TestPropertySource(properties = "spring.sql.init.mode=NEVER")
 @SpringBootTest
 public class AppUserTest {
     private static final Logger logger = LoggerFactory.getLogger(AppUserTest.class);

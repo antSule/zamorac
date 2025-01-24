@@ -4,6 +4,7 @@ import hr.fer.progi.ticketmestar.dao.ConcertRepository;
 import hr.fer.progi.ticketmestar.domain.Concert;
 import hr.fer.progi.ticketmestar.dto.AddConcertDto;
 import hr.fer.progi.ticketmestar.rest.ConcertService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
+@TestPropertySource(properties = "spring.sql.init.mode=NEVER")
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class ComponentTests {
@@ -35,6 +38,7 @@ public class ComponentTests {
 
     @InjectMocks
     private ConcertService concertService;
+
 
     @Test
     void testAddConcertSuccessfully() {
