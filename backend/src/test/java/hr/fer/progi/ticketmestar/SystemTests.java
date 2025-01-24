@@ -15,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SystemTests {
+	String backendUrl = System.getProperty("progi.backend.url");
+	String frontendUrl = System.getProperty("progi.frontend.url");
 	WebDriver driver = new ChromeDriver();
 	private static final Logger logger = LoggerFactory.getLogger(SystemTests.class);
 
@@ -25,7 +27,7 @@ public class SystemTests {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		logger.info("Navigating to homepage");
-		driver.get("http://localhost:3000/");
+		driver.get(frontendUrl + "/");
 		logger.info("Page loaded successfully.");
 
 		logger.info("Filling up the email input field with 'admin@admin.com'");
@@ -61,7 +63,7 @@ public class SystemTests {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		logger.info("Navigating to homepage");
-		driver.get("http://localhost:3000/");
+		driver.get(frontendUrl + "/");
 		logger.info("Page loaded successfully.");
 
 		logger.info("Filling up the email input field with 'admin@admin.com'");
@@ -96,7 +98,7 @@ public class SystemTests {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		logger.info("Navigating to homepage");
-		driver.get("http://localhost:3000/");
+		driver.get(frontendUrl + "/");
 		logger.info("Page loaded successfully.");
 
 		logger.info("Filling up the email input field with 'wrong@admin.com'");
@@ -130,7 +132,7 @@ public class SystemTests {
 		logger.info("Testing non-existing route");
 
 		logger.info("Navigating to backend login page");
-		driver.get("http://localhost:8080/");
+		driver.get(backendUrl + "/");
 		logger.info("Page loaded successfully.");
 
 		logger.info("Filling up the username input field with 'admin@admin.com'");
@@ -145,7 +147,7 @@ public class SystemTests {
 		driver.findElement(By.cssSelector("button[type='submit']")).click();
 
 		logger.info("Navigating to route /nonexisting");
-		driver.get("http://localhost:8080/nonexisting");
+		driver.get(backendUrl + "/nonexisting");
 		String pageSource = driver.getPageSource();
 		logger.info("Checking if the web pages states the 404 status");
 		assertTrue(
@@ -162,7 +164,7 @@ public class SystemTests {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		logger.info("Navigating to homepage");
-		driver.get("http://localhost:3000/");
+		driver.get(frontendUrl + "/");
 		logger.info("Page loaded successfully.");
 
 		logger.info("Clicking 'Log In With Google' button");
