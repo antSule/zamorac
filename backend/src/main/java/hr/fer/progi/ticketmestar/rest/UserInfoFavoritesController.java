@@ -1,36 +1,29 @@
 package hr.fer.progi.ticketmestar.rest;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
+import hr.fer.progi.ticketmestar.dao.AppUserRepository;
+import hr.fer.progi.ticketmestar.domain.AppUser;
+import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
+import hr.fer.progi.ticketmestar.service.AppUserDetailsService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import hr.fer.progi.ticketmestar.dao.AppUserRepository;
-import hr.fer.progi.ticketmestar.domain.AppUser;
-import hr.fer.progi.ticketmestar.domain.AuthenticationProvider;
-import hr.fer.progi.ticketmestar.service.AppUserDetailsService;
+import java.security.Principal;
+import java.util.*;
 
 
 @RestController
-@RequestMapping("/api/user")
-
 public class UserInfoFavoritesController {
 
     @Autowired
@@ -42,7 +35,6 @@ public class UserInfoFavoritesController {
     private PasswordEncoder passwordEncoder;
 
 
- 
     @GetMapping(value="/error")
     public ResponseEntity<String> getError(@RequestParam(required = false) String name){
         return ResponseEntity.ok("Error");
@@ -190,7 +182,7 @@ public class UserInfoFavoritesController {
         }
     }
 
-    @GetMapping("/favourites")
+    @GetMapping("/favorites")
     public ResponseEntity<Set<AppUser>> getFavoriteArtists() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -231,4 +223,3 @@ public class UserInfoFavoritesController {
         }
     }
 }
-
