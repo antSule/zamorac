@@ -2,7 +2,8 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #f4f4f4;
+    background: url(../slike/koncertslika.jpg) no-repeat center center;
+    background-size: cover;
 }
 
 .concert-add-containerANC {
@@ -11,9 +12,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url(../slike/koncertslika.jpg) no-repeat center center;
-    background-size: cover;
-    padding: 5px; 
+
+    padding: 5px;
 }
 
 .naslovANC {

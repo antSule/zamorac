@@ -1,12 +1,14 @@
+.edit-concertMain {
+    background: url(../slike/koncertslika.jpg) no-repeat center center;
+    background-size: cover;
+}
 .edit-concert{
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url(../slike/koncertslika.jpg) no-repeat center center;
-    background-size: cover;
-    padding: 5px; 
+    padding: 5px;
 }
 
 .formECA{

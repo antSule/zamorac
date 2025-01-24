@@ -149,30 +149,39 @@ const Ticketmaster = () => {
     return (
         <body className="bodyTM">
         <section className="h-wrapper">
-                                <div
-                                  className="flexCenter paddings innerWidth h-container"
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    position: "relative",
-                                    height: "120px",
-                                  }}
-                                >
-                                <RouterLink to="/home" className="buttonLink">
-                                  <img
-                                    src="fakelogo.png"
-                                    alt="logo"
-                                    width={100}
-                                    style={{
-                                      position: "absolute",
-                                      left: "20px",
-                                      top: "10px"
-                                    }}
-                                  />
-                                  </RouterLink>
-                                </div>
-                              </section>
+                    <div
+                      className="flexCenter paddings innerWidth h-container"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative",
+                        height: "120px",
+                      }}
+                    >
+                    <RouterLink to="/home" className="buttonLink">
+                      <img
+                        src="fakelogo.png"
+                        alt="logo"
+                        width={100}
+                        style={{
+                          position: "absolute",
+                          left: "20px",
+                          top: "10px"
+                        }}
+                      />
+                      </RouterLink>
+                      <div
+                        style={{
+                          fontSize: "6rem",
+                          fontWeight: "bold",
+                          color: "white",
+                        }}
+                      >
+                        Search for Concerts
+                      </div>
+                    </div>
+                  </section>
         <div className="ticketmaster">
             <form className="formTM" id="parameters-form" onSubmit={handleSubmit}>
                 <div className="naslovTM">Search for concerts</div>

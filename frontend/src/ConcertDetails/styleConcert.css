@@ -49,6 +49,17 @@
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
+.noticketsbutton {
+    text-decoration: none;
+    color: #4d1818;
+    font-weight: bold;
+    margin-top: 15px;
+    display: inline-block;
+    font-size: 18px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
 .concert-detailsCD a:hover {
     color: #1DB954;
     transform: translateY(-2px);
