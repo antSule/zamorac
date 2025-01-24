@@ -33,10 +33,10 @@ import static org.mockito.Mockito.*;
 public class ComponentTests {
     private static final Logger logger = LoggerFactory.getLogger(ComponentTests.class);
 
-    @Mock
+    @MockBean
     private ConcertRepository concertRepository;
 
-    @InjectMocks
+    @Autowired
     private ConcertService concertService;
 
 
