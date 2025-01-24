@@ -1,7 +1,10 @@
 DROP TABLE IF EXISTS concert;
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS app_users;
+
 
 CREATE TABLE concert (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     date DATE NOT NULL,
     time TIME NOT NULL,
     performer VARCHAR(255) NOT NULL
@@ -29,18 +32,16 @@ INSERT INTO concert (date, time, performer) VALUES
 ('2024-12-19', '20:00:00', 'Katy Perry'),
 ('2024-12-20', '21:00:00', 'Foo Fighters');
 
-DROP TABLE IF EXISTS app_users;
-DROP TABLE IF EXISTS user_roles;
 
 CREATE TABLE app_users (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     enabled BOOLEAN NOT NULL,
     auth_provider VARCHAR(50),
     verification_code VARCHAR(255),
-    verification_expiration DATETIME,
+    verification_expiration TIMESTAMP,
     spotify_user_id VARCHAR(255)
 );
 
