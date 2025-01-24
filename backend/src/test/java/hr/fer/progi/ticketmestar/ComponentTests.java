@@ -114,4 +114,20 @@ public class ComponentTests {
         logger.info("Test passed");
 
     }
+
+    @Test
+    void testDeleteConcertIdMaxValue() {
+        Long concertId = Long.MAX_VALUE;
+        logger.info("Initializing concertId: {}", concertId);
+
+        logger.info("Mock return that the concert with the given id exists");
+        when(concertRepository.existsById(concertId)).thenReturn(true);
+
+        logger.info("Calling the deleteConcert method");
+        concertService.deleteConcert(concertId);
+
+        logger.info("Checking that the concert is being deleted exactly one time.");
+        verify(concertRepository, times(1)).deleteById(concertId);
+        logger.info("Test passed");
+    }
 }
